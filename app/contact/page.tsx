@@ -87,7 +87,7 @@ export default function ContactPage() {
 
               {[
                 { icon: MapPin, label: 'Adresse', value: '3737 Crémazie Est #402\nMontréal, QC H1Z 2K4' },
-                { icon: Phone, label: 'Téléphone', value: '(514) 533-0482', href: 'tel:+15145330482' },
+                { icon: Phone, label: 'Téléphone', value: '+1 (514) 533-0482', href: 'tel:+15145330482' },
                 { icon: Mail, label: 'Courriel', value: 'info@soshubcanada.com', href: 'mailto:info@soshubcanada.com' },
                 { icon: MessageCircle, label: 'WhatsApp', value: '(438) 630-2869', href: 'https://wa.me/14386302869' },
                 { icon: Clock, label: 'Heures', value: 'Lun-Ven: 9h-17h\nSam: Sur rendez-vous' },
@@ -206,7 +206,7 @@ export default function ContactPage() {
 
               {error && (
                 <p className="text-red-500 text-sm text-center font-sans">
-                  Une erreur est survenue. Veuillez réessayer ou nous contacter par téléphone au (514) 533-0482.
+                  Une erreur est survenue. Veuillez réessayer ou nous contacter par téléphone au +1 (514) 533-0482.
                 </p>
               )}
               <p className="text-xs text-gray-400 text-center font-sans">

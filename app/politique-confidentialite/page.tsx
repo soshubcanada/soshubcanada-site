@@ -112,7 +112,7 @@ export default function PolitiqueConfidentialitePage() {
                 <p className="font-bold text-navy">SOS Hub Canada Inc.</p>
                 <p className="text-gray-500 text-sm mt-1">3737 Crémazie Est #402, Montréal, QC H1Z 2K4</p>
                 <p className="text-gray-500 text-sm">Courriel : <a href="mailto:info@soshubcanada.com" className="text-gold hover:underline">info@soshubcanada.com</a></p>
-                <p className="text-gray-500 text-sm">Téléphone : <a href="tel:+15145330482" className="text-gold hover:underline">(514) 533-0482</a></p>
+                <p className="text-gray-500 text-sm">Téléphone : <a href="tel:+15145330482" className="text-gold hover:underline">+1 (514) 533-0482</a></p>
               </div>
             </div>
 

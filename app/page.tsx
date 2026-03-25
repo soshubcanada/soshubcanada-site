@@ -21,7 +21,7 @@ const IMAGES = {
   happyCoupleCity: 'https://images.unsplash.com/photo-1543807535-eceef0bc6599?w=400&h=250&fit=crop',
   diverseGroup: 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=400&h=250&fit=crop',
   kidSchool: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=400&h=250&fit=crop',
-  newHome: 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=400&h=250&fit=crop',
+  newHome: 'https://images.unsplash.com/photo-1517457373958-b7bdd4587205?w=400&h=250&fit=crop',
   ctaBg: 'https://images.unsplash.com/photo-1517935706615-2717063c2225?w=1920&h=800&fit=crop',
   montreal: 'https://images.unsplash.com/photo-1519178614-68673b201f36?w=800&h=400&fit=crop',
   office: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=400&h=250&fit=crop',
@@ -170,7 +170,7 @@ export default function HomePage() {
                   Tester mon admissibilité <ArrowRight className="w-5 h-5" />
                 </Link>
                 <a href="tel:+15145330482" className="inline-flex items-center justify-center gap-2 px-8 py-4 glass text-white font-semibold rounded-xl hover:bg-white/20 transition-all font-sans">
-                  <Phone className="w-4 h-4" /> (514) 533-0482
+                  <Phone className="w-4 h-4" /> +1 (514) 533-0482
                 </a>
               </div>
 
