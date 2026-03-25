@@ -1,27 +1,26 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { AnimatedCounter } from '@/components/AnimatedCounter';
-import { VideoTestimonial } from '@/components/VideoTestimonial';
 import { NewsletterForm } from '@/components/NewsletterForm';
 import {
   ArrowRight, CheckCircle2, Users, FileText, Globe2, Shield,
   Star, TrendingUp, TrendingDown, Award, MapPin, Clock, Sparkles, ChevronRight,
-  GraduationCap, Briefcase, Heart, Plane, Quote, Play,
+  GraduationCap, Briefcase, Heart, Plane, Quote,
   Phone, ShieldAlert, CalendarClock
 } from 'lucide-react';
 
-/* ===== IMAGES - Familles heureuses et diversifiées ===== */
+/* ===== IMAGES - Familles maghrébines et diversifiées heureuses ===== */
 const IMAGES = {
-  hero: 'https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?w=1920&h=1080&fit=crop&crop=faces',
-  familyAirport: 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=800&h=500&fit=crop&crop=faces',
-  familyPark: 'https://images.unsplash.com/photo-1591474200742-8e512e6f98f8?w=600&h=700&fit=crop',
+  hero: 'https://images.unsplash.com/photo-1602471615287-d2838af03547?w=1920&h=1080&fit=crop&crop=faces',
+  familyAirport: 'https://images.unsplash.com/photo-1511895426328-dc8714191300?w=800&h=500&fit=crop&crop=faces',
+  familyPark: 'https://images.unsplash.com/photo-1609220136736-443140cffec6?w=600&h=700&fit=crop',
   happyCouple: 'https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=400&h=300&fit=crop',
   graduationJoy: 'https://images.unsplash.com/photo-1627556704302-624286467c65?w=400&h=250&fit=crop',
-  happyCoupleCity: 'https://images.unsplash.com/photo-1543807535-eceef0bc6599?w=400&h=250&fit=crop',
-  diverseGroup: 'https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?w=400&h=250&fit=crop',
+  happyCoupleCity: 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=400&h=250&fit=crop&crop=faces',
+  diverseGroup: 'https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=400&h=250&fit=crop&crop=face',
   kidSchool: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=400&h=250&fit=crop',
-  newHome: 'https://images.unsplash.com/photo-1517457373958-b7bdd4587205?w=400&h=250&fit=crop',
-  ctaBg: 'https://images.unsplash.com/photo-1517935706615-2717063c2225?w=1920&h=800&fit=crop',
+  newHome: 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=400&h=250&fit=crop',
+  ctaBg: 'https://images.unsplash.com/photo-1503614472-8c93d56e92ce?w=1920&h=800&fit=crop',
   montreal: 'https://images.unsplash.com/photo-1519178614-68673b201f36?w=800&h=400&fit=crop',
   office: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=400&h=250&fit=crop',
 };
@@ -74,40 +73,40 @@ const steps = [
 
 const testimonials = [
   {
-    name: 'Marie-Claire D.', origin: 'France', program: 'PEQ - Diplômés',
+    name: 'Amina B.', origin: 'Maroc', program: 'PEQ - Diplômés',
     text: 'Grâce à SOS Hub Canada, j\'ai obtenu mon CSQ en seulement 4 mois après mon diplôme. Leur connaissance du processus québécois est impressionnante.',
     rating: 5,
-    image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop&crop=face',
+    image: 'https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=100&h=100&fit=crop&crop=face',
   },
   {
-    name: 'Ahmed K.', origin: 'Maroc', program: 'Entrée Express',
+    name: 'Karim M.', origin: 'Algérie', program: 'Entrée Express',
     text: 'Un accompagnement professionnel du début à la fin. Mon score CRS a été optimisé et j\'ai reçu mon ITA au deuxième tirage. Merci infiniment!',
     rating: 5,
-    image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face',
+    image: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=100&h=100&fit=crop&crop=face',
   },
   {
-    name: 'Sofia L.', origin: 'Colombie', program: 'Permis de travail',
+    name: 'Fatima Z.', origin: 'Tunisie', program: 'Permis de travail',
     text: 'L\'équipe m\'a aidée avec mon EIMT et mon permis de travail fermé. Processus clair, communication constante. Je recommande à 100%.',
     rating: 5,
-    image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=face',
+    image: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=100&h=100&fit=crop&crop=face',
   },
   {
-    name: 'Jean-Baptiste M.', origin: 'Cameroun', program: 'Relocalisation',
+    name: 'Youssef E.', origin: 'Maroc', program: 'Relocalisation',
     text: 'Toute ma famille a été accompagnée pour notre installation à Montréal. Logement, école pour les enfants, tout a été géré. On se sent chez nous!',
     rating: 5,
-    image: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=100&h=100&fit=crop&crop=face',
+    image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face',
   },
 ];
 
 const successStories = [
+  { image: 'https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=300&h=300&fit=crop&crop=face', country: '🇲🇦 Maroc' },
+  { image: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=300&h=300&fit=crop&crop=face', country: '🇩🇿 Algérie' },
+  { image: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=300&h=300&fit=crop&crop=face', country: '🇹🇳 Tunisie' },
+  { image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&fit=crop&crop=face', country: '🇲🇦 Maroc' },
   { image: 'https://images.unsplash.com/photo-1609220136736-443140cffec6?w=300&h=300&fit=crop&crop=face', country: '🇫🇷 France' },
-  { image: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=300&h=300&fit=crop&crop=face', country: '🇲🇦 Maroc' },
-  { image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&h=300&fit=crop&crop=face', country: '🇧🇷 Brésil' },
-  { image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&fit=crop&crop=face', country: '🇹🇳 Tunisie' },
-  { image: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=300&h=300&fit=crop&crop=face', country: '🇨🇴 Colombie' },
-  { image: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=300&h=300&fit=crop&crop=face', country: '🇨🇲 Cameroun' },
-  { image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=300&h=300&fit=crop&crop=face', country: '🇭🇹 Haïti' },
-  { image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300&h=300&fit=crop&crop=face', country: '🇩🇿 Algérie' },
+  { image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&h=300&fit=crop&crop=face', country: '🇨🇲 Cameroun' },
+  { image: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=300&h=300&fit=crop&crop=face', country: '🇭🇹 Haïti' },
+  { image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300&h=300&fit=crop&crop=face', country: '🇨🇴 Colombie' },
 ];
 
 export default function HomePage() {
@@ -489,8 +488,42 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ========== VIDEO TESTIMONIALS ========== */}
-      <VideoTestimonial />
+      {/* ========== TESTIMONIALS ========== */}
+      <section className="py-20 md:py-28 bg-cream">
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="text-center mb-12 scroll-hidden">
+            <span className="text-gold font-semibold text-sm uppercase tracking-[0.2em] font-sans">Témoignages</span>
+            <h2 className="text-3xl md:text-4xl font-bold text-navy mt-3 mb-4">Ils nous ont fait confiance</h2>
+            <div className="divider-gold mx-auto" />
+          </div>
+          <div className="grid md:grid-cols-2 gap-6">
+            {testimonials.map((t, i) => (
+              <div key={i} className="scroll-hidden bg-white rounded-2xl p-6 border border-gray-100 shadow-sm">
+                <div className="flex items-center gap-1 mb-3">
+                  {Array.from({ length: t.rating }).map((_, j) => (
+                    <Star key={j} className="w-4 h-4 text-gold fill-gold" />
+                  ))}
+                </div>
+                <Quote className="w-8 h-8 text-gold/20 mb-2" />
+                <p className="text-gray-600 font-sans text-sm leading-relaxed mb-4">{t.text}</p>
+                <div className="flex items-center gap-3 pt-4 border-t border-gray-100">
+                  <Image
+                    src={t.image}
+                    alt={t.name}
+                    width={44}
+                    height={44}
+                    className="rounded-full object-cover"
+                  />
+                  <div>
+                    <p className="font-bold text-navy text-sm">{t.name}</p>
+                    <p className="text-xs text-gray-400 font-sans">{t.origin} — {t.program}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {/* ========== NEWSLETTER ========== */}
       <section className="py-16 bg-gradient-to-r from-gold-dark via-gold to-gold-light relative overflow-hidden">
