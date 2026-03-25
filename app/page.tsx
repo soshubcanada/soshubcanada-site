@@ -6,7 +6,7 @@ import {
   ArrowRight, CheckCircle2, Users, FileText, Globe2, Shield,
   Star, TrendingUp, TrendingDown, Award, MapPin, Clock, Sparkles, ChevronRight,
   GraduationCap, Briefcase, Heart, Plane, Quote,
-  Phone, ShieldAlert, CalendarClock
+  Phone, ShieldAlert, CalendarClock, Zap, BadgeCheck, Timer, AlertTriangle
 } from 'lucide-react';
 
 /* ===== IMAGES - Familles maghrébines et diversifiées heureuses ===== */
@@ -127,9 +127,15 @@ export default function HomePage() {
         <div className="relative max-w-7xl mx-auto px-6 py-32 md:py-40 w-full">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
-              <div className="inline-flex items-center gap-2 px-5 py-2 glass rounded-full text-gold text-sm font-medium mb-8 animate-fade-in font-sans glow-gold">
-                <Sparkles className="w-4 h-4" />
-                +500 familles accompagnées — Évaluation gratuite en 2 min
+              <div className="flex flex-wrap gap-3 mb-8 animate-fade-in">
+                <div className="inline-flex items-center gap-2 px-5 py-2 glass rounded-full text-gold text-sm font-medium font-sans glow-gold">
+                  <Sparkles className="w-4 h-4" />
+                  +500 familles accompagnées — Évaluation gratuite en 2 min
+                </div>
+                <div className="inline-flex items-center gap-2 px-4 py-2 bg-red-500/20 border border-red-400/30 rounded-full text-red-300 text-xs font-semibold font-sans animate-pulse">
+                  <Timer className="w-3.5 h-3.5" />
+                  Places limitées — Mars 2026
+                </div>
               </div>
 
               <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white leading-[1.08] mb-6 animate-fade-in-up">
@@ -232,6 +238,30 @@ export default function HomePage() {
                   <AnimatedCounter target={s.value} suffix={s.suffix} />
                 </div>
                 <div className="text-sm text-gray-400 font-sans">{s.label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ========== TRUST BADGES ========== */}
+      <section className="bg-navy py-10 md:py-12">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
+            {[
+              { icon: BadgeCheck, title: 'Certifié IRCC', desc: 'Conforme aux normes fédérales', color: 'text-emerald-400' },
+              { icon: Shield, title: 'Données protégées', desc: 'Confidentialité 100% garantie', color: 'text-blue-400' },
+              { icon: Zap, title: 'Résultat en 24h', desc: 'Évaluation rapide et précise', color: 'text-gold' },
+              { icon: Award, title: '4.9/5 Satisfaction', desc: '200+ avis vérifiés', color: 'text-amber-400' },
+            ].map((b, i) => (
+              <div key={i} className="flex items-center gap-3 p-3 rounded-xl border border-white/5 hover:border-white/10 transition-colors">
+                <div className={`w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center ${b.color}`}>
+                  <b.icon className="w-5 h-5" />
+                </div>
+                <div>
+                  <p className="text-white font-bold text-sm font-sans">{b.title}</p>
+                  <p className="text-white/40 text-[11px] font-sans">{b.desc}</p>
+                </div>
               </div>
             ))}
           </div>
@@ -525,6 +555,70 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ========== COMPARISON TABLE ========== */}
+      <section className="py-20 md:py-28 bg-white">
+        <div className="max-w-5xl mx-auto px-6">
+          <div className="text-center mb-12 scroll-hidden">
+            <span className="text-gold font-semibold text-sm uppercase tracking-[0.2em] font-sans">Comparez</span>
+            <h2 className="text-3xl md:text-4xl font-bold text-navy mt-3 mb-4">Quel programme est fait pour vous?</h2>
+            <div className="divider-gold mx-auto" />
+          </div>
+          <div className="overflow-x-auto scroll-hidden">
+            <table className="w-full text-sm font-sans border-collapse">
+              <thead>
+                <tr className="bg-navy text-white">
+                  <th className="text-left p-4 rounded-tl-xl font-semibold">Programme</th>
+                  <th className="p-4 text-center font-semibold">Délai</th>
+                  <th className="p-4 text-center font-semibold">Profil idéal</th>
+                  <th className="p-4 text-center font-semibold">Résidence permanente</th>
+                  <th className="p-4 text-center rounded-tr-xl font-semibold">Statut</th>
+                </tr>
+              </thead>
+              <tbody>
+                {[
+                  { name: 'Entrée Express', delay: '6-8 mois', profile: 'Travailleurs qualifiés', rp: true, hot: true },
+                  { name: 'PEQ Québec', delay: '6-12 mois', profile: 'Diplômés / Travailleurs QC', rp: true, hot: true },
+                  { name: 'Permis de travail', delay: '2-6 mois', profile: 'Offre d\'emploi confirmée', rp: false, hot: false },
+                  { name: 'Permis d\'études', delay: '2-4 mois', profile: 'Étudiants internationaux', rp: false, hot: false },
+                  { name: 'Parrainage familial', delay: '12-18 mois', profile: 'Conjoint / Famille', rp: true, hot: false },
+                  { name: 'Mobilité francophone', delay: '2-4 mois', profile: 'Francophones hors QC', rp: false, hot: true },
+                ].map((p, i) => (
+                  <tr key={i} className={`border-b border-gray-100 ${i % 2 === 0 ? 'bg-cream' : 'bg-white'} hover:bg-gold/5 transition-colors`}>
+                    <td className="p-4 font-bold text-navy flex items-center gap-2">
+                      {p.hot && <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" title="Programme populaire" />}
+                      {p.name}
+                    </td>
+                    <td className="p-4 text-center text-gray-600">{p.delay}</td>
+                    <td className="p-4 text-center text-gray-500">{p.profile}</td>
+                    <td className="p-4 text-center">
+                      {p.rp
+                        ? <CheckCircle2 className="w-5 h-5 text-green-500 mx-auto" />
+                        : <span className="text-gray-300">—</span>
+                      }
+                    </td>
+                    <td className="p-4 text-center">
+                      {p.hot
+                        ? <span className="px-3 py-1 bg-red-50 text-red-600 rounded-full text-xs font-bold">Populaire</span>
+                        : <span className="px-3 py-1 bg-gray-100 text-gray-500 rounded-full text-xs">Disponible</span>
+                      }
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <div className="text-center mt-8 scroll-hidden">
+            <Link
+              href="/admissibilite"
+              className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-gold to-gold-dark text-white font-bold rounded-xl hover:shadow-lg hover:shadow-gold/25 transition-all font-sans text-lg"
+            >
+              Découvrir mon programme idéal <ArrowRight className="w-5 h-5" />
+            </Link>
+            <p className="text-xs text-gray-400 mt-3 font-sans">Évaluation gratuite • Résultat en 24h • Sans engagement</p>
+          </div>
+        </div>
+      </section>
+
       {/* ========== NEWSLETTER ========== */}
       <section className="py-16 bg-gradient-to-r from-gold-dark via-gold to-gold-light relative overflow-hidden">
         <div className="absolute inset-0 opacity-10">
@@ -593,9 +687,12 @@ export default function HomePage() {
           <p className="text-white/60 text-lg mb-4 max-w-2xl mx-auto font-sans scroll-hidden">
             Testez votre admissibilité en 2 minutes. Notre équipe vous contacte dans les 24h avec un plan d&apos;action personnalisé.
           </p>
-          <p className="text-gold font-semibold text-sm mb-10 scroll-hidden font-sans">
-            Rejoignez les +500 familles qui ont choisi SOS Hub Canada
-          </p>
+          <div className="flex flex-wrap justify-center gap-6 mb-10 scroll-hidden">
+            <div className="flex items-center gap-2 text-white/50 text-sm font-sans"><Shield className="w-4 h-4 text-gold" /> Confidentiel</div>
+            <div className="flex items-center gap-2 text-white/50 text-sm font-sans"><Zap className="w-4 h-4 text-gold" /> Résultat en 24h</div>
+            <div className="flex items-center gap-2 text-white/50 text-sm font-sans"><BadgeCheck className="w-4 h-4 text-gold" /> Sans engagement</div>
+            <div className="flex items-center gap-2 text-white/50 text-sm font-sans"><Star className="w-4 h-4 text-gold" /> 500+ familles</div>
+          </div>
           <div className="flex flex-col sm:flex-row gap-4 justify-center scroll-hidden">
             <Link href="/admissibilite" className="inline-flex items-center justify-center gap-2 px-10 py-4 bg-gradient-to-r from-gold to-gold-dark text-white font-bold rounded-xl hover:shadow-2xl hover:shadow-gold/30 transition-all text-lg hover:scale-105 font-sans">
               Évaluation gratuite <ArrowRight className="w-5 h-5" />

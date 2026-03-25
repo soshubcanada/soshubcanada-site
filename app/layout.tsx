@@ -4,6 +4,8 @@ import './globals.css';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { WhatsAppButton } from '@/components/WhatsAppButton';
+import { StickyMobileCTA } from '@/components/StickyMobileCTA';
+import { SocialProofToast } from '@/components/SocialProofToast';
 import { ScrollAnimator } from '@/components/ScrollAnimator';
 
 const inter = Inter({
@@ -156,6 +158,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <main className="flex-1">{children}</main>
         <Footer />
         <WhatsAppButton />
+        <StickyMobileCTA />
+        <SocialProofToast />
         <ScrollAnimator />
       </body>
     </html>

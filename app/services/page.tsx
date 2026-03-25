@@ -127,29 +127,37 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      {/* Pricing */}
-      <section className="py-20 bg-white">
-        <div className="max-w-4xl mx-auto px-6 text-center scroll-hidden">
-          <FileText className="w-12 h-12 text-gold mx-auto mb-4" />
-          <h2 className="text-3xl md:text-4xl font-bold text-navy mb-4">Tarification transparente</h2>
+      {/* Next Step CTA */}
+      <section className="py-20 bg-navy relative overflow-hidden">
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute top-10 left-1/4 w-72 h-72 bg-gold/5 rounded-full blur-3xl" />
+          <div className="absolute bottom-10 right-1/4 w-72 h-72 bg-gold/5 rounded-full blur-3xl" />
+        </div>
+        <div className="relative max-w-4xl mx-auto px-6 text-center scroll-hidden">
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Prêt à commencer?</h2>
           <div className="divider-gold mx-auto mt-4 mb-6" />
-          <p className="text-gray-500 mb-8 max-w-2xl mx-auto font-sans text-lg">
-            Nos honoraires sont établis sur devis selon votre programme et la complexité de votre dossier.
-            Commencez par une <strong className="text-navy">évaluation gratuite</strong> de votre admissibilité, puis recevez un devis personnalisé.
+          <p className="text-white/60 mb-8 max-w-2xl mx-auto font-sans text-lg">
+            Testez votre admissibilité gratuitement en 2 minutes. Recevez votre plan d&apos;action personnalisé en 24h.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
             <Link
               href="/admissibilite"
-              className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-gold to-gold-dark text-white font-bold rounded-xl hover:shadow-lg hover:shadow-gold/25 transition-all font-sans"
+              className="inline-flex items-center gap-2 px-10 py-4 bg-gradient-to-r from-gold to-gold-dark text-white font-bold rounded-xl hover:shadow-2xl hover:shadow-gold/30 transition-all font-sans text-lg hover:scale-105 glow-gold"
             >
-              Évaluation gratuite <ArrowRight className="w-4 h-4" />
+              Évaluation gratuite <ArrowRight className="w-5 h-5" />
             </Link>
             <Link
               href="/contact"
-              className="inline-flex items-center gap-2 px-8 py-4 bg-navy text-white font-semibold rounded-xl hover:bg-navy-light transition-all font-sans"
+              className="inline-flex items-center gap-2 px-10 py-4 glass text-white font-semibold rounded-xl hover:bg-white/20 transition-all font-sans text-lg"
             >
-              Demander un devis
+              Nous contacter
             </Link>
+          </div>
+          <div className="flex flex-wrap justify-center gap-6 text-white/40 text-sm font-sans">
+            <span className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-gold" /> Gratuit</span>
+            <span className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-gold" /> Sans engagement</span>
+            <span className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-gold" /> Résultat en 24h</span>
+            <span className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-gold" /> 500+ familles accompagnées</span>
           </div>
         </div>
       </section>

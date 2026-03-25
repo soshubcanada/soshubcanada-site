@@ -381,6 +381,11 @@ input[type="range"]::-webkit-slider-thumb:hover {
   color: var(--navy);
 }
 
+/* Safe area for sticky mobile CTA */
+.safe-area-bottom {
+  padding-bottom: max(12px, env(safe-area-inset-bottom));
+}
+
 /* Focus ring */
 :focus-visible {
   outline: 2px solid var(--gold);
