@@ -5,7 +5,8 @@ import Link from 'next/link';
 import {
   ArrowRight, ArrowLeft, CheckCircle2, AlertCircle, Sparkles,
   User, GraduationCap, Briefcase, Globe2, Languages, Send,
-  MessageCircle, Phone, Mail
+  MessageCircle, Phone, Mail, Clock, TrendingDown, AlertTriangle,
+  CalendarClock, ShieldAlert, Flame, Zap
 } from 'lucide-react';
 
 interface FormData {
@@ -235,16 +236,110 @@ export default function AdmissibilitePage() {
 
   if (submitted && results) {
     const eligible = results.filter(r => r.eligible);
+    const age = parseInt(form.age) || 0;
+    const whatsappMsg = encodeURIComponent(`Bonjour SOS Hub Canada! Je viens de compléter le test d'admissibilité. Mon nom est ${form.name}, j'ai ${age} ans. J'ai ${eligible.length} programme(s) éligible(s): ${eligible.map(p => p.name).join(', ') || 'à discuter'}. J'aimerais obtenir mon plan d'action personnalisé.`);
+    const whatsappUrl = `https://wa.me/14386302869?text=${whatsappMsg}`;
+
+    // Dynamic urgency alerts based on profile
+    const urgencyAlerts: { icon: React.ElementType; title: string; text: string; color: string }[] = [];
+
+    if (age >= 30) {
+      const pointsLost = age >= 35 ? '10 à 15' : '5 à 8';
+      urgencyAlerts.push({
+        icon: TrendingDown,
+        title: `Facteur âge — Vous perdez des points chaque année`,
+        text: `À ${age} ans, chaque année qui passe vous fait perdre ${pointsLost} points CRS pour l'Entrée Express. Après 45 ans, la plupart des programmes fédéraux deviennent inaccessibles. Agissez maintenant pour maximiser votre score.`,
+        color: age >= 35 ? 'red' : 'amber',
+      });
+    }
+
+    urgencyAlerts.push({
+      icon: ShieldAlert,
+      title: 'Quotas IRCC en baisse — Fenêtres qui se ferment',
+      text: 'Le Canada réduit actuellement ses quotas de résidents temporaires et resserre les critères d\'admissibilité. Les niveaux d\'immigration 2025-2027 prévoient des réductions significatives. Les dossiers soumis maintenant ont plus de chances d\'être traités avant les nouveaux resserrements.',
+      color: 'amber',
+    });
+
+    if (eligible.some(p => p.name.includes('études'))) {
+      urgencyAlerts.push({
+        icon: CalendarClock,
+        title: 'Rentrée d\'automne 2026 — Délais stricts',
+        text: 'Les admissions pour la rentrée d\'automne 2026 ferment bientôt. Les universités canadiennes exigent les dossiers 4 à 6 mois à l\'avance. Commencez votre demande maintenant pour ne pas manquer la prochaine rentrée.',
+        color: 'blue',
+      });
+    }
+
+    if (eligible.some(p => p.name.includes('PEQ') || p.name.includes('PRTQ'))) {
+      urgencyAlerts.push({
+        icon: AlertTriangle,
+        title: 'Réforme du PEQ et Arrima — Nouvelles exigences',
+        text: 'Le Québec a resserré les critères du PEQ et du PRTQ. Les exigences de français et d\'expérience sont en constante évolution. Soumettez votre dossier pendant que votre profil correspond aux critères actuels.',
+        color: 'amber',
+      });
+    }
+
     return (
       <div className="min-h-screen bg-cream py-12">
         <div className="max-w-4xl mx-auto px-6">
-          {/* Results header */}
-          <div className="text-center mb-10">
-            <div className="w-16 h-16 rounded-2xl bg-gold/10 flex items-center justify-center mx-auto mb-4">
-              <Sparkles className="w-8 h-8 text-gold" />
+
+          {/* ===== MASSIVE WHATSAPP CTA — HERO ===== */}
+          <div className="relative bg-gradient-to-br from-[#25D366] to-[#128C7E] rounded-3xl p-8 md:p-10 mb-8 text-white shadow-2xl shadow-[#25D366]/20 overflow-hidden">
+            <div className="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-full blur-3xl -translate-y-10 translate-x-10" />
+            <div className="absolute bottom-0 left-0 w-32 h-32 bg-white/5 rounded-full blur-2xl translate-y-8 -translate-x-8" />
+            <div className="relative">
+              <div className="flex items-center gap-2 mb-4">
+                <div className="w-3 h-3 bg-green-300 rounded-full animate-pulse" />
+                <span className="text-sm font-medium text-white/80">Expert disponible maintenant</span>
+              </div>
+              <h2 className="text-2xl md:text-4xl font-bold mb-3 leading-tight">
+                ✅ Votre dossier est reçu, {form.name}!
+              </h2>
+              <p className="text-lg md:text-xl text-white/90 mb-6 max-w-2xl">
+                Cliquez ci-dessous pour obtenir votre <strong>plan d&apos;action personnalisé</strong> et votre statut via WhatsApp avec notre expert en immigration.
+              </p>
+              <a
+                href={whatsappUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-3 px-10 py-5 bg-white text-[#128C7E] font-bold rounded-2xl hover:bg-white/90 transition-all text-lg md:text-xl shadow-xl hover:shadow-2xl hover:scale-105 transform"
+              >
+                <MessageCircle className="w-7 h-7" />
+                Obtenir mon plan d&apos;action sur WhatsApp
+              </a>
+              <p className="text-sm text-white/60 mt-4 flex items-center gap-2">
+                <Clock className="w-4 h-4" /> Réponse moyenne : moins de 2 heures
+              </p>
             </div>
+          </div>
+
+          {/* ===== URGENCY ALERTS — FOMO ===== */}
+          <div className="space-y-3 mb-8">
+            {urgencyAlerts.map((alert, i) => {
+              const AlertIcon = alert.icon;
+              const bgColor = alert.color === 'red' ? 'bg-red-50 border-red-200' : alert.color === 'blue' ? 'bg-blue-50 border-blue-200' : 'bg-amber-50 border-amber-200';
+              const iconColor = alert.color === 'red' ? 'text-red-500 bg-red-100' : alert.color === 'blue' ? 'text-blue-500 bg-blue-100' : 'text-amber-500 bg-amber-100';
+              const titleColor = alert.color === 'red' ? 'text-red-800' : alert.color === 'blue' ? 'text-blue-800' : 'text-amber-800';
+              const textColor = alert.color === 'red' ? 'text-red-700' : alert.color === 'blue' ? 'text-blue-700' : 'text-amber-700';
+              return (
+                <div key={i} className={`${bgColor} border rounded-xl p-4 flex items-start gap-3`}>
+                  <div className={`w-9 h-9 rounded-lg ${iconColor} flex items-center justify-center shrink-0 mt-0.5`}>
+                    <AlertIcon className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h4 className={`font-bold text-sm ${titleColor} mb-1 flex items-center gap-2`}>
+                      <Flame className="w-4 h-4" /> {alert.title}
+                    </h4>
+                    <p className={`text-sm ${textColor}`}>{alert.text}</p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Results header */}
+          <div className="text-center mb-8">
             <h1 className="text-3xl font-bold text-navy mb-2">Résultats de votre évaluation</h1>
-            <p className="text-gray-500">
+            <p className="text-gray-500 font-sans">
               {eligible.length > 0
                 ? `${eligible.length} programme${eligible.length > 1 ? 's' : ''} potentiellement accessible${eligible.length > 1 ? 's' : ''} pour vous`
                 : 'Contactez-nous pour explorer toutes vos options'}
@@ -262,7 +357,7 @@ export default function AdmissibilitePage() {
           </div>
 
           {/* Results cards */}
-          <div className="space-y-4 mb-10">
+          <div className="space-y-4 mb-8">
             {results.map((r, i) => (
               <div
                 key={i}
@@ -294,94 +389,68 @@ export default function AdmissibilitePage() {
             ))}
           </div>
 
-          {/* Auto response message */}
-          <div className="bg-green-50 border border-green-200 rounded-2xl p-6 mb-8">
-            <div className="flex items-start gap-4">
-              <div className="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center shrink-0">
-                <CheckCircle2 className="w-6 h-6 text-green-600" />
-              </div>
-              <div>
-                <h3 className="font-bold text-navy mb-2">Merci {form.name}! Votre évaluation a été envoyée.</h3>
-                <p className="text-sm text-gray-600 mb-3">
-                  Un membre de notre équipe va analyser votre profil et vous contacter dans les <strong className="text-navy">prochaines 24 heures</strong> avec
-                  un plan d&apos;action personnalisé pour votre projet d&apos;immigration.
-                </p>
-                <p className="text-sm text-gray-600">
-                  Pour une réponse plus rapide, écrivez-nous directement sur WhatsApp :
-                </p>
-                <a
-                  href={`https://wa.me/14386302869?text=${encodeURIComponent(`Bonjour SOS Hub Canada! Je viens de compléter le test d'admissibilité sur votre site. Mon nom est ${form.name}. J'ai ${eligible.length} programme(s) éligible(s): ${eligible.map(p => p.name).join(', ') || 'à discuter'}. J'aimerais avoir plus d'informations.`)}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 mt-3 px-5 py-2.5 bg-[#25D366] text-white font-bold rounded-xl hover:bg-[#20bd5a] transition-colors text-sm"
-                >
-                  <MessageCircle className="w-4 h-4" /> Écrire sur WhatsApp — Réponse rapide
-                </a>
-              </div>
-            </div>
-          </div>
-
-          {/* CTA */}
-          <div className="bg-gradient-to-br from-navy to-navy-light rounded-2xl p-8 text-white">
-            <h2 className="text-2xl font-bold mb-3 text-center">Prochaines étapes</h2>
-            <p className="text-white/70 mb-6 max-w-lg mx-auto text-center">
-              Notre équipe peut examiner votre dossier en détail, identifier des programmes supplémentaires
-              et vous proposer une stratégie d&apos;immigration optimale.
+          {/* ===== SECOND WHATSAPP CTA — After results ===== */}
+          <div className="bg-gradient-to-r from-navy to-navy-light rounded-2xl p-6 md:p-8 mb-8 text-white text-center">
+            <Zap className="w-10 h-10 text-gold mx-auto mb-3" />
+            <h3 className="text-xl md:text-2xl font-bold mb-2">Ne laissez pas votre dossier dormir</h3>
+            <p className="text-white/70 mb-6 max-w-lg mx-auto font-sans">
+              {age >= 30
+                ? `À ${age} ans, chaque mois compte. Nos experts peuvent optimiser votre profil et soumettre votre dossier rapidement.`
+                : 'Nos experts peuvent analyser votre dossier en détail et vous proposer la stratégie la plus rapide vers le Canada.'
+              }
             </p>
-
-            <div className="grid sm:grid-cols-3 gap-4 mb-6">
-              <a
-                href={`https://wa.me/14386302869?text=${encodeURIComponent(`Bonjour! Je suis ${form.name}, j'ai complété le test d'admissibilité. J'aimerais prendre rendez-vous.`)}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-3 p-4 bg-white/10 rounded-xl border border-white/20 hover:bg-white/20 transition-colors"
-              >
-                <MessageCircle className="w-5 h-5 text-[#25D366]" />
-                <div>
-                  <p className="font-semibold text-sm">WhatsApp</p>
-                  <p className="text-white/50 text-xs">+1 (438) 630-2869</p>
-                </div>
-              </a>
-              <a
-                href="tel:+15145330482"
-                className="flex items-center gap-3 p-4 bg-white/10 rounded-xl border border-white/20 hover:bg-white/20 transition-colors"
-              >
-                <Phone className="w-5 h-5 text-gold" />
-                <div>
-                  <p className="font-semibold text-sm">Téléphone</p>
-                  <p className="text-white/50 text-xs">+1 (514) 533-0482</p>
-                </div>
-              </a>
-              <a
-                href="mailto:info@soshubcanada.com"
-                className="flex items-center gap-3 p-4 bg-white/10 rounded-xl border border-white/20 hover:bg-white/20 transition-colors"
-              >
-                <Mail className="w-5 h-5 text-gold" />
-                <div>
-                  <p className="font-semibold text-sm">Courriel</p>
-                  <p className="text-white/50 text-xs">info@soshubcanada.com</p>
-                </div>
-              </a>
-            </div>
-
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link
-                href="/contact"
-                className="px-8 py-3 bg-gold text-white font-bold rounded-xl hover:bg-gold-dark transition-colors text-center"
-              >
-                Consultation personnalisée
-              </Link>
-              <Link
-                href="https://soshubca.vercel.app/inscription"
-                target="_blank"
-                className="px-8 py-3 bg-white/10 text-white font-semibold rounded-xl hover:bg-white/20 transition-colors border border-white/20 text-center"
-              >
-                S&apos;inscrire en ligne
-              </Link>
+            <a
+              href={whatsappUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-3 px-8 py-4 bg-[#25D366] text-white font-bold rounded-xl hover:bg-[#20bd5a] transition-all text-lg shadow-lg hover:shadow-xl hover:scale-105"
+            >
+              <MessageCircle className="w-6 h-6" /> Parler à un expert maintenant
+            </a>
+            <div className="flex flex-wrap justify-center gap-6 mt-6 text-sm text-white/50">
+              <span className="flex items-center gap-1"><CheckCircle2 className="w-4 h-4 text-green-400" /> Consultation gratuite</span>
+              <span className="flex items-center gap-1"><Clock className="w-4 h-4 text-gold" /> Réponse en moins de 2h</span>
+              <span className="flex items-center gap-1"><ShieldAlert className="w-4 h-4 text-gold" /> 100% confidentiel</span>
             </div>
           </div>
 
-          <div className="text-center mt-8">
+          {/* Contact options */}
+          <div className="grid sm:grid-cols-3 gap-4 mb-8">
+            <a
+              href={whatsappUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-3 p-4 bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-md hover:border-[#25D366]/30 transition-all"
+            >
+              <MessageCircle className="w-5 h-5 text-[#25D366]" />
+              <div>
+                <p className="font-semibold text-sm text-navy">WhatsApp</p>
+                <p className="text-gray-400 text-xs">+1 (438) 630-2869</p>
+              </div>
+            </a>
+            <a
+              href="tel:+15145330482"
+              className="flex items-center gap-3 p-4 bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-all"
+            >
+              <Phone className="w-5 h-5 text-gold" />
+              <div>
+                <p className="font-semibold text-sm text-navy">Téléphone</p>
+                <p className="text-gray-400 text-xs">+1 (514) 533-0482</p>
+              </div>
+            </a>
+            <a
+              href="mailto:info@soshubcanada.com"
+              className="flex items-center gap-3 p-4 bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-all"
+            >
+              <Mail className="w-5 h-5 text-gold" />
+              <div>
+                <p className="font-semibold text-sm text-navy">Courriel</p>
+                <p className="text-gray-400 text-xs">info@soshubcanada.com</p>
+              </div>
+            </a>
+          </div>
+
+          <div className="text-center mt-6">
             <button
               onClick={() => { setSubmitted(false); setResults(null); setStep(0); setForm(initialForm); }}
               className="text-gold font-medium hover:text-gold-dark transition-colors"

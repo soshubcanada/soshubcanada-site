@@ -5,9 +5,9 @@ import { VideoTestimonial } from '@/components/VideoTestimonial';
 import { NewsletterForm } from '@/components/NewsletterForm';
 import {
   ArrowRight, CheckCircle2, Users, FileText, Globe2, Shield,
-  Star, TrendingUp, Award, MapPin, Clock, Sparkles, ChevronRight,
+  Star, TrendingUp, TrendingDown, Award, MapPin, Clock, Sparkles, ChevronRight,
   GraduationCap, Briefcase, Heart, Plane, Quote, Play,
-  Phone
+  Phone, ShieldAlert, CalendarClock
 } from 'lucide-react';
 
 /* ===== IMAGES - Familles heureuses et diversifiées ===== */
@@ -345,6 +345,49 @@ export default function HomePage() {
           <div className="text-center mt-12 scroll-hidden">
             <Link href="/services" className="inline-flex items-center gap-2 px-8 py-3 bg-navy text-white font-semibold rounded-xl hover:bg-navy-light transition-all hover:shadow-lg font-sans">
               Voir tous nos services <ChevronRight className="w-4 h-4" />
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ========== URGENCY BAR — FOMO ========== */}
+      <section className="py-12 bg-gradient-to-r from-red-600 via-red-500 to-amber-500 relative overflow-hidden">
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-0 left-1/4 w-40 h-40 bg-white rounded-full blur-3xl" />
+        </div>
+        <div className="max-w-6xl mx-auto px-6 relative">
+          <div className="grid md:grid-cols-3 gap-6 text-white">
+            <div className="flex items-start gap-3 scroll-hidden">
+              <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center shrink-0">
+                <TrendingDown className="w-5 h-5" />
+              </div>
+              <div>
+                <h4 className="font-bold text-sm mb-1">Après 30 ans = moins de points</h4>
+                <p className="text-xs text-white/80">Chaque année après 30 ans vous fait perdre des points CRS cruciaux pour l&apos;Entrée Express.</p>
+              </div>
+            </div>
+            <div className="flex items-start gap-3 scroll-hidden" style={{ transitionDelay: '100ms' }}>
+              <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center shrink-0">
+                <ShieldAlert className="w-5 h-5" />
+              </div>
+              <div>
+                <h4 className="font-bold text-sm mb-1">Quotas IRCC en baisse</h4>
+                <p className="text-xs text-white/80">Le Canada réduit ses quotas de résidents temporaires. Les fenêtres d&apos;opportunité se ferment.</p>
+              </div>
+            </div>
+            <div className="flex items-start gap-3 scroll-hidden" style={{ transitionDelay: '200ms' }}>
+              <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center shrink-0">
+                <CalendarClock className="w-5 h-5" />
+              </div>
+              <div>
+                <h4 className="font-bold text-sm mb-1">Rentrée automne 2026</h4>
+                <p className="text-xs text-white/80">Les dossiers d&apos;admission universitaire doivent être soumis ce mois-ci pour la rentrée.</p>
+              </div>
+            </div>
+          </div>
+          <div className="text-center mt-8 scroll-hidden">
+            <Link href="/admissibilite" className="inline-flex items-center gap-2 px-8 py-4 bg-white text-red-600 font-bold rounded-xl hover:bg-white/90 transition-all text-lg shadow-xl hover:shadow-2xl hover:scale-105 font-sans">
+              <Sparkles className="w-5 h-5" /> Évaluer mon admissibilité — C&apos;est gratuit
             </Link>
           </div>
         </div>
