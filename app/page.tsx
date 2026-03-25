@@ -18,7 +18,7 @@ const IMAGES = {
   familyPark: 'https://images.unsplash.com/photo-1591474200742-8e512e6f98f8?w=600&h=700&fit=crop',
   happyCouple: 'https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=400&h=300&fit=crop',
   graduationJoy: 'https://images.unsplash.com/photo-1627556704302-624286467c65?w=400&h=250&fit=crop',
-  familyHome: 'https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=400&h=250&fit=crop',
+  happyCoupleCity: 'https://images.unsplash.com/photo-1543807535-eceef0bc6599?w=400&h=250&fit=crop',
   diverseGroup: 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=400&h=250&fit=crop',
   kidSchool: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=400&h=250&fit=crop',
   newHome: 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=400&h=250&fit=crop',
@@ -152,17 +152,17 @@ export default function HomePage() {
             <div>
               <div className="inline-flex items-center gap-2 px-5 py-2 glass rounded-full text-gold text-sm font-medium mb-8 animate-fade-in font-sans">
                 <Sparkles className="w-4 h-4" />
-                Évaluation d&apos;admissibilité gratuite
+                +500 familles accompagnées — Évaluation gratuite en 2 min
               </div>
 
               <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white leading-[1.08] mb-6 animate-fade-in-up">
-                Votre nouvelle vie au{' '}
+                Immigrer au{' '}
                 <span className="text-gradient-gold">Canada</span>{' '}
-                commence ici
+                avec confiance
               </h1>
 
               <p className="text-lg md:text-xl text-white/60 mb-10 max-w-xl leading-relaxed animate-fade-in-up delay-100 font-sans">
-                Service de relocalisation et d&apos;intégration à Montréal. Nous accompagnons les familles et les professionnels dans chaque étape de leur projet au Canada.
+                Entrée Express, PEQ Québec, permis de travail, parrainage familial — notre équipe multilingue à Montréal vous accompagne de A à Z. Résultat en 24h.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 mb-10 animate-fade-in-up delay-200">
@@ -280,7 +280,7 @@ export default function HomePage() {
                 </div>
                 <div className="space-y-4 pt-8">
                   <div className="relative h-[180px] rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-shadow">
-                    <Image src={IMAGES.familyHome} alt="Famille dans leur nouveau foyer" fill sizes="(max-width: 1024px) 50vw, 25vw" className="object-cover hover:scale-105 transition-transform duration-700" />
+                    <Image src={IMAGES.happyCoupleCity} alt="Couple heureux au Canada" fill sizes="(max-width: 1024px) 50vw, 25vw" className="object-cover hover:scale-105 transition-transform duration-700" />
                   </div>
                   <div className="relative h-[220px] rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-shadow">
                     <Image src={IMAGES.graduationJoy} alt="Graduation" fill sizes="(max-width: 1024px) 50vw, 25vw" className="object-cover hover:scale-105 transition-transform duration-700" />
@@ -298,12 +298,12 @@ export default function HomePage() {
             <div className="scroll-hidden-right">
               <span className="text-gold font-semibold text-sm uppercase tracking-[0.2em] font-sans">Pourquoi nous choisir</span>
               <h2 className="text-3xl md:text-5xl font-bold text-navy mt-3 mb-4">
-                Des familles heureuses, notre plus grande fierté
+                +500 familles heureuses au Canada grâce à nous
               </h2>
               <div className="divider-gold mt-4 mb-6" />
               <p className="text-gray-500 mb-8 leading-relaxed font-sans text-lg">
-                Chaque année, des centaines de familles nous font confiance pour leur projet d&apos;installation au Canada.
-                De l&apos;évaluation initiale à l&apos;intégration complète, nous sommes à vos côtés.
+                Depuis Montréal, nous accompagnons des familles du monde entier — France, Maroc, Tunisie, Cameroun, Haïti, Colombie — dans leur projet d&apos;immigration au Canada.
+                Évaluation gratuite, suivi personnalisé, résultat garanti.
               </p>
 
               <div className="space-y-4 mb-8">
@@ -421,7 +421,7 @@ export default function HomePage() {
                     <Globe2 className="w-6 h-6 text-gold" /> Ce que nous offrons
                   </h3>
                   <ul className="space-y-3">
-                    {['Expertise IRCC et MIFI', 'Programmes québécois (PEQ, PRTQ, Arrima)', 'Suivi personnalisé de A à Z', 'Service multilingue (FR, EN, AR, ES)', 'Frais d\'ouverture: 250$ CAD'].map((item, i) => (
+                    {['Expertise IRCC et MIFI', 'Programmes québécois (PEQ, PRTQ, Arrima)', 'Suivi personnalisé de A à Z', 'Service multilingue (FR, EN, AR, ES)', 'Évaluation d\'admissibilité gratuite'].map((item, i) => (
                       <li key={i} className="flex items-center gap-3"><CheckCircle2 className="w-5 h-5 text-gold shrink-0" /><span className="text-white/80 text-sm font-sans">{item}</span></li>
                     ))}
                   </ul>
@@ -548,11 +548,13 @@ export default function HomePage() {
 
           <div className="space-y-4">
             {[
-              { q: 'Quels sont les frais pour ouvrir un dossier?', a: 'Les frais d\'ouverture de dossier sont de 250$ CAD, non remboursables. Ce montant couvre l\'analyse initiale et la première consultation. Les honoraires complets sont détaillés sur devis.' },
-              { q: 'Combien de temps prend un processus d\'immigration?', a: 'Les délais varient: Entrée Express 6-8 mois, PEQ 6-12 mois, permis de travail 2-6 mois. Nous vous donnerons une estimation réaliste lors de la consultation.' },
-              { q: 'Est-ce que le test d\'admissibilité en ligne est fiable?', a: 'Notre test fournit une première indication basée sur les critères principaux. Pour une analyse complète, nous recommandons une consultation personnalisée.' },
-              { q: 'En quelles langues offrez-vous vos services?', a: 'Notre équipe offre ses services en français, anglais, arabe et espagnol.' },
-              { q: 'Où êtes-vous situés?', a: 'Nos bureaux sont au 3737 Crémazie Est #402, Montréal QC H1Z 2K4. Nous offrons aussi des consultations à distance.' },
+              { q: 'Comment immigrer au Canada depuis la France, le Maroc ou l\'Afrique?', a: 'Plusieurs programmes s\'offrent à vous: Entrée Express (fédéral), PEQ (Québec), permis de travail via la mobilité francophone, ou parrainage familial. Notre équipe analyse votre profil gratuitement pour identifier la meilleure voie.' },
+              { q: 'Combien de temps prend un processus d\'immigration au Canada?', a: 'Les délais varient selon le programme: Entrée Express 6-8 mois, PEQ 6-12 mois, permis de travail 2-6 mois, parrainage conjugal 12-18 mois. Nous vous donnerons une estimation réaliste lors de la consultation gratuite.' },
+              { q: 'Qu\'est-ce que le score CRS et comment l\'améliorer?', a: 'Le score CRS (Comprehensive Ranking System) classe les candidats à l\'Entrée Express selon l\'âge, les études, l\'expérience et les langues. Notre calculateur gratuit vous donne une estimation, et nos experts identifient des stratégies pour maximiser votre score.' },
+              { q: 'Peut-on travailler au Canada avec un permis d\'études?', a: 'Oui! Les étudiants internationaux peuvent travailler jusqu\'à 20h/semaine pendant les études et à temps plein pendant les vacances. Après le diplôme, le permis post-diplôme (PGWP) permet de travailler jusqu\'à 3 ans.' },
+              { q: 'En quelles langues offrez-vous vos services?', a: 'Notre équipe offre ses services en français, anglais, arabe et espagnol pour accompagner les candidats du monde entier.' },
+              { q: 'Est-ce que l\'évaluation d\'admissibilité est vraiment gratuite?', a: 'Oui, notre test d\'admissibilité en ligne et la première analyse de votre profil sont entièrement gratuits et sans engagement. Contactez-nous pour une consultation personnalisée.' },
+              { q: 'Où êtes-vous situés à Montréal?', a: 'Nos bureaux sont au 3737 Crémazie Est #402, Montréal QC H1Z 2K4, facilement accessible en métro (station Crémazie). Nous offrons aussi des consultations à distance par vidéoconférence.' },
             ].map((faq, i) => (
               <details key={i} className="group scroll-hidden bg-cream rounded-2xl border border-gray-100 overflow-hidden" style={{ transitionDelay: `${i * 50}ms` }}>
                 <summary className="flex items-center justify-between p-6 cursor-pointer font-semibold text-navy hover:text-gold-dark transition-colors font-sans">
@@ -586,9 +588,12 @@ export default function HomePage() {
         <Image src={IMAGES.ctaBg} alt="Canada" fill sizes="100vw" className="object-cover" />
         <div className="absolute inset-0 bg-navy/90" />
         <div className="relative max-w-4xl mx-auto px-6 text-center">
-          <h2 className="text-3xl md:text-5xl font-bold text-white mb-6 scroll-hidden">Prêt à commencer votre nouvelle vie au Canada?</h2>
-          <p className="text-white/60 text-lg mb-10 max-w-2xl mx-auto font-sans scroll-hidden">
-            Faites le premier pas. Notre équipe d&apos;experts est là pour vous guider à chaque étape.
+          <h2 className="text-3xl md:text-5xl font-bold text-white mb-6 scroll-hidden">Votre projet d&apos;immigration commence maintenant</h2>
+          <p className="text-white/60 text-lg mb-4 max-w-2xl mx-auto font-sans scroll-hidden">
+            Testez votre admissibilité en 2 minutes. Notre équipe vous contacte dans les 24h avec un plan d&apos;action personnalisé.
+          </p>
+          <p className="text-gold font-semibold text-sm mb-10 scroll-hidden font-sans">
+            Rejoignez les +500 familles qui ont choisi SOS Hub Canada
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center scroll-hidden">
             <Link href="/admissibilite" className="inline-flex items-center justify-center gap-2 px-10 py-4 bg-gradient-to-r from-gold to-gold-dark text-white font-bold rounded-xl hover:shadow-2xl hover:shadow-gold/30 transition-all text-lg hover:scale-105 font-sans">

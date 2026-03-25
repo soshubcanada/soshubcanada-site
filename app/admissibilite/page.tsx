@@ -315,7 +315,7 @@ export default function AdmissibilitePage() {
                 S&apos;inscrire en ligne
               </Link>
             </div>
-            <p className="text-white/40 text-xs mt-4">Frais d&apos;ouverture de dossier: 250$ CAD</p>
+            <p className="text-white/40 text-xs mt-4">Consultation personnalisée — Contactez-nous pour un devis</p>
           </div>
 
           <div className="text-center mt-8">

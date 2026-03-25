@@ -20,11 +20,11 @@ const playfair = Playfair_Display({
 
 export const metadata: Metadata = {
   title: {
-    default: 'SOS Hub Canada | Immigration et Relocalisation à Montréal',
+    default: 'SOS Hub Canada | Immigration et Relocalisation à Montréal — Évaluation Gratuite',
     template: '%s | SOS Hub Canada',
   },
-  description: 'Service de relocalisation et d\'intégration au Canada. Accompagnement complet pour votre installation à Montréal. Entrée Express, PEQ, permis de travail. Évaluation gratuite.',
-  keywords: 'immigration canada, relocalisation montréal, PEQ québec, entrée express, permis travail canada, permis études, CSQ, MIFI, IRCC, consultation immigration, intégration canada',
+  description: 'Immigrer au Canada depuis la France, le Maroc, l\'Afrique ou l\'Amérique latine. Service de relocalisation à Montréal. Entrée Express, PEQ Québec, permis de travail, parrainage familial. Évaluation d\'admissibilité gratuite. +500 familles accompagnées.',
+  keywords: 'immigrer au canada, immigration canada 2026, relocalisation montréal, PEQ québec, entrée express canada, permis travail canada, permis études canada, CSQ certificat sélection québec, MIFI, IRCC, score CRS, mobilité francophone, parrainage conjoint canada, visa canada, résidence permanente canada, travailler au canada, étudier au canada, vivre au canada, immigration québec, EIMT LMIA, permis post-diplôme PGWP, installation montréal, accompagnement immigration',
   authors: [{ name: 'SOS Hub Canada Inc.' }],
   creator: 'SOS Hub Canada',
   publisher: 'SOS Hub Canada Inc.',
@@ -34,25 +34,25 @@ export const metadata: Metadata = {
     languages: { 'fr-CA': '/' },
   },
   openGraph: {
-    title: 'SOS Hub Canada | Immigration et Relocalisation',
-    description: 'Votre partenaire de confiance pour immigrer au Canada. Évaluation d\'admissibilité gratuite. Entrée Express, PEQ, permis de travail.',
+    title: 'Immigrer au Canada — Évaluation Gratuite | SOS Hub Canada',
+    description: 'Votre partenaire de confiance pour immigrer au Canada. +500 familles accompagnées. Entrée Express, PEQ, permis de travail, parrainage. Évaluation gratuite en 2 minutes.',
     type: 'website',
     locale: 'fr_CA',
     url: 'https://soshubcanada.com',
     siteName: 'SOS Hub Canada',
     images: [
       {
-        url: 'https://images.unsplash.com/photo-1519832979-6fa011b87667?w=1200&h=630&fit=crop',
+        url: 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=1200&h=630&fit=crop&crop=faces',
         width: 1200,
         height: 630,
-        alt: 'SOS Hub Canada - Immigration et Relocalisation à Montréal',
+        alt: 'SOS Hub Canada - Immigration et Relocalisation à Montréal - Familles heureuses',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'SOS Hub Canada | Immigration et Relocalisation',
-    description: 'Votre partenaire de confiance pour immigrer au Canada.',
+    title: 'Immigrer au Canada — Évaluation Gratuite | SOS Hub Canada',
+    description: '+500 familles accompagnées. Entrée Express, PEQ, permis de travail. Testez votre admissibilité gratuitement.',
   },
   robots: {
     index: true,
@@ -65,10 +65,11 @@ const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'ProfessionalService',
   name: 'SOS Hub Canada Inc.',
-  description: 'Service de relocalisation et d\'intégration au Canada, situé à Montréal.',
+  description: 'Service de relocalisation et d\'intégration au Canada. Accompagnement pour Entrée Express, PEQ Québec, permis de travail, parrainage familial. +500 familles accompagnées à Montréal.',
   url: 'https://soshubcanada.com',
   telephone: '+1-514-533-0482',
   email: 'info@soshubcanada.com',
+  image: 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=1200&h=630&fit=crop&crop=faces',
   address: {
     '@type': 'PostalAddress',
     streetAddress: '3737 Crémazie Est #402',
@@ -77,11 +78,60 @@ const jsonLd = {
     postalCode: 'H1Z 2K4',
     addressCountry: 'CA',
   },
-  areaServed: { '@type': 'Country', name: 'Canada' },
-  serviceType: ['Relocation Services', 'Integration Services', 'Settlement Services'],
+  geo: {
+    '@type': 'GeoCoordinates',
+    latitude: 45.5536,
+    longitude: -73.5985,
+  },
+  areaServed: [
+    { '@type': 'Country', name: 'Canada' },
+    { '@type': 'Country', name: 'France' },
+    { '@type': 'Country', name: 'Morocco' },
+    { '@type': 'Country', name: 'Algeria' },
+    { '@type': 'Country', name: 'Tunisia' },
+    { '@type': 'Country', name: 'Cameroon' },
+    { '@type': 'Country', name: 'Haiti' },
+    { '@type': 'Country', name: 'Colombia' },
+    { '@type': 'Country', name: 'Brazil' },
+  ],
+  serviceType: ['Immigration Services', 'Relocation Services', 'Integration Services', 'Settlement Services', 'Express Entry', 'PEQ Quebec', 'Work Permit', 'Study Permit', 'Family Sponsorship'],
+  knowsLanguage: ['fr', 'en', 'ar', 'es'],
   priceRange: '$$',
+  aggregateRating: {
+    '@type': 'AggregateRating',
+    ratingValue: '4.9',
+    reviewCount: '200',
+    bestRating: '5',
+  },
   openingHoursSpecification: [
     { '@type': 'OpeningHoursSpecification', dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'], opens: '09:00', closes: '17:00' },
+  ],
+};
+
+const faqJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: [
+    {
+      '@type': 'Question',
+      name: 'Comment immigrer au Canada depuis la France, le Maroc ou l\'Afrique?',
+      acceptedAnswer: { '@type': 'Answer', text: 'Plusieurs programmes s\'offrent à vous: Entrée Express (fédéral), PEQ (Québec), permis de travail via la mobilité francophone, ou parrainage familial. SOS Hub Canada analyse votre profil gratuitement pour identifier la meilleure voie.' },
+    },
+    {
+      '@type': 'Question',
+      name: 'Combien de temps prend un processus d\'immigration au Canada?',
+      acceptedAnswer: { '@type': 'Answer', text: 'Entrée Express 6-8 mois, PEQ 6-12 mois, permis de travail 2-6 mois, parrainage conjugal 12-18 mois.' },
+    },
+    {
+      '@type': 'Question',
+      name: 'Qu\'est-ce que le score CRS et comment l\'améliorer?',
+      acceptedAnswer: { '@type': 'Answer', text: 'Le score CRS classe les candidats à l\'Entrée Express selon l\'âge, les études, l\'expérience et les langues. Notre calculateur gratuit vous donne une estimation et nos experts identifient des stratégies pour maximiser votre score.' },
+    },
+    {
+      '@type': 'Question',
+      name: 'Peut-on travailler au Canada avec un permis d\'études?',
+      acceptedAnswer: { '@type': 'Answer', text: 'Oui! Les étudiants internationaux peuvent travailler jusqu\'à 20h/semaine pendant les études. Après le diplôme, le permis post-diplôme (PGWP) permet de travailler jusqu\'à 3 ans.' },
+    },
   ],
 };
 
@@ -93,6 +143,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
         />
       </head>
       <body className="min-h-screen flex flex-col font-sans">

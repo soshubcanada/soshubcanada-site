@@ -270,8 +270,7 @@ export default function ServicesPage() {
           <div className="divider-gold mx-auto mt-4 mb-6" />
           <p className="text-gray-500 mb-8 max-w-2xl mx-auto font-sans text-lg">
             Nos honoraires sont établis sur devis selon votre programme et la complexité de votre dossier.
-            Les frais d&apos;ouverture de dossier de <strong className="text-navy">250$ CAD</strong> sont non remboursables et couvrent
-            l&apos;analyse initiale de votre profil.
+            Commencez par une <strong className="text-navy">évaluation gratuite</strong> de votre admissibilité, puis recevez un devis personnalisé.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
