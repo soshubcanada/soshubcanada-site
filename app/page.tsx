@@ -13,13 +13,13 @@ import {
 
 /* ===== IMAGES - Familles heureuses et diversifiées ===== */
 const IMAGES = {
-  hero: 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=1920&h=1080&fit=crop&crop=faces',
+  hero: 'https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?w=1920&h=1080&fit=crop&crop=faces',
   familyAirport: 'https://images.unsplash.com/photo-1559599238-308793637427?w=800&h=500&fit=crop',
   familyPark: 'https://images.unsplash.com/photo-1591474200742-8e512e6f98f8?w=600&h=700&fit=crop',
   happyCouple: 'https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=400&h=300&fit=crop',
   graduationJoy: 'https://images.unsplash.com/photo-1627556704302-624286467c65?w=400&h=250&fit=crop',
   happyCoupleCity: 'https://images.unsplash.com/photo-1543807535-eceef0bc6599?w=400&h=250&fit=crop',
-  diverseGroup: 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=400&h=250&fit=crop',
+  diverseGroup: 'https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?w=400&h=250&fit=crop',
   kidSchool: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=400&h=250&fit=crop',
   newHome: 'https://images.unsplash.com/photo-1517457373958-b7bdd4587205?w=400&h=250&fit=crop',
   ctaBg: 'https://images.unsplash.com/photo-1517935706615-2717063c2225?w=1920&h=800&fit=crop',
