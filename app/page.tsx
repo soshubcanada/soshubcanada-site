@@ -4,7 +4,6 @@ import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { AnimatedCounter } from '@/components/AnimatedCounter';
-import { VideoHero } from '@/components/VideoHero';
 import { VideoTestimonial } from '@/components/VideoTestimonial';
 import {
   ArrowRight, CheckCircle2, Users, FileText, Globe2, Shield,
@@ -140,12 +139,13 @@ export default function HomePage() {
 
   return (
     <>
-      {/* ========== VIDEO HERO ========== */}
-      <VideoHero>
+      {/* ========== HERO ========== */}
+      <section className="relative min-h-[92vh] flex items-center overflow-hidden">
+        <Image src={IMAGES.hero} alt="Famille heureuse au Canada" fill sizes="100vw" className="object-cover object-top animate-kenburns" priority quality={90} />
+        <div className="absolute inset-0 hero-overlay" />
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="absolute top-20 left-10 w-72 h-72 bg-gold/10 rounded-full blur-3xl animate-float" />
           <div className="absolute bottom-20 right-10 w-96 h-96 bg-gold/5 rounded-full blur-3xl animate-float" style={{ animationDelay: '2s' }} />
-          {/* Subtle floating particles */}
           {[...Array(4)].map((_, i) => (
             <div key={i} className="absolute w-1.5 h-1.5 bg-gold/15 rounded-full animate-particle" style={{ left: `${20 + i * 20}%`, top: `${30 + (i % 2) * 30}%`, animationDelay: `${i * 1.2}s` }} />
           ))}
@@ -186,13 +186,12 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* Hero floating video card */}
+            {/* Hero floating image card */}
             <div className="hidden lg:block animate-fade-in-up delay-300">
               <div className="relative">
                 <div className="rounded-2xl overflow-hidden shadow-2xl rotate-2 hover:rotate-0 transition-transform duration-700">
                   <Image src={IMAGES.familyAirport} alt="Famille heureuse à l'aéroport" width={500} height={350} className="object-cover w-full h-[350px] animate-kenburns" />
                 </div>
-                {/* Floating stat */}
                 <div className="absolute -bottom-6 -left-6 glass-white rounded-2xl p-4 shadow-xl animate-float">
                   <div className="flex items-center gap-3">
                     <div className="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center">
@@ -204,7 +203,6 @@ export default function HomePage() {
                     </div>
                   </div>
                 </div>
-                {/* Floating rating */}
                 <div className="absolute -top-4 -right-4 glass-white rounded-2xl p-3 shadow-xl animate-float" style={{ animationDelay: '1s' }}>
                   <div className="flex items-center gap-2">
                     <div className="flex gap-0.5">
@@ -218,13 +216,12 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* Scroll indicator */}
         <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-float">
           <div className="w-6 h-10 rounded-full border-2 border-white/20 flex justify-center pt-2">
             <div className="w-1 h-3 bg-gold rounded-full animate-slide-up" style={{ animationDuration: '1.5s', animationIterationCount: 'infinite' }} />
           </div>
         </div>
-      </VideoHero>
+      </section>
 
       {/* ========== SOCIAL PROOF BAR ========== */}
       <section className="bg-white py-6 border-b border-gray-100 relative z-10">

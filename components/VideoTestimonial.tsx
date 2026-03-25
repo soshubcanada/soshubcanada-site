@@ -177,16 +177,24 @@ export function VideoTestimonial() {
             </button>
             <div className="relative rounded-2xl overflow-hidden bg-navy shadow-2xl aspect-video">
               {activeVideo === -1 ? (
-                /* Promo video */
-                <video
-                  className="w-full h-full object-cover"
-                  controls
-                  autoPlay
-                  playsInline
-                >
-                  <source src="https://videos.pexels.com/video-files/3015510/3015510-hd_1920_1080_24fps.mp4" type="video/mp4" />
-                  Votre navigateur ne supporte pas la lecture vidéo.
-                </video>
+                /* Promo presentation */
+                <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-navy via-navy-dark to-navy p-8 text-center relative overflow-hidden">
+                  <div className="absolute inset-0 opacity-20">
+                    <Image src="https://images.unsplash.com/photo-1503614472-8c93d56e92ce?w=1920&h=600&fit=crop" alt="" fill sizes="100vw" className="object-cover" />
+                  </div>
+                  <div className="relative z-10">
+                    <div className="w-20 h-20 rounded-full bg-gradient-to-br from-gold to-gold-dark flex items-center justify-center mx-auto mb-6 shadow-2xl shadow-gold/30">
+                      <span className="text-3xl font-bold text-white">S</span>
+                    </div>
+                    <h3 className="text-2xl md:text-3xl font-bold text-white mb-4">SOS Hub Canada</h3>
+                    <p className="text-white/70 font-sans text-lg max-w-md mx-auto mb-6">Service de relocalisation et d&apos;immigration à Montréal. +500 familles accompagnées depuis 2019.</p>
+                    <div className="flex justify-center gap-6 text-gold font-sans text-sm">
+                      <span>✓ Entrée Express</span>
+                      <span>✓ PEQ Québec</span>
+                      <span>✓ Parrainage</span>
+                    </div>
+                  </div>
+                </div>
               ) : (
                 /* Testimonial placeholder — future: real testimonial videos */
                 <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-navy to-navy-dark p-8 text-center">
