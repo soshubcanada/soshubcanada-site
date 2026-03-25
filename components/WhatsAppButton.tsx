@@ -9,7 +9,7 @@ export function WhatsAppButton() {
   const message = encodeURIComponent('Bonjour SOS Hub Canada! Je souhaite obtenir des informations sur vos services d\'immigration.');
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 flex items-end gap-3">
+    <div className="fixed bottom-6 right-6 z-50 hidden md:flex items-end gap-3">
       {showTooltip && (
         <div className="glass-white rounded-2xl p-4 shadow-xl max-w-[260px] animate-fade-in-left relative">
           <button
