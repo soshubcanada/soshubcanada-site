@@ -335,12 +335,13 @@ export default function AdmissibilitePage() {
       <div className="max-w-3xl mx-auto px-6">
         {/* Header */}
         <div className="text-center mb-10">
-          <span className="text-gold font-semibold text-sm uppercase tracking-wider">Outil gratuit</span>
+          <span className="text-gold font-semibold text-sm uppercase tracking-[0.2em] font-sans">Outil gratuit</span>
           <h1 className="text-3xl md:text-4xl font-bold text-navy mt-3 mb-3">
             Test d&apos;admissibilité
           </h1>
-          <p className="text-gray-500 max-w-xl mx-auto">
-            Répondez à quelques questions pour découvrir les programmes d&apos;immigration auxquels vous pourriez être éligible.
+          <div className="divider-gold mx-auto mt-3 mb-4" />
+          <p className="text-gray-500 max-w-xl mx-auto font-sans">
+            Répondez à quelques questions pour découvrir les programmes auxquels vous pourriez être éligible.
           </p>
         </div>
 

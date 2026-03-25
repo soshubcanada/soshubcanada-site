@@ -164,13 +164,14 @@ export default function CalculateurCRSPage() {
       <div className="max-w-6xl mx-auto px-6">
         {/* Header */}
         <div className="text-center mb-10">
-          <span className="text-gold font-semibold text-sm uppercase tracking-wider">Outil gratuit</span>
+          <span className="text-gold font-semibold text-sm uppercase tracking-[0.2em] font-sans">Outil gratuit</span>
           <h1 className="text-3xl md:text-4xl font-bold text-navy mt-3 mb-3">
             Calculateur CRS partiel
           </h1>
-          <p className="text-gray-500 max-w-2xl mx-auto">
+          <div className="divider-gold mx-auto mt-3 mb-5" />
+          <p className="text-gray-500 max-w-2xl mx-auto font-sans">
             Estimez votre score du Système de classement global (CRS) pour Entrée Express.
-            Ce calcul est une approximation — contactez-nous pour un calcul exact.
+            Ce calcul est une approximation — contactez-nous pour une évaluation précise.
           </p>
         </div>
 
