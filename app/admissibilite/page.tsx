@@ -4,7 +4,8 @@ import { useState } from 'react';
 import Link from 'next/link';
 import {
   ArrowRight, ArrowLeft, CheckCircle2, AlertCircle, Sparkles,
-  User, GraduationCap, Briefcase, Globe2, Languages, Send
+  User, GraduationCap, Briefcase, Globe2, Languages, Send,
+  MessageCircle, Phone, Mail
 } from 'lucide-react';
 
 interface FormData {
@@ -293,29 +294,91 @@ export default function AdmissibilitePage() {
             ))}
           </div>
 
+          {/* Auto response message */}
+          <div className="bg-green-50 border border-green-200 rounded-2xl p-6 mb-8">
+            <div className="flex items-start gap-4">
+              <div className="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center shrink-0">
+                <CheckCircle2 className="w-6 h-6 text-green-600" />
+              </div>
+              <div>
+                <h3 className="font-bold text-navy mb-2">Merci {form.name}! Votre évaluation a été envoyée.</h3>
+                <p className="text-sm text-gray-600 mb-3">
+                  Un membre de notre équipe va analyser votre profil et vous contacter dans les <strong className="text-navy">prochaines 24 heures</strong> avec
+                  un plan d&apos;action personnalisé pour votre projet d&apos;immigration.
+                </p>
+                <p className="text-sm text-gray-600">
+                  Pour une réponse plus rapide, écrivez-nous directement sur WhatsApp :
+                </p>
+                <a
+                  href={`https://wa.me/14386302869?text=${encodeURIComponent(`Bonjour SOS Hub Canada! Je viens de compléter le test d'admissibilité sur votre site. Mon nom est ${form.name}. J'ai ${eligible.length} programme(s) éligible(s): ${eligible.map(p => p.name).join(', ') || 'à discuter'}. J'aimerais avoir plus d'informations.`)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 mt-3 px-5 py-2.5 bg-[#25D366] text-white font-bold rounded-xl hover:bg-[#20bd5a] transition-colors text-sm"
+                >
+                  <MessageCircle className="w-4 h-4" /> Écrire sur WhatsApp — Réponse rapide
+                </a>
+              </div>
+            </div>
+          </div>
+
           {/* CTA */}
-          <div className="bg-gradient-to-br from-navy to-navy-light rounded-2xl p-8 text-center text-white">
-            <h2 className="text-2xl font-bold mb-3">Obtenez une analyse complète</h2>
-            <p className="text-white/70 mb-6 max-w-lg mx-auto">
+          <div className="bg-gradient-to-br from-navy to-navy-light rounded-2xl p-8 text-white">
+            <h2 className="text-2xl font-bold mb-3 text-center">Prochaines étapes</h2>
+            <p className="text-white/70 mb-6 max-w-lg mx-auto text-center">
               Notre équipe peut examiner votre dossier en détail, identifier des programmes supplémentaires
               et vous proposer une stratégie d&apos;immigration optimale.
             </p>
+
+            <div className="grid sm:grid-cols-3 gap-4 mb-6">
+              <a
+                href={`https://wa.me/14386302869?text=${encodeURIComponent(`Bonjour! Je suis ${form.name}, j'ai complété le test d'admissibilité. J'aimerais prendre rendez-vous.`)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-3 p-4 bg-white/10 rounded-xl border border-white/20 hover:bg-white/20 transition-colors"
+              >
+                <MessageCircle className="w-5 h-5 text-[#25D366]" />
+                <div>
+                  <p className="font-semibold text-sm">WhatsApp</p>
+                  <p className="text-white/50 text-xs">+1 (438) 630-2869</p>
+                </div>
+              </a>
+              <a
+                href="tel:+15145330482"
+                className="flex items-center gap-3 p-4 bg-white/10 rounded-xl border border-white/20 hover:bg-white/20 transition-colors"
+              >
+                <Phone className="w-5 h-5 text-gold" />
+                <div>
+                  <p className="font-semibold text-sm">Téléphone</p>
+                  <p className="text-white/50 text-xs">+1 (514) 533-0482</p>
+                </div>
+              </a>
+              <a
+                href="mailto:info@soshubcanada.com"
+                className="flex items-center gap-3 p-4 bg-white/10 rounded-xl border border-white/20 hover:bg-white/20 transition-colors"
+              >
+                <Mail className="w-5 h-5 text-gold" />
+                <div>
+                  <p className="font-semibold text-sm">Courriel</p>
+                  <p className="text-white/50 text-xs">info@soshubcanada.com</p>
+                </div>
+              </a>
+            </div>
+
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
                 href="/contact"
-                className="px-8 py-3 bg-gold text-white font-bold rounded-xl hover:bg-gold-dark transition-colors"
+                className="px-8 py-3 bg-gold text-white font-bold rounded-xl hover:bg-gold-dark transition-colors text-center"
               >
                 Consultation personnalisée
               </Link>
               <Link
                 href="https://soshubca.vercel.app/inscription"
                 target="_blank"
-                className="px-8 py-3 bg-white/10 text-white font-semibold rounded-xl hover:bg-white/20 transition-colors border border-white/20"
+                className="px-8 py-3 bg-white/10 text-white font-semibold rounded-xl hover:bg-white/20 transition-colors border border-white/20 text-center"
               >
                 S&apos;inscrire en ligne
               </Link>
             </div>
-            <p className="text-white/40 text-xs mt-4">Consultation personnalisée — Contactez-nous pour un devis</p>
           </div>
 
           <div className="text-center mt-8">
