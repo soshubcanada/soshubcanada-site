@@ -17,13 +17,13 @@ const IMAGES = {
   familyAirport: 'https://images.unsplash.com/photo-1559599238-308793637427?w=800&h=500&fit=crop',
   familyPark: 'https://images.unsplash.com/photo-1591474200742-8e512e6f98f8?w=600&h=700&fit=crop',
   happyCouple: 'https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=400&h=300&fit=crop',
-  graduationJoy: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=400&h=250&fit=crop',
+  graduationJoy: 'https://images.unsplash.com/photo-1627556704302-624286467c65?w=400&h=250&fit=crop',
   familyHome: 'https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=400&h=250&fit=crop',
   diverseGroup: 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=400&h=250&fit=crop',
   kidSchool: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=400&h=250&fit=crop',
   newHome: 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=400&h=250&fit=crop',
   ctaBg: 'https://images.unsplash.com/photo-1517935706615-2717063c2225?w=1920&h=800&fit=crop',
-  montreal: 'https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=800&h=400&fit=crop',
+  montreal: 'https://images.unsplash.com/photo-1519178614-68673b201f36?w=800&h=400&fit=crop',
   office: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=400&h=250&fit=crop',
 };
 
@@ -115,25 +115,32 @@ export default function HomePage() {
   const [nlEmail, setNlEmail] = useState('');
   const [nlSent, setNlSent] = useState(false);
   const [nlLoading, setNlLoading] = useState(false);
+  const [nlError, setNlError] = useState(false);
 
   const handleNewsletter = async (e: React.FormEvent) => {
     e.preventDefault();
     setNlLoading(true);
+    setNlError(false);
     try {
-      await fetch('https://soshubca.vercel.app/api/crm/leads', {
+      const res = await fetch('https://soshubca.vercel.app/api/crm/leads', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ source: 'newsletter', email: nlEmail, name: nlEmail.split('@')[0] }),
       });
-    } catch { /* silent */ }
-    setTimeout(() => { setNlSent(true); setNlLoading(false); }, 800);
+      if (!res.ok) throw new Error('API error');
+      setNlSent(true);
+    } catch {
+      setNlError(true);
+    } finally {
+      setNlLoading(false);
+    }
   };
 
   return (
     <>
       {/* ========== HERO ========== */}
       <section className="relative min-h-[92vh] flex items-center overflow-hidden">
-        <Image src={IMAGES.hero} alt="Famille heureuse au Canada" fill className="object-cover object-top" priority quality={90} />
+        <Image src={IMAGES.hero} alt="Famille heureuse au Canada" fill sizes="100vw" className="object-cover object-top" priority quality={90} />
         <div className="absolute inset-0 hero-overlay" />
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="absolute top-20 left-10 w-72 h-72 bg-gold/10 rounded-full blur-3xl" />
@@ -222,7 +229,7 @@ export default function HomePage() {
             <div className="flex -space-x-3">
               {successStories.map((s, i) => (
                 <div key={i} className="relative w-10 h-10 rounded-full border-2 border-white overflow-hidden shadow-md hover:scale-110 hover:z-10 transition-transform" title={s.country}>
-                  <Image src={s.image} alt={s.country} fill className="object-cover" />
+                  <Image src={s.image} alt={s.country} fill sizes="40px" className="object-cover" />
                 </div>
               ))}
             </div>
@@ -264,19 +271,19 @@ export default function HomePage() {
             <div className="scroll-hidden-left relative">
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-4">
-                  <div className="rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-shadow">
-                    <Image src={IMAGES.happyCouple} alt="Couple heureux" width={300} height={220} className="object-cover w-full h-[220px] hover:scale-105 transition-transform duration-700" />
+                  <div className="relative h-[220px] rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-shadow">
+                    <Image src={IMAGES.happyCouple} alt="Couple heureux" fill sizes="(max-width: 1024px) 50vw, 25vw" className="object-cover hover:scale-105 transition-transform duration-700" />
                   </div>
-                  <div className="rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-shadow">
-                    <Image src={IMAGES.kidSchool} alt="Enfant à l'école" width={300} height={180} className="object-cover w-full h-[180px] hover:scale-105 transition-transform duration-700" />
+                  <div className="relative h-[180px] rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-shadow">
+                    <Image src={IMAGES.kidSchool} alt="Enfant à l'école" fill sizes="(max-width: 1024px) 50vw, 25vw" className="object-cover hover:scale-105 transition-transform duration-700" />
                   </div>
                 </div>
                 <div className="space-y-4 pt-8">
-                  <div className="rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-shadow">
-                    <Image src={IMAGES.familyHome} alt="Famille dans leur nouveau foyer" width={300} height={180} className="object-cover w-full h-[180px] hover:scale-105 transition-transform duration-700" />
+                  <div className="relative h-[180px] rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-shadow">
+                    <Image src={IMAGES.familyHome} alt="Famille dans leur nouveau foyer" fill sizes="(max-width: 1024px) 50vw, 25vw" className="object-cover hover:scale-105 transition-transform duration-700" />
                   </div>
-                  <div className="rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-shadow">
-                    <Image src={IMAGES.graduationJoy} alt="Graduation" width={300} height={220} className="object-cover w-full h-[220px] hover:scale-105 transition-transform duration-700" />
+                  <div className="relative h-[220px] rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-shadow">
+                    <Image src={IMAGES.graduationJoy} alt="Graduation" fill sizes="(max-width: 1024px) 50vw, 25vw" className="object-cover hover:scale-105 transition-transform duration-700" />
                   </div>
                 </div>
               </div>
@@ -340,7 +347,7 @@ export default function HomePage() {
             {programs.map((p, i) => (
               <div key={i} className="scroll-hidden group bg-white border border-gray-100 rounded-2xl overflow-hidden card-premium" style={{ transitionDelay: `${i * 100}ms` }}>
                 <div className="relative h-48 overflow-hidden">
-                  <Image src={p.image} alt={p.title} fill className="object-cover group-hover:scale-110 transition-transform duration-700" />
+                  <Image src={p.image} alt={p.title} fill sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw" className="object-cover group-hover:scale-110 transition-transform duration-700" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
                   <div className={`absolute bottom-4 left-4 w-10 h-10 rounded-lg bg-gradient-to-br ${p.color} flex items-center justify-center shadow-lg`}>
                     <p.icon className="w-5 h-5 text-white" />
@@ -514,13 +521,18 @@ export default function HomePage() {
               <CheckCircle2 className="w-5 h-5" /> Merci! Vous êtes inscrit.
             </div>
           ) : (
-            <form onSubmit={handleNewsletter} className="flex flex-col sm:flex-row gap-3 max-w-lg mx-auto">
-              <input type="email" required value={nlEmail} onChange={e => setNlEmail(e.target.value)} placeholder="Votre courriel" className="flex-1 px-5 py-3.5 rounded-xl border-0 outline-none text-navy font-sans shadow-lg" />
-              <button type="submit" disabled={nlLoading} className="px-8 py-3.5 bg-navy text-white font-bold rounded-xl hover:bg-navy-light transition-colors flex items-center justify-center gap-2 font-sans shadow-lg disabled:opacity-50">
-                {nlLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Send className="w-5 h-5" />}
-                S&apos;inscrire
-              </button>
-            </form>
+            <>
+              <form onSubmit={handleNewsletter} className="flex flex-col sm:flex-row gap-3 max-w-lg mx-auto">
+                <input type="email" required value={nlEmail} onChange={e => setNlEmail(e.target.value)} placeholder="Votre courriel" className="flex-1 px-5 py-3.5 rounded-xl border-0 outline-none text-navy font-sans shadow-lg" />
+                <button type="submit" disabled={nlLoading} className="px-8 py-3.5 bg-navy text-white font-bold rounded-xl hover:bg-navy-light transition-colors flex items-center justify-center gap-2 font-sans shadow-lg disabled:opacity-50">
+                  {nlLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Send className="w-5 h-5" />}
+                  S&apos;inscrire
+                </button>
+              </form>
+              {nlError && (
+                <p className="text-white/90 text-sm mt-3 font-sans">Une erreur est survenue. Veuillez réessayer ou nous contacter directement.</p>
+              )}
+            </>
           )}
         </div>
       </section>
@@ -571,7 +583,7 @@ export default function HomePage() {
 
       {/* ========== FINAL CTA ========== */}
       <section className="relative py-24 md:py-32 overflow-hidden">
-        <Image src={IMAGES.ctaBg} alt="Canada" fill className="object-cover" />
+        <Image src={IMAGES.ctaBg} alt="Canada" fill sizes="100vw" className="object-cover" />
         <div className="absolute inset-0 bg-navy/90" />
         <div className="relative max-w-4xl mx-auto px-6 text-center">
           <h2 className="text-3xl md:text-5xl font-bold text-white mb-6 scroll-hidden">Prêt à commencer votre nouvelle vie au Canada?</h2>

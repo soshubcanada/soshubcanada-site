@@ -227,7 +227,8 @@ export default function AdmissibilitePage() {
         }),
       });
     } catch {
-      // Silently fail - don't block user experience
+      // CRM send failed - don't block results display
+      console.warn('CRM lead submission failed');
     }
   };
 

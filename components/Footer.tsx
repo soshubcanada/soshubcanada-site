@@ -13,6 +13,7 @@ export function Footer() {
           src="https://images.unsplash.com/photo-1462536943532-57a629f6cc60?w=1920&h=400&fit=crop"
           alt="Canada"
           fill
+          sizes="100vw"
           className="object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-gold-dark/95 via-gold/90 to-gold-light/85" />

@@ -8,13 +8,15 @@ export default function ContactPage() {
   const [form, setForm] = useState({ name: '', email: '', phone: '', subject: '', message: '' });
   const [sent, setSent] = useState(false);
   const [sending, setSending] = useState(false);
+  const [error, setError] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSending(true);
+    setError(false);
 
     try {
-      await fetch('https://soshubca.vercel.app/api/crm/leads', {
+      const res = await fetch('https://soshubca.vercel.app/api/crm/leads', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -26,14 +28,13 @@ export default function ContactPage() {
           message: form.message,
         }),
       });
-    } catch {
-      // Silently fail
-    }
-
-    setTimeout(() => {
+      if (!res.ok) throw new Error('API error');
       setSent(true);
+    } catch {
+      setError(true);
+    } finally {
       setSending(false);
-    }, 1000);
+    }
   };
 
   if (sent) {
@@ -63,6 +64,7 @@ export default function ContactPage() {
           src="https://images.unsplash.com/photo-1596524430615-b46475ddff6e?w=1920&h=500&fit=crop"
           alt="Contactez-nous"
           fill
+          sizes="100vw"
           className="object-cover"
         />
         <div className="absolute inset-0 hero-overlay" />
@@ -202,6 +204,11 @@ export default function ContactPage() {
                 {sending ? 'Envoi en cours...' : 'Envoyer le message'}
               </button>
 
+              {error && (
+                <p className="text-red-500 text-sm text-center font-sans">
+                  Une erreur est survenue. Veuillez réessayer ou nous contacter par téléphone au (514) 533-0482.
+                </p>
+              )}
               <p className="text-xs text-gray-400 text-center font-sans">
                 En soumettant ce formulaire, vous acceptez notre politique de confidentialité.
               </p>

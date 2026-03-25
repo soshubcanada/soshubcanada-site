@@ -31,6 +31,7 @@ export default function AProposPage() {
           src="https://images.unsplash.com/photo-1504439468489-c8920d796a29?w=1920&h=600&fit=crop"
           alt="Montréal skyline"
           fill
+          sizes="100vw"
           className="object-cover"
         />
         <div className="absolute inset-0 hero-overlay" />
@@ -160,6 +161,7 @@ export default function AProposPage() {
                     src={t.image}
                     alt={t.name}
                     fill
+                    sizes="112px"
                     className="object-cover"
                   />
                 </div>
@@ -178,6 +180,7 @@ export default function AProposPage() {
           src="https://images.unsplash.com/photo-1517935706615-2717063c2225?w=1920&h=600&fit=crop"
           alt="Montréal"
           fill
+          sizes="100vw"
           className="object-cover"
         />
         <div className="absolute inset-0 bg-navy/90" />

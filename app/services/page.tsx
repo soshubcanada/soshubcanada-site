@@ -33,7 +33,7 @@ const services = [
     title: 'Programmes du Québec',
     subtitle: 'PEQ, PRTQ, Arrima',
     color: 'from-emerald-500 to-emerald-700',
-    image: 'https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=800&h=400&fit=crop',
+    image: 'https://images.unsplash.com/photo-1519178614-68673b201f36?w=800&h=400&fit=crop',
     desc: 'Programmes d\'immigration spécifiques au Québec, offrant des voies privilégiées pour les francophones et les diplômés québécois.',
     includes: [
       'PEQ: diplômés et travailleurs temporaires',
@@ -69,7 +69,7 @@ const services = [
     title: 'Permis d\'études',
     subtitle: 'Étudier au Canada',
     color: 'from-amber-500 to-amber-700',
-    image: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=800&h=400&fit=crop',
+    image: 'https://images.unsplash.com/photo-1627556704302-624286467c65?w=800&h=400&fit=crop',
     desc: 'Étudiez au Canada et ouvrez la porte à l\'immigration permanente grâce à un diplôme canadien.',
     includes: [
       'Choix du programme et de l\'établissement',
@@ -164,6 +164,7 @@ export default function ServicesPage() {
           src="https://images.unsplash.com/photo-1462536943532-57a629f6cc60?w=1920&h=600&fit=crop"
           alt="Services d'immigration"
           fill
+          sizes="100vw"
           className="object-cover"
         />
         <div className="absolute inset-0 hero-overlay" />
@@ -209,6 +210,7 @@ export default function ServicesPage() {
                   src={service.image}
                   alt={service.title}
                   fill
+                  sizes="(max-width: 768px) 100vw, 80vw"
                   className="object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/30 to-transparent" />
