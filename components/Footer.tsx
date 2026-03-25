@@ -1,8 +1,6 @@
-'use client';
-
 import Link from 'next/link';
 import Image from 'next/image';
-import { MapPin, Phone, Mail, Clock, ExternalLink, ArrowRight, MessageCircle } from 'lucide-react';
+import { MapPin, Phone, Mail, Clock, ExternalLink, MessageCircle } from 'lucide-react';
 
 export function Footer() {
   return (
@@ -13,6 +11,7 @@ export function Footer() {
           src="https://images.unsplash.com/photo-1462536943532-57a629f6cc60?w=1920&h=400&fit=crop"
           alt="Canada"
           fill
+          loading="lazy"
           sizes="100vw"
           className="object-cover"
         />

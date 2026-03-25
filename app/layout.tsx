@@ -96,7 +96,7 @@ const jsonLd = {
   ],
   serviceType: ['Immigration Services', 'Relocation Services', 'Integration Services', 'Settlement Services', 'Express Entry', 'PEQ Quebec', 'Work Permit', 'Study Permit', 'Family Sponsorship'],
   knowsLanguage: ['fr', 'en', 'ar', 'es'],
-  priceRange: '$$',
+  priceRange: 'Contactez-nous',
   aggregateRating: {
     '@type': 'AggregateRating',
     ratingValue: '4.9',

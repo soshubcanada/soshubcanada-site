@@ -6,8 +6,10 @@ import {
   ArrowRight, ArrowLeft, CheckCircle2, AlertCircle, Sparkles,
   User, GraduationCap, Briefcase, Globe2, Languages, Send,
   MessageCircle, Phone, Mail, Clock, TrendingDown, AlertTriangle,
-  CalendarClock, ShieldAlert, Flame, Zap
+  CalendarClock, ShieldAlert, Flame, Zap, FileText, ChevronDown,
+  ChevronRight, Target, AlertOctagon, Lightbulb, Building2
 } from 'lucide-react';
+import { generateActionPlan, type FullActionPlan, type ActionPhase, type ActionStep } from '@/lib/action-plan-engine';
 
 interface FormData {
   age: string;
@@ -49,6 +51,291 @@ const stepConfig = [
   { title: 'Situation au Canada', icon: Globe2 },
   { title: 'Coordonnées', icon: Send },
 ];
+
+// =============================================================================
+// ACTION PLAN COMPONENTS
+// =============================================================================
+
+function StepCard({ step, index }: { step: ActionStep; index: number }) {
+  const [open, setOpen] = useState(false);
+  const hasDetails = (step.documents?.length || 0) + (step.forms?.length || 0) + (step.tips?.length || 0) > 0 || step.sosHubService || step.warning;
+
+  return (
+    <div className="border border-gray-100 rounded-xl overflow-hidden bg-white">
+      <button
+        onClick={() => hasDetails && setOpen(!open)}
+        className={`w-full text-left p-4 flex items-start gap-3 ${hasDetails ? 'hover:bg-gray-50 cursor-pointer' : ''} transition-colors`}
+      >
+        <span className="w-7 h-7 rounded-full bg-gold/10 text-gold flex items-center justify-center text-sm font-bold shrink-0 mt-0.5">
+          {index + 1}
+        </span>
+        <div className="flex-1 min-w-0">
+          <h5 className="font-bold text-navy text-sm">{step.title}</h5>
+          <p className="text-xs text-gray-500 mt-1 leading-relaxed">{step.description}</p>
+          {step.timeline && (
+            <span className="inline-flex items-center gap-1 mt-2 text-xs text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full">
+              <Clock className="w-3 h-3" /> {step.timeline}
+            </span>
+          )}
+        </div>
+        {hasDetails && (
+          <span className="shrink-0 mt-1">
+            {open ? <ChevronDown className="w-4 h-4 text-gray-400" /> : <ChevronRight className="w-4 h-4 text-gray-400" />}
+          </span>
+        )}
+      </button>
+
+      {open && hasDetails && (
+        <div className="px-4 pb-4 pt-0 space-y-3 border-t border-gray-50 ml-10">
+          {step.warning && (
+            <div className="bg-red-50 border border-red-200 rounded-lg p-3 flex items-start gap-2">
+              <AlertOctagon className="w-4 h-4 text-red-500 mt-0.5 shrink-0" />
+              <p className="text-xs text-red-700 font-medium">{step.warning}</p>
+            </div>
+          )}
+
+          {step.documents && step.documents.length > 0 && (
+            <div>
+              <h6 className="text-xs font-semibold text-navy mb-1.5 flex items-center gap-1">
+                <FileText className="w-3 h-3 text-gold" /> Documents requis
+              </h6>
+              <ul className="space-y-1">
+                {step.documents.map((doc, i) => (
+                  <li key={i} className="text-xs text-gray-600 flex items-start gap-2">
+                    <span className="text-gold mt-0.5">•</span> {doc}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {step.forms && step.forms.length > 0 && (
+            <div>
+              <h6 className="text-xs font-semibold text-navy mb-1.5 flex items-center gap-1">
+                <FileText className="w-3 h-3 text-purple-500" /> Formulaires
+              </h6>
+              <ul className="space-y-1">
+                {step.forms.map((f, i) => (
+                  <li key={i} className="text-xs text-purple-700 bg-purple-50 px-2 py-1 rounded font-mono">{f}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {step.tips && step.tips.length > 0 && (
+            <div>
+              <h6 className="text-xs font-semibold text-navy mb-1.5 flex items-center gap-1">
+                <Lightbulb className="w-3 h-3 text-amber-500" /> Conseils
+              </h6>
+              <ul className="space-y-1">
+                {step.tips.map((tip, i) => (
+                  <li key={i} className="text-xs text-amber-800 bg-amber-50 px-2 py-1 rounded flex items-start gap-1.5">
+                    <span className="text-amber-500 mt-0.5 shrink-0">💡</span> {tip}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {step.sosHubService && (
+            <div className="bg-gold/5 border border-gold/20 rounded-lg p-3">
+              <h6 className="text-xs font-semibold text-gold-dark mb-1 flex items-center gap-1">
+                <Building2 className="w-3 h-3" /> Service SOS Hub Canada
+              </h6>
+              <p className="text-xs text-gray-600">{step.sosHubService}</p>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function PhaseSection({ phase }: { phase: ActionPhase }) {
+  return (
+    <div className="mb-6">
+      <div className="flex items-center gap-3 mb-3">
+        <span className="text-2xl">{phase.icon}</span>
+        <div>
+          <span className="text-xs font-semibold text-gold uppercase tracking-wider">
+            {phase.phase === 0 ? 'Préparation' : `Phase ${phase.phase}`}
+          </span>
+          <h4 className="text-sm font-bold text-navy">{phase.title}</h4>
+        </div>
+      </div>
+      <div className="space-y-2 ml-1">
+        {phase.steps.map((step, i) => (
+          <StepCard key={i} step={step} index={i} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function ActionPlanSection({ plan }: { plan: FullActionPlan }) {
+  const [expandedProgram, setExpandedProgram] = useState<number>(0);
+  const [showGlobal, setShowGlobal] = useState(false);
+
+  return (
+    <div className="mb-8">
+      {/* Plan header */}
+      <div className="bg-gradient-to-r from-navy to-navy-light rounded-2xl p-6 md:p-8 mb-6 text-white">
+        <div className="flex items-center gap-3 mb-4">
+          <Target className="w-8 h-8 text-gold" />
+          <div>
+            <h2 className="text-xl md:text-2xl font-bold">Votre plan d&apos;action personnalisé</h2>
+            <p className="text-white/60 text-sm font-sans">Généré le {plan.generatedDate} pour {plan.clientName}</p>
+          </div>
+        </div>
+
+        {/* Profile summary */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
+          {[
+            { label: 'Âge', value: `${plan.profileSummary.age} ans` },
+            { label: 'Études', value: plan.profileSummary.education },
+            { label: 'Expérience', value: plan.profileSummary.workExperience === '0' ? 'Aucune' : `${plan.profileSummary.workExperience} ans` },
+            { label: 'Destination', value: plan.profileSummary.destination },
+          ].map((item, i) => (
+            <div key={i} className="bg-white/10 rounded-lg px-3 py-2">
+              <p className="text-[10px] text-white/50 uppercase tracking-wider">{item.label}</p>
+              <p className="text-sm font-semibold text-white truncate">{item.value}</p>
+            </div>
+          ))}
+        </div>
+
+        {/* Strengths & Weaknesses */}
+        {(plan.profileSummary.strengths.length > 0 || plan.profileSummary.weaknesses.length > 0) && (
+          <div className="grid md:grid-cols-2 gap-3">
+            {plan.profileSummary.strengths.length > 0 && (
+              <div className="bg-green-500/10 border border-green-500/20 rounded-xl p-3">
+                <h4 className="text-xs font-semibold text-green-300 mb-2">✓ Points forts</h4>
+                <ul className="space-y-1">
+                  {plan.profileSummary.strengths.map((s, i) => (
+                    <li key={i} className="text-xs text-green-100">{s}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            {plan.profileSummary.weaknesses.length > 0 && (
+              <div className="bg-red-500/10 border border-red-500/20 rounded-xl p-3">
+                <h4 className="text-xs font-semibold text-red-300 mb-2">⚠ Points à améliorer</h4>
+                <ul className="space-y-1">
+                  {plan.profileSummary.weaknesses.map((w, i) => (
+                    <li key={i} className="text-xs text-red-100">{w}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Recommendation */}
+        <div className="mt-4 bg-white/10 rounded-xl p-4">
+          <p className="text-sm text-white/90 font-sans leading-relaxed">
+            <strong className="text-gold">Recommandation:</strong> {plan.recommendation}
+          </p>
+        </div>
+      </div>
+
+      {/* Global preparation */}
+      <div className="mb-6">
+        <button
+          onClick={() => setShowGlobal(!showGlobal)}
+          className="w-full flex items-center justify-between bg-amber-50 border border-amber-200 rounded-xl p-4 hover:bg-amber-100 transition-colors"
+        >
+          <div className="flex items-center gap-3">
+            <span className="text-2xl">📋</span>
+            <div className="text-left">
+              <h3 className="font-bold text-navy text-sm">Étapes préparatoires — Obligatoires pour tous les programmes</h3>
+              <p className="text-xs text-gray-500">Tests de langue, ECA, documents, preuve de fonds</p>
+            </div>
+          </div>
+          {showGlobal ? <ChevronDown className="w-5 h-5 text-gray-400" /> : <ChevronRight className="w-5 h-5 text-gray-400" />}
+        </button>
+        {showGlobal && (
+          <div className="mt-3 bg-white rounded-xl border border-gray-100 p-4 md:p-6">
+            <PhaseSection phase={plan.globalPreparation} />
+          </div>
+        )}
+      </div>
+
+      {/* Program-specific plans */}
+      {plan.programs.length > 0 && (
+        <div className="space-y-4">
+          <h3 className="font-bold text-navy flex items-center gap-2">
+            <Target className="w-5 h-5 text-gold" />
+            Plans d&apos;action par programme ({plan.programs.length})
+          </h3>
+
+          {plan.programs.map((prog, i) => (
+            <div key={i} className="border border-gray-100 rounded-xl overflow-hidden bg-white shadow-sm">
+              {/* Program header */}
+              <button
+                onClick={() => setExpandedProgram(expandedProgram === i ? -1 : i)}
+                className="w-full text-left p-4 md:p-5 flex items-start gap-4 hover:bg-gray-50 transition-colors"
+              >
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-gold to-gold-dark flex items-center justify-center shrink-0 shadow-md">
+                  <span className="text-white font-bold text-sm">#{prog.priority}</span>
+                </div>
+                <div className="flex-1 min-w-0">
+                  <h4 className="font-bold text-navy text-sm md:text-base">{prog.programName}</h4>
+                  <p className="text-xs text-gray-500 mt-0.5">{prog.tagline}</p>
+                  <div className="flex flex-wrap gap-2 mt-2">
+                    <span className="text-xs bg-blue-50 text-blue-700 px-2 py-0.5 rounded-full flex items-center gap-1">
+                      <Clock className="w-3 h-3" /> {prog.estimatedTimeline}
+                    </span>
+                    <span className="text-xs bg-gold/10 text-gold-dark px-2 py-0.5 rounded-full">
+                      Contactez SOS Hub pour les frais
+                    </span>
+                  </div>
+                </div>
+                {expandedProgram === i ? <ChevronDown className="w-5 h-5 text-gray-400 mt-2" /> : <ChevronRight className="w-5 h-5 text-gray-400 mt-2" />}
+              </button>
+
+              {/* Expanded content */}
+              {expandedProgram === i && (
+                <div className="border-t border-gray-100 p-4 md:p-6">
+                  {/* Eligibility note */}
+                  <div className="bg-blue-50 border border-blue-200 rounded-xl p-3 mb-6">
+                    <p className="text-xs text-blue-800">{prog.eligibilityNote}</p>
+                  </div>
+
+                  {/* Phases */}
+                  {prog.phases.map((phase, j) => (
+                    <PhaseSection key={j} phase={phase} />
+                  ))}
+
+                  {/* Next step CTA */}
+                  <div className="bg-gradient-to-r from-gold/10 to-gold/5 border border-gold/30 rounded-xl p-4 mt-4">
+                    <h5 className="font-bold text-navy text-sm mb-2 flex items-center gap-2">
+                      <ArrowRight className="w-4 h-4 text-gold" /> Prochaine étape avec SOS Hub Canada
+                    </h5>
+                    <p className="text-xs text-gray-600 mb-3">{prog.nextStepWithSosHub}</p>
+                    <a
+                      href={`https://wa.me/14386302869?text=${encodeURIComponent(`Bonjour! Je viens de compléter mon évaluation d'admissibilité et j'aimerais discuter de mon plan d'action pour le programme "${prog.programName}". Mon nom est ${plan.clientName}.`)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#25D366] text-white text-sm font-bold rounded-xl hover:bg-[#20bd5a] transition-all"
+                    >
+                      <MessageCircle className="w-4 h-4" /> Discuter de ce programme
+                    </a>
+                  </div>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Disclaimer */}
+      <div className="mt-6 bg-gray-50 border border-gray-200 rounded-xl p-4">
+        <p className="text-[11px] text-gray-400 leading-relaxed">
+          <strong>Avertissement:</strong> {plan.disclaimer}
+        </p>
+      </div>
+    </div>
+  );
+}
 
 export default function AdmissibilitePage() {
   const [step, setStep] = useState(0);
@@ -237,6 +524,7 @@ export default function AdmissibilitePage() {
   if (submitted && results) {
     const eligible = results.filter(r => r.eligible);
     const age = parseInt(form.age) || 0;
+    const actionPlan = generateActionPlan(form, results);
     const whatsappMsg = encodeURIComponent(`Bonjour SOS Hub Canada! Je viens de compléter le test d'admissibilité. Mon nom est ${form.name}, j'ai ${age} ans. J'ai ${eligible.length} programme(s) éligible(s): ${eligible.map(p => p.name).join(', ') || 'à discuter'}. J'aimerais obtenir mon plan d'action personnalisé.`);
     const whatsappUrl = `https://wa.me/14386302869?text=${whatsappMsg}`;
 
@@ -388,6 +676,9 @@ export default function AdmissibilitePage() {
               </div>
             ))}
           </div>
+
+          {/* ===== ACTION PLAN SECTION ===== */}
+          <ActionPlanSection plan={actionPlan} />
 
           {/* ===== SECOND WHATSAPP CTA — After results ===== */}
           <div className="bg-gradient-to-r from-navy to-navy-light rounded-2xl p-6 md:p-8 mb-8 text-white text-center">
