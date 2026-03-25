@@ -89,7 +89,7 @@ export default function AProposPage() {
           <div className="scroll-hidden-right">
             <div className="relative rounded-2xl overflow-hidden shadow-2xl">
               <Image
-                src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=600&h=700&fit=crop"
+                src="https://images.unsplash.com/photo-1543807535-eceef0bc6599?w=600&h=700&fit=crop"
                 alt="Notre équipe"
                 width={600}
                 height={700}
