@@ -4,6 +4,8 @@ import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { AnimatedCounter } from '@/components/AnimatedCounter';
+import { VideoHero } from '@/components/VideoHero';
+import { VideoTestimonial } from '@/components/VideoTestimonial';
 import {
   ArrowRight, CheckCircle2, Users, FileText, Globe2, Shield,
   Star, TrendingUp, Award, MapPin, Clock, Sparkles, ChevronRight,
@@ -138,19 +140,21 @@ export default function HomePage() {
 
   return (
     <>
-      {/* ========== HERO ========== */}
-      <section className="relative min-h-[92vh] flex items-center overflow-hidden">
-        <Image src={IMAGES.hero} alt="Famille heureuse au Canada" fill sizes="100vw" className="object-cover object-top" priority quality={90} />
-        <div className="absolute inset-0 hero-overlay" />
+      {/* ========== VIDEO HERO ========== */}
+      <VideoHero>
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-20 left-10 w-72 h-72 bg-gold/10 rounded-full blur-3xl" />
-          <div className="absolute bottom-20 right-10 w-96 h-96 bg-gold/5 rounded-full blur-3xl" />
+          <div className="absolute top-20 left-10 w-72 h-72 bg-gold/10 rounded-full blur-3xl animate-float" />
+          <div className="absolute bottom-20 right-10 w-96 h-96 bg-gold/5 rounded-full blur-3xl animate-float" style={{ animationDelay: '2s' }} />
+          {/* Subtle floating particles */}
+          {[...Array(4)].map((_, i) => (
+            <div key={i} className="absolute w-1.5 h-1.5 bg-gold/15 rounded-full animate-particle" style={{ left: `${20 + i * 20}%`, top: `${30 + (i % 2) * 30}%`, animationDelay: `${i * 1.2}s` }} />
+          ))}
         </div>
 
         <div className="relative max-w-7xl mx-auto px-6 py-32 md:py-40 w-full">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
-              <div className="inline-flex items-center gap-2 px-5 py-2 glass rounded-full text-gold text-sm font-medium mb-8 animate-fade-in font-sans">
+              <div className="inline-flex items-center gap-2 px-5 py-2 glass rounded-full text-gold text-sm font-medium mb-8 animate-fade-in font-sans glow-gold">
                 <Sparkles className="w-4 h-4" />
                 +500 familles accompagnées — Évaluation gratuite en 2 min
               </div>
@@ -166,7 +170,7 @@ export default function HomePage() {
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 mb-10 animate-fade-in-up delay-200">
-                <Link href="/admissibilite" className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-gradient-to-r from-gold to-gold-dark text-white font-bold rounded-xl hover:shadow-2xl hover:shadow-gold/30 transition-all text-lg animate-pulse-gold hover:scale-105 font-sans">
+                <Link href="/admissibilite" className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-gradient-to-r from-gold to-gold-dark text-white font-bold rounded-xl hover:shadow-2xl hover:shadow-gold/30 transition-all text-lg animate-pulse-gold hover:scale-105 font-sans glow-gold">
                   Tester mon admissibilité <ArrowRight className="w-5 h-5" />
                 </Link>
                 <a href="tel:+15145330482" className="inline-flex items-center justify-center gap-2 px-8 py-4 glass text-white font-semibold rounded-xl hover:bg-white/20 transition-all font-sans">
@@ -182,11 +186,11 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* Hero floating image card */}
+            {/* Hero floating video card */}
             <div className="hidden lg:block animate-fade-in-up delay-300">
               <div className="relative">
                 <div className="rounded-2xl overflow-hidden shadow-2xl rotate-2 hover:rotate-0 transition-transform duration-700">
-                  <Image src={IMAGES.familyAirport} alt="Famille heureuse à l'aéroport" width={500} height={350} className="object-cover w-full h-[350px]" />
+                  <Image src={IMAGES.familyAirport} alt="Famille heureuse à l'aéroport" width={500} height={350} className="object-cover w-full h-[350px] animate-kenburns" />
                 </div>
                 {/* Floating stat */}
                 <div className="absolute -bottom-6 -left-6 glass-white rounded-2xl p-4 shadow-xl animate-float">
@@ -214,12 +218,13 @@ export default function HomePage() {
           </div>
         </div>
 
+        {/* Scroll indicator */}
         <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-float">
           <div className="w-6 h-10 rounded-full border-2 border-white/20 flex justify-center pt-2">
-            <div className="w-1 h-3 bg-gold rounded-full" />
+            <div className="w-1 h-3 bg-gold rounded-full animate-slide-up" style={{ animationDuration: '1.5s', animationIterationCount: 'infinite' }} />
           </div>
         </div>
-      </section>
+      </VideoHero>
 
       {/* ========== SOCIAL PROOF BAR ========== */}
       <section className="bg-white py-6 border-b border-gray-100 relative z-10">
@@ -470,42 +475,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ========== TESTIMONIALS ========== */}
-      <section className="py-24 md:py-32 bg-navy relative overflow-hidden">
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-0 left-0 w-[600px] h-[600px] bg-gold/5 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2" />
-          <div className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-gold/5 rounded-full blur-3xl translate-x-1/2 translate-y-1/2" />
-        </div>
-
-        <div className="max-w-7xl mx-auto px-6 relative">
-          <div className="text-center mb-16 scroll-hidden">
-            <span className="text-gold font-semibold text-sm uppercase tracking-[0.2em] font-sans">Témoignages</span>
-            <h2 className="text-3xl md:text-5xl font-bold text-white mt-3 mb-4">Ils nous ont fait confiance</h2>
-            <div className="divider-gold mx-auto mt-4" />
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {testimonials.map((t, i) => (
-              <div key={i} className="scroll-hidden glass rounded-2xl p-6 hover:bg-white/12 transition-all group" style={{ transitionDelay: `${i * 100}ms` }}>
-                <Quote className="w-8 h-8 text-gold/30 mb-3" />
-                <div className="flex gap-1 mb-3">
-                  {Array.from({ length: t.rating }).map((_, j) => (
-                    <Star key={j} className="w-3.5 h-3.5 fill-gold text-gold" />
-                  ))}
-                </div>
-                <p className="text-white/70 text-sm leading-relaxed mb-5 italic font-sans">&quot;{t.text}&quot;</p>
-                <div className="flex items-center gap-3 pt-3 border-t border-white/10">
-                  <Image src={t.image} alt={t.name} width={40} height={40} className="rounded-full object-cover" />
-                  <div>
-                    <div className="font-semibold text-white text-sm">{t.name}</div>
-                    <div className="text-xs text-gold/70 font-sans">{t.origin} — {t.program}</div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* ========== VIDEO TESTIMONIALS ========== */}
+      <VideoTestimonial />
 
       {/* ========== NEWSLETTER ========== */}
       <section className="py-16 bg-gradient-to-r from-gold-dark via-gold to-gold-light relative overflow-hidden">
