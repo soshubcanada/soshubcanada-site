@@ -42,8 +42,8 @@ export function Header() {
         <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
           <span className="tracking-wide">Service de relocalisation et d'intégration — Montréal, Québec</span>
           <div className="flex items-center gap-8">
-            <a href="tel:+15147575562" className="flex items-center gap-1.5 hover:text-gold transition-colors">
-              <Phone className="w-3 h-3" /> (514) 757-5562
+            <a href="tel:+15145330482" className="flex items-center gap-1.5 hover:text-gold transition-colors">
+              <Phone className="w-3 h-3" /> (514) 533-0482
             </a>
             <a href="mailto:info@soshubcanada.com" className="flex items-center gap-1.5 hover:text-gold transition-colors">
               <Mail className="w-3 h-3" /> info@soshubcanada.com

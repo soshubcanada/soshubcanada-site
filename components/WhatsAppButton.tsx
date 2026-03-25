@@ -5,7 +5,7 @@ import { MessageCircle, X } from 'lucide-react';
 
 export function WhatsAppButton() {
   const [showTooltip, setShowTooltip] = useState(true);
-  const phone = '15147575562';
+  const phone = '14386302869';
   const message = encodeURIComponent('Bonjour SOS Hub Canada! Je souhaite obtenir des informations sur vos services d\'immigration.');
 
   return (

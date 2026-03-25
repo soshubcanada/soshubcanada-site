@@ -59,7 +59,7 @@ export function Footer() {
               Accompagnement personnalisé pour tous vos projets.
             </p>
             <a
-              href="https://wa.me/15147575562"
+              href="https://wa.me/14386302869"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-4 py-2 bg-[#25D366]/20 rounded-lg text-sm text-[#25D366] hover:bg-[#25D366]/30 transition-colors font-sans"
@@ -105,11 +105,11 @@ export function Footer() {
             <ul className="space-y-4">
               <li className="flex items-start gap-3 text-sm font-sans">
                 <MapPin className="w-4 h-4 mt-0.5 text-gold shrink-0" />
-                <span>Montréal, Québec<br />Canada</span>
+                <span>3737 Crémazie Est #402<br />Montréal, QC H1Z 2K4</span>
               </li>
               <li className="flex items-center gap-3 text-sm font-sans">
                 <Phone className="w-4 h-4 text-gold shrink-0" />
-                <a href="tel:+15147575562" className="hover:text-gold transition-colors">(514) 757-5562</a>
+                <a href="tel:+15145330482" className="hover:text-gold transition-colors">(514) 533-0482</a>
               </li>
               <li className="flex items-center gap-3 text-sm font-sans">
                 <Mail className="w-4 h-4 text-gold shrink-0" />

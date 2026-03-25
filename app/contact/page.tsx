@@ -84,9 +84,10 @@ export default function ContactPage() {
               <div className="divider-gold mb-2" />
 
               {[
-                { icon: MapPin, label: 'Adresse', value: 'Montréal, Québec\nCanada' },
-                { icon: Phone, label: 'Téléphone', value: '(514) 757-5562', href: 'tel:+15147575562' },
+                { icon: MapPin, label: 'Adresse', value: '3737 Crémazie Est #402\nMontréal, QC H1Z 2K4' },
+                { icon: Phone, label: 'Téléphone', value: '(514) 533-0482', href: 'tel:+15145330482' },
                 { icon: Mail, label: 'Courriel', value: 'info@soshubcanada.com', href: 'mailto:info@soshubcanada.com' },
+                { icon: MessageCircle, label: 'WhatsApp', value: '(438) 630-2869', href: 'https://wa.me/14386302869' },
                 { icon: Clock, label: 'Heures', value: 'Lun-Ven: 9h-17h\nSam: Sur rendez-vous' },
               ].map((item, i) => (
                 <div key={i} className="flex items-start gap-4">
@@ -128,7 +129,7 @@ export default function ContactPage() {
             </div>
 
             <a
-              href="https://wa.me/15147575562"
+              href="https://wa.me/14386302869"
               target="_blank"
               rel="noopener noreferrer"
               className="scroll-hidden-left flex items-center gap-4 p-5 bg-[#25D366]/10 rounded-2xl border border-[#25D366]/20 hover:bg-[#25D366]/20 transition-colors"
