@@ -7,6 +7,7 @@ import { WhatsAppButton } from '@/components/WhatsAppButton';
 import { StickyMobileCTA } from '@/components/StickyMobileCTA';
 import { SocialProofToast } from '@/components/SocialProofToast';
 import { ScrollAnimator } from '@/components/ScrollAnimator';
+import { AnalyticsProvider } from '@/components/Analytics';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -161,6 +162,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <StickyMobileCTA />
         <SocialProofToast />
         <ScrollAnimator />
+        <AnalyticsProvider />
       </body>
     </html>
   );
