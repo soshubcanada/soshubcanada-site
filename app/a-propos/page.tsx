@@ -9,7 +9,7 @@ import {
 } from 'lucide-react';
 
 const values = [
-  { icon: Shield, title: 'Intégrité', desc: 'Transparence totale dans nos démarches et nos honoraires. Aucune promesse de résultat.' },
+  { icon: Shield, title: 'Intégrité', desc: 'Transparence totale dans nos démarches et notre accompagnement. Aucune promesse de résultat.' },
   { icon: Users, title: 'Accompagnement', desc: 'Suivi personnalisé de chaque dossier, du début à la fin de votre parcours.' },
   { icon: Award, title: 'Excellence', desc: 'Connaissance approfondie des programmes fédéraux et provinciaux, mise à jour continue.' },
   { icon: Heart, title: 'Humanité', desc: 'Nous comprenons l\'importance de votre projet. Chaque dossier est traité avec soin et empathie.' },

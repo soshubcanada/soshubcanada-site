@@ -285,7 +285,7 @@ function ActionPlanSection({ plan }: { plan: FullActionPlan }) {
                       <Clock className="w-3 h-3" /> {prog.estimatedTimeline}
                     </span>
                     <span className="text-xs bg-gold/10 text-gold-dark px-2 py-0.5 rounded-full">
-                      Contactez SOS Hub pour les frais
+                      Consultation gratuite disponible
                     </span>
                   </div>
                 </div>
@@ -517,7 +517,7 @@ export default function AdmissibilitePage() {
       });
     } catch {
       // CRM send failed - don't block results display
-      console.warn('CRM lead submission failed');
+      // CRM lead submission failed silently
     }
   };
 

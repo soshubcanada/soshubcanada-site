@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { Save, LogIn, LogOut, Phone, Mail, MapPin, Clock, Globe2, Edit3, CheckCircle2, Settings, FileText, Users, MessageCircle } from 'lucide-react';
 
-const ADMIN_PASSWORD = 'SosHub2026!';
+const ADMIN_PASSWORD = process.env.NEXT_PUBLIC_ADMIN_PASSWORD || '';
 
 interface SiteConfig {
   phone: string;
