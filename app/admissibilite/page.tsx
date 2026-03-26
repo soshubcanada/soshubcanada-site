@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import {
   ArrowRight, ArrowLeft, CheckCircle2, AlertCircle, Sparkles,
@@ -51,6 +51,76 @@ const stepConfig = [
   { title: 'Situation au Canada', icon: Globe2 },
   { title: 'Coordonnées', icon: Send },
 ];
+
+// ═══════════════════════════════════════════════════════
+// ANTI-SPAM: Disposable/temporary email domains blacklist
+// ═══════════════════════════════════════════════════════
+const DISPOSABLE_DOMAINS = new Set([
+  // Top disposable email providers
+  'tempmail.com','temp-mail.org','guerrillamail.com','guerrillamail.net','guerrillamail.de',
+  'guerrillamail.org','sharklasers.com','grr.la','guerrillamailblock.com','pokemail.net',
+  'spam4.me','bccto.me','mailinator.com','maildrop.cc','dispostable.com','yopmail.com',
+  'yopmail.fr','yopmail.net','throwaway.email','getnada.com','trashmail.com','trashmail.net',
+  'trashmail.me','mailnesia.com','mailcatch.com','tempail.com','tempr.email','temp-mail.io',
+  'mohmal.com','discard.email','fakeinbox.com','emailondeck.com','mailtemp.org',
+  'mintemail.com','mailnator.com','harakirimail.com','crazymailing.com',
+  'inboxkitten.com','burnermail.io','maildax.com','10minutemail.com','10minutemail.net',
+  'minutemail.com','tempinbox.com','tempinbox.org','inbox.lv','tempomail.fr',
+  'jetable.org','trash-mail.com','trash-mail.at','mytrashmail.com','mailexpire.com',
+  'mailzilla.com','spamfree24.org','spamgourmet.com','throwam.com','mailsac.com',
+  'anonbox.net','anonymail.cc','bugmenot.com','deadaddress.com','disbox.net',
+  'dropmail.me','emailfake.com','emkei.cz','fakeemail.com','filzmail.com',
+  'getairmail.com','einrot.com','imgof.com','imstations.com','mailforspam.com',
+  'mytemp.email','nomail.xl.cx','nospam.ze.tc','owlpic.com','proxymail.eu',
+  'rcpt.at','reallymymail.com','recode.me','sify.com','spambox.us',
+  'superrito.com','tittbit.in','trashymail.com','trashymail.net','twinmail.de',
+  'tyldd.com','uggsrock.com','veryrealemail.com','wegwerfemail.de','wh4f.org',
+  'mailnull.com','spamcero.com','spamhole.com','spamthis.co.uk',
+  // Common test/fake patterns
+  'example.com','example.org','example.net','test.com','test.org','testing.com',
+  'nowhere.com','noone.com','fake.com','noemail.com','invalid.com',
+]);
+
+// Suspicious email patterns
+function isEmailSuspicious(email: string): { valid: boolean; reason: string } {
+  if (!email) return { valid: false, reason: 'Courriel requis' };
+
+  const trimmed = email.trim().toLowerCase();
+
+  // Basic format
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+  if (!emailRegex.test(trimmed)) return { valid: false, reason: 'Format de courriel invalide' };
+
+  const [localPart, domain] = trimmed.split('@');
+
+  // Check disposable domains
+  if (DISPOSABLE_DOMAINS.has(domain)) {
+    return { valid: false, reason: 'Les adresses courriel temporaires ne sont pas acceptées. Veuillez utiliser votre courriel personnel.' };
+  }
+
+  // Check if domain has no TLD or suspicious TLD
+  const parts = domain.split('.');
+  const tld = parts[parts.length - 1];
+  if (tld.length < 2) return { valid: false, reason: 'Domaine de courriel invalide' };
+
+  // Suspicious local parts (bot patterns)
+  if (/^(test|admin|info|noreply|no-reply|spam|asdf|qwerty|abc|123|aaa|xxx)$/i.test(localPart)) {
+    return { valid: false, reason: 'Veuillez utiliser votre adresse courriel personnelle' };
+  }
+
+  // Excessive numbers or random chars
+  if (/^\d+$/.test(localPart)) return { valid: false, reason: 'Adresse courriel invalide' };
+  if (localPart.length < 3) return { valid: false, reason: 'Adresse courriel trop courte' };
+  if (localPart.length > 50) return { valid: false, reason: 'Adresse courriel trop longue' };
+
+  // Random string detection (no vowels = likely random)
+  const vowels = localPart.replace(/[^aeiouy]/gi, '').length;
+  if (localPart.length > 6 && vowels === 0) {
+    return { valid: false, reason: 'Adresse courriel invalide' };
+  }
+
+  return { valid: true, reason: '' };
+}
 
 // =============================================================================
 // ACTION PLAN COMPONENTS
@@ -343,6 +413,16 @@ export default function AdmissibilitePage() {
   const [results, setResults] = useState<ProgramResult[] | null>(null);
   const [submitted, setSubmitted] = useState(false);
 
+  // ── Anti-spam state ──
+  const [emailError, setEmailError] = useState('');
+  const [honeypot, setHoneypot] = useState(''); // Hidden field — bots fill it
+  const [submitCount, setSubmitCount] = useState(0);
+  const [blocked, setBlocked] = useState(false);
+  const formStartTime = useRef(Date.now());
+
+  // Reset timer when form starts
+  useEffect(() => { formStartTime.current = Date.now(); }, []);
+
   const update = (field: keyof FormData, value: string) => {
     setForm(prev => ({ ...prev, [field]: value }));
   };
@@ -353,7 +433,7 @@ export default function AdmissibilitePage() {
       case 1: return form.education && form.workExperience;
       case 2: return form.frenchLevel;
       case 3: return form.destination;
-      case 4: return form.email && form.name;
+      case 4: return form.email && form.name && !emailError && isEmailSuspicious(form.email).valid;
       default: return true;
     }
   };
@@ -483,6 +563,46 @@ export default function AdmissibilitePage() {
   };
 
   const handleSubmit = async () => {
+    // ── Anti-spam checks ──
+
+    // 1. Honeypot — bots fill hidden fields
+    if (honeypot) {
+      console.log('[SPAM] Honeypot triggered');
+      // Show fake success to bot
+      setResults([]);
+      setSubmitted(true);
+      return;
+    }
+
+    // 2. Rate limiting — max 3 submissions per session
+    if (submitCount >= 3) {
+      setBlocked(true);
+      return;
+    }
+
+    // 3. Time check — form filled in < 15 seconds = bot
+    const elapsed = (Date.now() - formStartTime.current) / 1000;
+    if (elapsed < 15) {
+      console.log('[SPAM] Too fast:', elapsed, 'seconds');
+      setResults([]);
+      setSubmitted(true);
+      return; // Silent fail for bots
+    }
+
+    // 4. Email validation
+    const emailCheck = isEmailSuspicious(form.email);
+    if (!emailCheck.valid) {
+      setEmailError(emailCheck.reason);
+      return;
+    }
+
+    // 5. Name validation — at least 2 chars, no URLs
+    if (form.name.length < 2 || /https?:\/\/|www\./i.test(form.name)) {
+      return;
+    }
+
+    setSubmitCount(prev => prev + 1);
+
     const r = evaluate();
     setResults(r);
     setSubmitted(true);
@@ -983,10 +1103,29 @@ export default function AdmissibilitePage() {
                 <input
                   type="email"
                   value={form.email}
-                  onChange={e => update('email', e.target.value)}
+                  onChange={e => {
+                    update('email', e.target.value);
+                    if (e.target.value.includes('@')) {
+                      const check = isEmailSuspicious(e.target.value);
+                      setEmailError(check.valid ? '' : check.reason);
+                    } else {
+                      setEmailError('');
+                    }
+                  }}
                   placeholder="votre@email.com"
-                  className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gold/30 focus:border-gold outline-none"
+                  className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-gold/30 outline-none ${emailError ? 'border-red-400 bg-red-50 focus:border-red-400' : 'border-gray-200 focus:border-gold'}`}
                 />
+                {emailError && (
+                  <div className="flex items-center gap-1.5 mt-1.5 text-red-600 text-xs">
+                    <AlertCircle className="w-3.5 h-3.5 shrink-0" />
+                    <span>{emailError}</span>
+                  </div>
+                )}
+              </div>
+              {/* Honeypot — invisible to users, bots fill it */}
+              <div style={{ position: 'absolute', left: '-9999px', opacity: 0, height: 0, overflow: 'hidden' }} aria-hidden="true" tabIndex={-1}>
+                <label htmlFor="website_url">Website</label>
+                <input type="text" id="website_url" name="website_url" value={honeypot} onChange={e => setHoneypot(e.target.value)} autoComplete="off" tabIndex={-1} />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Téléphone (optionnel)</label>
@@ -1022,10 +1161,10 @@ export default function AdmissibilitePage() {
             ) : (
               <button
                 onClick={handleSubmit}
-                disabled={!canNext()}
+                disabled={!canNext() || blocked}
                 className="flex items-center gap-2 px-6 py-2.5 bg-gold text-white font-semibold rounded-xl hover:bg-gold-dark disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               >
-                Voir mes résultats <Sparkles className="w-4 h-4" />
+                {blocked ? 'Trop de tentatives — Réessayez plus tard' : <>Voir mes résultats <Sparkles className="w-4 h-4" /></>}
               </button>
             )}
           </div>
