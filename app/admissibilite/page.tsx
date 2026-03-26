@@ -77,9 +77,22 @@ const DISPOSABLE_DOMAINS = new Set([
   'tyldd.com','uggsrock.com','veryrealemail.com','wegwerfemail.de','wh4f.org',
   'mailnull.com','spamcero.com','spamhole.com','spamthis.co.uk',
   // Common test/fake patterns
-  'example.com','example.org','example.net','test.com','test.org','testing.com',
-  'nowhere.com','noone.com','fake.com','noemail.com','invalid.com',
+  'example.com','example.org','example.net','test.com','test.org','test.net',
+  'testing.com','testing.org','testmail.com','testmail.net','tester.com',
+  'nowhere.com','noone.com','fake.com','fakemail.com','noemail.com','invalid.com',
+  'mailtest.com','mailtest.net','testymail.com','mailtest.info',
 ]);
+
+// Also block any domain containing "test" as a substring
+function isDomainBlocked(domain: string): boolean {
+  if (DISPOSABLE_DOMAINS.has(domain)) return true;
+  // Block domains containing "test" or "temp" or "fake" or "spam" or "trash"
+  if (/\b(test|temp|fake|spam|trash|junk|throw|dispos|jetable|poubelle)\b/i.test(domain)) return true;
+  // Block numeric-only domains (123.com, etc.)
+  const domainName = domain.split('.')[0];
+  if (/^\d+$/.test(domainName)) return true;
+  return false;
+}
 
 // Suspicious email patterns
 function isEmailSuspicious(email: string): { valid: boolean; reason: string } {
@@ -93,9 +106,9 @@ function isEmailSuspicious(email: string): { valid: boolean; reason: string } {
 
   const [localPart, domain] = trimmed.split('@');
 
-  // Check disposable domains
-  if (DISPOSABLE_DOMAINS.has(domain)) {
-    return { valid: false, reason: 'Les adresses courriel temporaires ne sont pas acceptées. Veuillez utiliser votre courriel personnel.' };
+  // Check disposable/test domains
+  if (isDomainBlocked(domain)) {
+    return { valid: false, reason: 'Les adresses courriel temporaires ou de test ne sont pas acceptées. Veuillez utiliser votre courriel personnel.' };
   }
 
   // Check if domain has no TLD or suspicious TLD
