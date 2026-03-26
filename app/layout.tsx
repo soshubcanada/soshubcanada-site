@@ -8,6 +8,7 @@ import { StickyMobileCTA } from '@/components/StickyMobileCTA';
 import { SocialProofToast } from '@/components/SocialProofToast';
 import { ScrollAnimator } from '@/components/ScrollAnimator';
 import { AnalyticsProvider } from '@/components/Analytics';
+import { CookieBanner } from '@/components/CookieBanner';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -163,6 +164,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <SocialProofToast />
         <ScrollAnimator />
         <AnalyticsProvider />
+        <CookieBanner />
       </body>
     </html>
   );

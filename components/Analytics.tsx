@@ -1,9 +1,10 @@
 'use client';
 
-import { Suspense, useEffect } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { Analytics as VercelAnalytics } from '@vercel/analytics/next';
 import { SpeedInsights } from '@vercel/speed-insights/next';
+import { hasConsentedToCookies } from './CookieBanner';
 
 /* ─────────── Google Analytics 4 ─────────── */
 const GA_ID = process.env.NEXT_PUBLIC_GA_ID; // G-XXXXXXXXXX
@@ -161,13 +162,25 @@ function UTMHandler() {
 
 /* ─────────── Main Export ─────────── */
 export function AnalyticsProvider() {
+  const [consented, setConsented] = useState(false);
+
+  useEffect(() => {
+    setConsented(hasConsentedToCookies());
+  }, []);
+
   return (
     <Suspense fallback={null}>
+      {/* Vercel Analytics + Speed Insights = first-party, always OK */}
       <VercelAnalytics />
       <SpeedInsights />
-      <GoogleAnalytics />
-      <MetaPixel />
-      <MicrosoftClarity />
+      {/* Third-party tracking only after consent */}
+      {consented && (
+        <>
+          <GoogleAnalytics />
+          <MetaPixel />
+          <MicrosoftClarity />
+        </>
+      )}
       <UTMHandler />
     </Suspense>
   );
