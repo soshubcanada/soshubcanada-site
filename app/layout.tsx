@@ -9,6 +9,7 @@ import { SocialProofToast } from '@/components/SocialProofToast';
 import { ScrollAnimator } from '@/components/ScrollAnimator';
 import { AnalyticsProvider } from '@/components/Analytics';
 import { CookieBanner } from '@/components/CookieBanner';
+import { ExitIntentPopup } from '@/components/ExitIntentPopup';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -165,6 +166,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <ScrollAnimator />
         <AnalyticsProvider />
         <CookieBanner />
+        <ExitIntentPopup />
       </body>
     </html>
   );
