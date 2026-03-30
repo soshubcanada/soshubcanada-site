@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 120" fill="none">
+  <!-- Left bracket -->
+  <path d="M10 10 H30 V18 H18 V102 H30 V110 H10 V10Z" fill="#1B2559"/>
+  <!-- Right bracket -->
+  <path d="M250 10 H270 V110 H250 V102 H262 V18 H250 V10Z" fill="#1B2559"/>
+  <!-- SOS text -->
+  <text x="140" y="72" text-anchor="middle" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="62" fill="#1B2559" letter-spacing="-1">SOS</text>
+  <!-- HUB text -->
+  <text x="140" y="105" text-anchor="middle" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="36" fill="#D4A03C" letter-spacing="8">HUB</text>
+</svg>

@@ -1,0 +1,36 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "etabli-dev",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev", "--prefix", "etabli"],
+      "port": 3000
+    },
+    {
+      "name": "expatria",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["serve", "-l", "3001", "."],
+      "port": 3001
+    },
+    {
+      "name": "soshub-site",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev", "--prefix", "soshubcanada-site"],
+      "port": 3002,
+      "autoPort": true
+    },
+    {
+      "name": "soshub-receptionist",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev", "--prefix", "soshub-receptionist"],
+      "port": 3050
+    },
+    {
+      "name": "wix-maquette",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["serve", "-l", "3003", "soshubcanada-site/wix-maquette"],
+      "port": 3003
+    }
+  ]
+}

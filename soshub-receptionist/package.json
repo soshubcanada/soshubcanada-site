@@ -1,0 +1,36 @@
+{
+  "name": "soshub-receptionist",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --port 3050",
+    "dev:ws": "tsx src/server/ws-server.ts",
+    "dev:all": "concurrently --names next,ws --prefix-colors blue,green \"npm run dev\" \"npm run dev:ws\"",
+    "build": "next build",
+    "start": "next start",
+    "start:ws": "tsx src/server/ws-server.ts"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.80.0",
+    "dotenv": "^17.3.1",
+    "lucide-react": "^0.468.0",
+    "next": "^15.1.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "twilio": "^5.13.1",
+    "uuid": "^13.0.0",
+    "ws": "^8.20.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.0.0",
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@types/uuid": "^10.0.0",
+    "@types/ws": "^8.18.1",
+    "concurrently": "^9.2.1",
+    "tailwindcss": "^4.0.0",
+    "tsx": "^4.21.0",
+    "typescript": "^5.7.0"
+  }
+}

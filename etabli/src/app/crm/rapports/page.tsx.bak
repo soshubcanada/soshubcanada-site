@@ -1,0 +1,314 @@
+"use client";
+import { useCrm, DEMO_USERS } from "@/lib/crm-store";
+import {
+  CASE_STATUS_LABELS,
+  CASE_STATUS_COLORS,
+  ROLE_PERMISSIONS,
+} from "@/lib/crm-types";
+import type { CrmUser } from "@/lib/crm-types";
+import { IMMIGRATION_PROGRAMS, PROGRAM_CATEGORIES } from "@/lib/crm-programs";
+import { BarChart3, Users, FolderOpen, TrendingUp, DollarSign, ShieldX } from "lucide-react";
+import { useState, useEffect } from "react";
+
+export default function RapportsPage() {
+  const { currentUser, clients, cases, contracts } = useCrm();
+  const [users, setUsers] = useState<CrmUser[]>([]);
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const svc = await import("@/lib/crm-data-service");
+        const fetched = await svc.fetchUsers();
+        if (!cancelled && fetched.length > 0) setUsers(fetched);
+      } catch { /* fallback handled below */ }
+    })();
+    return () => { cancelled = true; };
+  }, []);
+
+  // Use fetched users if available, otherwise fall back to DEMO_USERS
+  const activeUsers = users.length > 0 ? users : DEMO_USERS;
+
+  if (!currentUser) return null;
+  const perms = ROLE_PERMISSIONS[currentUser.role];
+
+  if (!perms.canViewReports) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[60vh] text-center">
+        <div className="p-4 rounded-full bg-red-50 mb-4">
+          <ShieldX className="w-12 h-12 text-red-400" />
+        </div>
+        <h1 className="text-2xl font-bold text-gray-800 mb-2">Acces refuse</h1>
+        <p className="text-gray-500">
+          Vous n&apos;avez pas la permission de consulter les rapports et statistiques.
+        </p>
+      </div>
+    );
+  }
+
+  // --- Calculs KPI ---
+  const totalClients = clients.length;
+  const dossiersOuverts = cases.filter(
+    (c) => !["approuve", "refuse", "ferme"].includes(c.status)
+  ).length;
+
+  const approuves = cases.filter((c) => c.status === "approuve").length;
+  const refuses = cases.filter((c) => c.status === "refuse").length;
+  const tauxApprobation =
+    approuves + refuses > 0
+      ? Math.round((approuves / (approuves + refuses)) * 100)
+      : 0;
+
+  // Calculate revenue from actual contracts when available, fallback to program catalog fees
+  const revenusEstimes = contracts && contracts.length > 0
+    ? contracts.reduce((sum, ct) => sum + (ct.grandTotal || 0), 0)
+    : cases.reduce((sum, c) => {
+        const prog = IMMIGRATION_PROGRAMS.find((p) => p.id === c.programId);
+        if (!prog) return sum;
+        return sum + prog.fees.service;
+      }, 0);
+
+  // --- Dossiers par programme ---
+  const parProgramme: Record<string, number> = {};
+  cases.forEach((c) => {
+    const prog = IMMIGRATION_PROGRAMS.find((p) => p.id === c.programId);
+    const name = prog?.name ?? c.programId;
+    parProgramme[name] = (parProgramme[name] || 0) + 1;
+  });
+  const maxProgramme = Math.max(...Object.values(parProgramme), 1);
+
+  // --- Pipeline (funnel par statut) ---
+  const statusOrder = [
+    "nouveau",
+    "consultation",
+    "en_preparation",
+    "formulaires_remplis",
+    "revision",
+    "soumis",
+    "en_traitement_ircc",
+    "approuve",
+    "refuse",
+    "appel",
+    "ferme",
+  ] as const;
+  const pipeline = statusOrder.map((s) => ({
+    status: s,
+    label: CASE_STATUS_LABELS[s],
+    colors: CASE_STATUS_COLORS[s],
+    count: cases.filter((c) => c.status === s).length,
+  }));
+  const maxPipeline = Math.max(...pipeline.map((p) => p.count), 1);
+
+  // --- Repartition par categorie ---
+  const parCategorie: Record<string, number> = {};
+  cases.forEach((c) => {
+    const prog = IMMIGRATION_PROGRAMS.find((p) => p.id === c.programId);
+    const catKey = prog?.category ?? "autre";
+    const catLabel = PROGRAM_CATEGORIES[catKey] ?? catKey;
+    parCategorie[catLabel] = (parCategorie[catLabel] || 0) + 1;
+  });
+
+  // --- Performance par conseiller ---
+  const conseillerStats = activeUsers.map((u) => {
+    const userCases = cases.filter(
+      (c) => c.assignedTo === u.id || c.assignedLawyer === u.id
+    );
+    const userClients = new Set(userCases.map((c) => c.clientId)).size;
+    const userApproved = userCases.filter((c) => c.status === "approuve").length;
+    const userRefused = userCases.filter((c) => c.status === "refuse").length;
+    const userOpen = userCases.filter(
+      (c) => !["approuve", "refuse", "ferme"].includes(c.status)
+    ).length;
+    return {
+      user: u,
+      totalCases: userCases.length,
+      clients: userClients,
+      approved: userApproved,
+      refused: userRefused,
+      open: userOpen,
+    };
+  });
+
+  const kpis = [
+    { label: "Total clients", value: totalClients, icon: Users, color: "#1B2559" },
+    { label: "Dossiers ouverts", value: dossiersOuverts, icon: FolderOpen, color: "#D4A03C" },
+    { label: "Taux d'approbation", value: `${tauxApprobation}%`, icon: TrendingUp, color: "#1B2559" },
+    {
+      label: "Revenus estimes",
+      value: `${revenusEstimes.toLocaleString("fr-CA")} $`,
+      icon: DollarSign,
+      color: "#D4A03C",
+    },
+  ];
+
+  return (
+    <div className="space-y-8">
+      {/* En-tete */}
+      <div className="flex items-center gap-3">
+        <div className="p-2 rounded-lg" style={{ backgroundColor: "#EAEDF5" }}>
+          <BarChart3 className="w-6 h-6" style={{ color: "#1B2559" }} />
+        </div>
+        <div>
+          <h1 className="text-2xl font-bold" style={{ color: "#1B2559" }}>
+            Rapports et statistiques
+          </h1>
+          <p className="text-sm text-gray-500">Vue d&apos;ensemble de l&apos;activite du cabinet</p>
+        </div>
+      </div>
+
+      {/* KPI */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {kpis.map((kpi) => (
+          <div key={kpi.label} className="bg-white rounded-xl border p-5">
+            <div className="flex items-center justify-between mb-3">
+              <span className="text-sm text-gray-500">{kpi.label}</span>
+              <div className="p-2 rounded-lg" style={{ backgroundColor: "#EAEDF5" }}>
+                <kpi.icon className="w-4 h-4" style={{ color: kpi.color }} />
+              </div>
+            </div>
+            <div className="text-3xl font-bold" style={{ color: kpi.color }}>
+              {kpi.value}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Dossiers par programme */}
+      <div className="bg-white rounded-xl border p-6">
+        <h2 className="text-lg font-bold mb-4" style={{ color: "#1B2559" }}>
+          Dossiers par programme
+        </h2>
+        <div className="space-y-3">
+          {Object.entries(parProgramme)
+            .sort((a, b) => b[1] - a[1])
+            .map(([name, count]) => (
+              <div key={name} className="flex items-center gap-3">
+                <div className="w-48 text-sm text-gray-700 truncate flex-shrink-0">{name}</div>
+                <div className="flex-1 h-7 bg-gray-100 rounded-full overflow-hidden">
+                  <div
+                    className="h-full rounded-full flex items-center justify-end pr-2 text-xs font-bold text-white transition-all"
+                    style={{
+                      width: `${Math.max((count / maxProgramme) * 100, 12)}%`,
+                      backgroundColor: "#D4A03C",
+                    }}
+                  >
+                    {count}
+                  </div>
+                </div>
+              </div>
+            ))}
+          {Object.keys(parProgramme).length === 0 && (
+            <p className="text-sm text-gray-400">Aucun dossier</p>
+          )}
+        </div>
+      </div>
+
+      {/* Pipeline funnel */}
+      <div className="bg-white rounded-xl border p-6">
+        <h2 className="text-lg font-bold mb-4" style={{ color: "#1B2559" }}>
+          Pipeline - Entonnoir des dossiers
+        </h2>
+        <div className="space-y-2">
+          {pipeline.map((p) => (
+            <div key={p.status} className="flex items-center gap-3">
+              <div className="w-40 text-sm text-gray-700 flex-shrink-0">{p.label}</div>
+              <div className="flex-1 h-8 bg-gray-50 rounded overflow-hidden">
+                <div
+                  className={`h-full rounded flex items-center px-3 text-xs font-bold transition-all ${p.colors}`}
+                  style={{
+                    width: `${Math.max((p.count / maxPipeline) * 100, 8)}%`,
+                  }}
+                >
+                  {p.count}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Repartition par categorie */}
+      <div className="bg-white rounded-xl border p-6">
+        <h2 className="text-lg font-bold mb-4" style={{ color: "#1B2559" }}>
+          Repartition par categorie
+        </h2>
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          {Object.entries(parCategorie)
+            .sort((a, b) => b[1] - a[1])
+            .map(([cat, count]) => (
+              <div
+                key={cat}
+                className="rounded-xl p-4 text-center"
+                style={{ backgroundColor: "#EAEDF5" }}
+              >
+                <div className="text-2xl font-bold" style={{ color: "#1B2559" }}>
+                  {count}
+                </div>
+                <div className="text-sm text-gray-600 mt-1">{cat}</div>
+              </div>
+            ))}
+          {Object.keys(parCategorie).length === 0 && (
+            <p className="text-sm text-gray-400 col-span-full">Aucun dossier</p>
+          )}
+        </div>
+      </div>
+
+      {/* Performance par conseiller */}
+      <div className="bg-white rounded-xl border p-6">
+        <h2 className="text-lg font-bold mb-4" style={{ color: "#1B2559" }}>
+          Performance par conseiller
+        </h2>
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b" style={{ backgroundColor: "#EAEDF5" }}>
+                <th className="text-left p-3 font-semibold" style={{ color: "#1B2559" }}>
+                  Conseiller
+                </th>
+                <th className="text-center p-3 font-semibold" style={{ color: "#1B2559" }}>
+                  Clients
+                </th>
+                <th className="text-center p-3 font-semibold" style={{ color: "#1B2559" }}>
+                  Dossiers
+                </th>
+                <th className="text-center p-3 font-semibold" style={{ color: "#1B2559" }}>
+                  En cours
+                </th>
+                <th className="text-center p-3 font-semibold" style={{ color: "#1B2559" }}>
+                  Approuves
+                </th>
+                <th className="text-center p-3 font-semibold" style={{ color: "#1B2559" }}>
+                  Refuses
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {conseillerStats.map((cs) => (
+                <tr key={cs.user.id} className="border-b hover:bg-gray-50">
+                  <td className="p-3 font-medium">{cs.user.name}</td>
+                  <td className="p-3 text-center">{cs.clients}</td>
+                  <td className="p-3 text-center">{cs.totalCases}</td>
+                  <td className="p-3 text-center">
+                    <span className="px-2 py-0.5 rounded-full text-xs bg-amber-100 text-amber-700">
+                      {cs.open}
+                    </span>
+                  </td>
+                  <td className="p-3 text-center">
+                    <span className="px-2 py-0.5 rounded-full text-xs bg-green-100 text-green-700">
+                      {cs.approved}
+                    </span>
+                  </td>
+                  <td className="p-3 text-center">
+                    <span className="px-2 py-0.5 rounded-full text-xs bg-red-100 text-red-700">
+                      {cs.refused}
+                    </span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  );
+}

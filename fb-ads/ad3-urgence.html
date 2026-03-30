@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=Playfair+Display:wght@700;800&display=swap');
+
+  body {
+    width: 1080px;
+    height: 1080px;
+    background: #1B2A4A;
+    font-family: 'Inter', sans-serif;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* Red urgency stripe */
+  .urgency-stripe {
+    background: linear-gradient(90deg, #DC2626, #EF4444, #DC2626);
+    padding: 16px 60px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 800;
+    color: white;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    animation: none;
+  }
+
+  /* Gold glow */
+  .glow {
+    position: absolute;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(200,163,95,0.2) 0%, transparent 70%);
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .content {
+    position: relative;
+    z-index: 2;
+    padding: 50px 70px;
+    text-align: center;
+  }
+
+  /* Timer */
+  .timer-wrap {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 45px;
+  }
+  .timer-box {
+    background: rgba(255,255,255,0.08);
+    border: 1.5px solid rgba(200,163,95,0.3);
+    border-radius: 16px;
+    padding: 18px 24px;
+    min-width: 100px;
+    text-align: center;
+  }
+  .timer-box .num {
+    font-size: 48px;
+    font-weight: 900;
+    color: #C8A35F;
+    line-height: 1;
+  }
+  .timer-box .label {
+    font-size: 12px;
+    color: rgba(255,255,255,0.4);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-top: 6px;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 62px;
+    font-weight: 800;
+    color: white;
+    line-height: 1.15;
+    margin-bottom: 20px;
+  }
+  h1 .gold { color: #C8A35F; }
+  h1 .red { color: #EF4444; }
+
+  .subtitle {
+    font-size: 20px;
+    color: rgba(255,255,255,0.6);
+    line-height: 1.6;
+    max-width: 700px;
+    margin: 0 auto 40px;
+  }
+
+  /* Programs */
+  .programs {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 45px;
+    flex-wrap: wrap;
+  }
+  .program {
+    background: rgba(200,163,95,0.1);
+    border: 1px solid rgba(200,163,95,0.25);
+    color: #C8A35F;
+    font-size: 14px;
+    font-weight: 700;
+    padding: 10px 22px;
+    border-radius: 50px;
+  }
+
+  /* CTA */
+  .cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background: linear-gradient(135deg, #C8A35F, #A8873F);
+    color: white;
+    font-size: 24px;
+    font-weight: 800;
+    padding: 22px 50px;
+    border-radius: 16px;
+    box-shadow: 0 15px 40px rgba(200,163,95,0.3);
+    margin-bottom: 20px;
+  }
+
+  .note {
+    font-size: 15px;
+    color: rgba(255,255,255,0.35);
+    margin-top: 10px;
+  }
+
+  /* Logo */
+  .logo-bar {
+    position: absolute;
+    bottom: 30px;
+    left: 0;
+    right: 0;
+    text-align: center;
+  }
+  .logo-bar .logo {
+    font-family: 'Playfair Display', serif;
+    font-weight: 800;
+    font-size: 24px;
+    color: rgba(255,255,255,0.3);
+  }
+  .logo-bar .logo span { color: rgba(200,163,95,0.5); }
+</style>
+</head>
+<body>
+  <div class="glow"></div>
+
+  <div class="urgency-stripe">
+    &#9888; Places limitees — Mars 2026
+  </div>
+
+  <div class="content">
+    <div class="timer-wrap">
+      <div class="timer-box"><div class="num">03</div><div class="label">Jours</div></div>
+      <div class="timer-box"><div class="num">14</div><div class="label">Heures</div></div>
+      <div class="timer-box"><div class="num">27</div><div class="label">Minutes</div></div>
+    </div>
+
+    <h1>Prochain tirage<br><span class="gold">Entree Express</span></h1>
+    <p class="subtitle">
+      Evaluez vos chances MAINTENANT avant le prochain tirage.<br>
+      Chaque jour compte pour votre score CRS.
+    </p>
+
+    <div class="programs">
+      <div class="program">Entree Express</div>
+      <div class="program">PEQ Quebec</div>
+      <div class="program">Permis de travail</div>
+      <div class="program">Parrainage</div>
+    </div>
+
+    <div class="cta">
+      Evaluer mes chances maintenant &rarr;
+    </div>
+    <div class="note">Resultat en 2 minutes — 100% gratuit</div>
+  </div>
+
+  <div class="logo-bar">
+    <div class="logo">SOS Hub <span>Canada</span></div>
+  </div>
+</body>
+</html>

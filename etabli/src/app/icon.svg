@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <rect width="32" height="32" rx="6" fill="#1B2559"/>
+  <path d="M4 6 H8 V8 H6 V24 H8 V26 H4 V6Z" fill="#D4A03C"/>
+  <path d="M24 6 H28 V26 H24 V24 H26 V8 H24 V6Z" fill="#D4A03C"/>
+  <text x="16" y="19.5" text-anchor="middle" font-family="Arial Black,Arial,sans-serif" font-weight="900" font-size="11" fill="#FFFFFF" letter-spacing="-0.5">SOS</text>
+</svg>

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 120" fill="none">
+  <!-- Left bracket — white for dark backgrounds -->
+  <path d="M10 10 H30 V18 H18 V102 H30 V110 H10 V10Z" fill="#FFFFFF"/>
+  <!-- Right bracket — white for dark backgrounds -->
+  <path d="M250 10 H270 V110 H250 V102 H262 V18 H250 V10Z" fill="#FFFFFF"/>
+  <!-- SOS text — white -->
+  <text x="140" y="72" text-anchor="middle" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="62" fill="#FFFFFF" letter-spacing="-1">SOS</text>
+  <!-- HUB text — gold unchanged -->
+  <text x="140" y="105" text-anchor="middle" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="36" fill="#D4A03C" letter-spacing="8">HUB</text>
+</svg>

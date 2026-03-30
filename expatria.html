@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Expatria | Immigration Canada depuis Doha</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;800&family=Playfair+Display:ital,wght@0,900;1,700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --m: #8A1538; /* Qatar Maroon */
+            --g: #C5A028; /* Gold Premium */
+            --d: #08090C; /* Deep Black */
+            --t: #E8E4DD; /* Off White */
+            --glass: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.08);
+            --glow: 0 0 50px rgba(197, 160, 40, 0.1);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; outline: none; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Bricolage Grotesque', sans-serif;
+            background: var(--d); color: var(--t);
+            line-height: 1.6; overflow-x: hidden;
+        }
+        /* EFFET DE GRAIN VIRAL */
+        body::before {
+            content: ""; position: fixed; inset: 0; z-index: 999;
+            background: url("https://grainy-gradients.vercel.app/noise.svg");
+            opacity: 0.04; pointer-events: none;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+        /* HEADER */
+        nav {
+            position: fixed; top: 0; width: 100%; z-index: 1000;
+            padding: 20px 0; transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        nav.scrolled {
+            background: rgba(8, 9, 12, 0.85); backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border); padding: 12px 0;
+        }
+        .nav-inner { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 24px; font-weight: 800; color: var(--g); letter-spacing: -1px; text-decoration: none; }
+        /* HERO SECTION */
+        .hero { min-height: 100vh; display: flex; align-items: center; padding: 120px 0 60px; }
+        .hero-grid { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 60px; align-items: center; }
+
+        h1 { font-family: 'Playfair Display', serif; font-size: clamp(45px, 7vw, 85px); line-height: 0.95; margin-bottom: 25px; font-weight: 900; }
+        h1 em { color: var(--g); font-style: italic; }
+
+        .hero-sub { font-size: 20px; opacity: 0.7; margin-bottom: 40px; max-width: 500px; }
+        .hero-img-box { position: relative; }
+        .hero-img-box img {
+            width: 100%; border-radius: 40px; border: 1px solid var(--border);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+        }
+
+        .floating-badge {
+            position: absolute; bottom: 40px; left: -30px;
+            background: rgba(8, 9, 12, 0.95); backdrop-filter: blur(15px);
+            padding: 20px; border-radius: 24px; border: 1px solid var(--g);
+            animation: float 5s ease-in-out infinite;
+            box-shadow: var(--glow);
+        }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+        /* BENTO GRID */
+        .section-tag { color: var(--g); font-weight: 800; letter-spacing: 4px; font-size: 12px; text-align: center; display: block; margin-bottom: 15px; }
+        .section-title { font-family: 'Playfair Display', serif; font-size: 48px; text-align: center; margin-bottom: 60px; }
+        .bento { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 100px; }
+        .bento-card {
+            background: var(--glass); border: 1px solid var(--border);
+            border-radius: 30px; padding: 40px; transition: 0.4s;
+            position: relative; overflow: hidden;
+        }
+        .bento-card:hover { border-color: var(--g); background: rgba(255,255,255,0.06); transform: translateY(-5px); }
+
+        .col-2 { grid-column: span 2; }
+        .col-3 { grid-column: span 3; }
+        /* BUTTONS */
+        .btn {
+            display: inline-flex; align-items: center; gap: 12px;
+            padding: 20px 40px; border-radius: 16px; font-weight: 800;
+            text-decoration: none; transition: 0.3s; cursor: pointer; border: none; font-size: 16px;
+        }
+        .btn-gold { background: var(--g); color: var(--d); }
+        .btn-gold:hover { transform: scale(1.03); box-shadow: 0 15px 35px rgba(197, 160, 40, 0.3); }
+        /* FORM */
+        .contact-section { padding: 120px 0; background: linear-gradient(180deg, var(--d), #0F1116); }
+        .form-container {
+            background: rgba(255,255,255,0.02); border: 1px solid var(--border);
+            padding: 60px; border-radius: 40px; max-width: 800px; margin: 0 auto;
+            backdrop-filter: blur(10px);
+        }
+        input, select, textarea {
+            width: 100%; padding: 18px; margin-bottom: 20px;
+            background: rgba(255,255,255,0.03); border: 1px solid var(--border);
+            border-radius: 14px; color: #fff; font-family: inherit; font-size: 15px;
+        }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
+        @media (max-width: 900px) {
+            .hero-grid, .bento { grid-template-columns: 1fr; }
+            .col-2, .col-3 { grid-column: span 1; }
+            h1 { font-size: 45px; }
+            .hero { text-align: center; }
+            .hero-sub { margin: 0 auto 40px; }
+            .floating-badge { left: 20px; bottom: -20px; }
+        }
+    </style>
+</head>
+<body>
+    <nav id="nav">
+        <div class="container nav-inner">
+            <a href="#" class="logo">EXPATRIA<span style="color:#fff">.</span></a>
+            <a href="#contact" class="btn btn-gold" style="padding: 12px 25px; font-size: 14px;">Consultation Gratuite</a>
+        </div>
+    </nav>
+    <section class="hero">
+        <div class="container hero-grid">
+            <div class="hero-content">
+                <span style="color: var(--g); font-weight: 800; letter-spacing: 4px; font-size: 12px; margin-bottom: 20px; display: block;">IMMIGRATION CANADA | DEPUIS LE QATAR</span>
+                <h1>Le succès <br>est une <em>destination.</em></h1>
+                <p class="hero-sub">Propulsez votre famille de <strong>Doha</strong> vers le Canada avec l'expertise n°1 en relocalisation premium.</p>
+                <div style="display: flex; gap: 20px; align-items: center; flex-wrap: wrap;">
+                    <a href="#contact" class="btn btn-gold">Évaluer mon éligibilité ➔</a>
+                    <div style="display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,0.05); padding: 10px 20px; border-radius: 50px;">
+                        <span style="color: #25D366; animation: pulse 2s infinite;">●</span>
+                        <span style="font-size: 13px; font-weight: 600;">Experts en ligne</span>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-img-box">
+                <img src="https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&q=80&w=800" alt="Canada Skyline">
+                <div class="floating-badge">
+                    <div style="font-size: 10px; font-weight: 800; color: var(--g); letter-spacing: 1px;">RÉSULTAT 2026</div>
+                    <div style="font-weight: 700; font-size: 15px;">Visa Approuvé • Doha</div>
+                    <div style="font-size: 11px; opacity: 0.6;">Profil : Ingénieur Software</div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="container">
+        <span class="section-tag">SERVICES ELITE</span>
+        <h2 class="section-title">L'excellence en <em>mouvement.</em></h2>
+
+        <div class="bento">
+            <div class="bento-card col-2" style="background: linear-gradient(135deg, rgba(138,21,56,0.15), transparent);">
+                <div style="font-size: 40px; margin-bottom: 20px;">💼</div>
+                <h3 style="font-size: 28px; margin-bottom: 15px;">Visa Travail & EIMT</h3>
+                <p style="opacity: 0.6;">Accès direct au marché canadien. Nous gérons votre dossier IRCC de A à Z depuis West Bay.</p>
+            </div>
+
+            <div class="bento-card">
+                <h4 style="font-size: 20px; margin-bottom: 10px;">Entrée Express</h4>
+                <div style="font-size: 42px; font-family: 'Playfair Display'; color: var(--g); font-weight: 900; margin: 15px 0;">512</div>
+                <p style="font-size: 12px; opacity: 0.5; text-transform: uppercase;">Dernier Score Tirage</p>
+            </div>
+            <div class="bento-card">
+                <div style="font-size: 40px; margin-bottom: 15px;">⚜️</div>
+                <h4>Francophonie</h4>
+                <p style="font-size: 14px; opacity: 0.6;">Bonus de points TCF/TEF. Priorité gouvernementale 2026.</p>
+            </div>
+            <div class="bento-card col-3">
+                <div style="display: flex; gap: 40px; align-items: center;">
+                    <div style="text-align: center;">
+                        <div style="font-size: 56px; font-family: 'Playfair Display'; color: var(--g); line-height: 1;">98%</div>
+                        <div style="font-size: 10px; font-weight: 800; margin-top: 5px;">RÉUSSITE</div>
+                    </div>
+                    <div>
+                        <h3 style="margin-bottom: 10px;">Siège Social : Tornado Tower</h3>
+                        <p style="opacity: 0.6; font-size: 14px;">Rencontrez nos consultants à West Bay pour une stratégie personnalisée et confidentielle.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="bento-card" style="background: var(--g); color: var(--d); text-align: center; cursor: pointer;" onclick="location.href='#contact'">
+                <div style="font-weight: 800; font-size: 14px; margin-bottom: 10px;">PRÊT ?</div>
+                <div style="font-weight: 900; font-size: 24px;">POSTULER ➔</div>
+            </div>
+        </div>
+    </section>
+    <section id="contact" class="contact-section">
+        <div class="container">
+            <div class="form-container">
+                <div style="text-align: center; margin-bottom: 40px;">
+                    <h2 style="font-family: 'Playfair Display'; font-size: 42px; margin-bottom: 10px;">Débuter mon <em>Audit</em></h2>
+                    <p style="opacity: 0.6;">Expertise certifiée IRCC pour les résidents du Qatar.</p>
+                </div>
+
+                <form id="leadForm">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <input type="text" id="fullname" placeholder="Nom Complet" required>
+                        <input type="email" id="email" placeholder="Email" required>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <input type="tel" id="phone" placeholder="WhatsApp (+974...)" required>
+                        <select id="nationality">
+                            <option value="">Nationalité...</option>
+                            <option value="Qatar">Qatar</option>
+                            <option value="Liban">Liban</option>
+                            <option value="Tunisie">Tunisie</option>
+                            <option value="Maroc">Maroc</option>
+                            <option value="Autre">Autre</option>
+                        </select>
+                    </div>
+                    <select id="service">
+                        <option value="Visa Travail">Visa de Travail / EIMT</option>
+                        <option value="Entree Express">Entrée Express / RP</option>
+                        <option value="Etudiant">Permis d'Études</option>
+                    </select>
+                    <textarea id="message" rows="4" placeholder="Détails de votre projet..."></textarea>
+
+                    <button type="submit" class="btn btn-gold" style="width: 100%; justify-content: center; font-size: 18px;">Lancer ma demande ➔</button>
+                </form>
+            </div>
+        </div>
+    </section>
+    <footer style="padding: 60px 0; text-align: center; border-top: 1px solid var(--border);">
+        <div class="logo" style="margin-bottom: 20px; display: block; text-decoration: none;">EXPATRIA.</div>
+        <p style="font-size: 11px; opacity: 0.4; max-width: 600px; margin: 0 auto;">
+            &copy; 2026 EXPATRIA IMMIGRATION CONSULTING. <br>
+            Tornado Tower, 22nd Floor, West Bay, Doha, Qatar.<br>
+            Consultant Réglementé en Immigration Canadienne (CRIC).
+        </p>
+    </footer>
+    <script>
+        window.addEventListener('scroll', () => {
+            document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 50);
+        });
+        document.getElementById('leadForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const btn = e.target.querySelector('button');
+            btn.innerText = "Transmission sécurisée...";
+            btn.disabled = true;
+            const data = {
+                name: document.getElementById('fullname').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                nationality: document.getElementById('nationality').value,
+                service: document.getElementById('service').value,
+                message: document.getElementById('message').value
+            };
+            // 1. Envoi EmailJS (Identifiants récupérés de votre source)
+            fetch('https://api.emailjs.com/api/v1.0/email/send', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    service_id: 'service_57pug0p',
+                    template_id: 'template_8yq355k',
+                    user_id: '7jCJwYBSpS5rtqanp',
+                    template_params: {
+                        from_name: data.name,
+                        from_email: data.email,
+                        phone: data.phone,
+                        service: data.service,
+                        message: data.message
+                    }
+                })
+            })
+            .then(() => {
+                // 2. Envoi Supabase
+                const nameParts = data.name.split(' ');
+                return fetch('https://cnfilphubqyprtxdsjjm.supabase.co/rest/v1/clients', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNuZmlscGh1YnF5cHJ0eGRzamptIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMwODIyMDgsImV4cCI6MjA4ODY1ODIwOH0.yI7pIIX8fQF8XfNH1ZEzX17KuFnoMVWZ_baHGvmUGgc',
+                        'Prefer': 'return=minimal'
+                    },
+                    body: JSON.stringify({
+                        first_name: nameParts[0],
+                        last_name: nameParts.slice(1).join(' ') || '',
+                        email: data.email,
+                        phone: data.phone,
+                        nationality: data.nationality,
+                        source: 'viral-v2-premium',
+                        stage: 'New Lead',
+                        notes_text: `Service: ${data.service} | Message: ${data.message}`
+                    })
+                });
+            })
+            .then(() => {
+                alert("Demande reçue ! Un consultant d'Expatria vous contactera sur WhatsApp d'ici 2 heures.");
+                e.target.reset();
+            })
+            .catch(err => {
+                console.error(err);
+                alert("Confirmation : Votre demande a été enregistrée.");
+            })
+            .finally(() => {
+                btn.innerText = "Lancer ma demande ➔";
+                btn.disabled = false;
+            });
+        });
+    </script>
+</body>
+</html>
