@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import { CheckCircle2, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 
@@ -19,6 +20,8 @@ const communities = [
       'Accompagnement respectueux de vos valeurs',
     ],
     color: 'from-emerald-600 to-emerald-800',
+    image: 'https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=600&h=400&fit=crop&crop=face',
+    imageAlt: 'Femme maghrébine professionnelle',
   },
   {
     id: 'afrique',
@@ -34,6 +37,8 @@ const communities = [
       'Réseau d\'entraide et d\'intégration',
     ],
     color: 'from-amber-500 to-amber-700',
+    image: 'https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=600&h=400&fit=crop&crop=face',
+    imageAlt: 'Famille africaine heureuse',
   },
   {
     id: 'latino',
@@ -49,6 +54,8 @@ const communities = [
       'Intégration culturelle facilitée',
     ],
     color: 'from-orange-500 to-orange-700',
+    image: 'https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=600&h=400&fit=crop&crop=face',
+    imageAlt: 'Famille latino-américaine souriante',
   },
   {
     id: 'moyen-orient',
@@ -64,6 +71,8 @@ const communities = [
       'Accompagnement familial complet',
     ],
     color: 'from-navy to-navy-light',
+    image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=400&fit=crop&crop=face',
+    imageAlt: 'Homme du Moyen-Orient professionnel',
   },
 ];
 
@@ -102,25 +111,41 @@ export function CommunautesSection() {
 
         {/* Content */}
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden scroll-hidden">
-          <div className={`bg-gradient-to-r ${c.color} px-8 py-8`}>
-            <h3 className="text-2xl md:text-3xl font-bold text-white mb-3">{c.title}</h3>
-            <p className="text-white/80 font-sans max-w-2xl">{c.desc}</p>
-          </div>
-          <div className="p-8">
-            <div className="grid sm:grid-cols-2 gap-4 mb-8">
-              {c.points.map((point, i) => (
-                <div key={i} className="flex items-start gap-3">
-                  <CheckCircle2 className="w-5 h-5 text-gold shrink-0 mt-0.5" />
-                  <span className="text-sm text-gray-600 font-sans">{point}</span>
-                </div>
-              ))}
+          <div className="grid md:grid-cols-5">
+            {/* Image */}
+            <div className="relative md:col-span-2 h-64 md:h-auto">
+              <Image
+                src={c.image}
+                alt={c.imageAlt}
+                fill
+                sizes="(max-width: 768px) 100vw, 40vw"
+                className="object-cover"
+              />
+              <div className={`absolute inset-0 bg-gradient-to-r ${c.color} opacity-20`} />
             </div>
-            <Link
-              href="/admissibilite"
-              className="inline-flex items-center gap-2 px-8 py-3.5 bg-gradient-to-r from-gold to-gold-dark text-white font-bold rounded-xl hover:shadow-lg hover:shadow-gold/25 transition-all font-sans"
-            >
-              Tester mon admissibilité <ArrowRight className="w-5 h-5" />
-            </Link>
+            {/* Text */}
+            <div className="md:col-span-3">
+              <div className={`bg-gradient-to-r ${c.color} px-8 py-6`}>
+                <h3 className="text-2xl md:text-3xl font-bold text-white mb-2">{c.title}</h3>
+                <p className="text-white/80 font-sans">{c.desc}</p>
+              </div>
+              <div className="p-8">
+                <div className="grid sm:grid-cols-2 gap-4 mb-8">
+                  {c.points.map((point, i) => (
+                    <div key={i} className="flex items-start gap-3">
+                      <CheckCircle2 className="w-5 h-5 text-gold shrink-0 mt-0.5" />
+                      <span className="text-sm text-gray-600 font-sans">{point}</span>
+                    </div>
+                  ))}
+                </div>
+                <Link
+                  href="/admissibilite"
+                  className="inline-flex items-center gap-2 px-8 py-3.5 bg-gradient-to-r from-gold to-gold-dark text-white font-bold rounded-xl hover:shadow-lg hover:shadow-gold/25 transition-all font-sans"
+                >
+                  Tester mon admissibilité <ArrowRight className="w-5 h-5" />
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
       </div>
