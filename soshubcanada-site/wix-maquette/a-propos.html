@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="google-site-verification" content="IDtoGjbhbdc8FMx4Mct-WEWTOqxpe5MFtiPPxdxsnqw">
+  <title>À Propos | SOS Hub Canada — Notre Équipe à Montréal</title>
+  <meta name="description" content="Découvrez l'équipe SOS Hub Canada. Fondée en 2019 à Montréal, notre équipe multilingue accompagne +500 familles dans leur projet de vie au Canada.">
+  <meta name="author" content="SOS Hub Canada">
+  <meta name="theme-color" content="#1B2A4A">
+  <link rel="canonical" href="https://soshubcanada.com/a-propos">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="SOS Hub Canada">
+  <meta property="og:title" content="À Propos | SOS Hub Canada">
+  <meta property="og:description" content="Découvrez l'équipe SOS Hub Canada. Depuis 2019, nous accompagnons les familles dans leur projet de vie au Canada depuis Montréal.">
+  <meta property="og:url" content="https://soshubcanada.com/a-propos">
+  <meta property="og:image" content="https://soshubcanada.com/assets/hero-famille.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="À Propos | SOS Hub Canada">
+  <meta name="twitter:image" content="https://soshubcanada.com/assets/hero-famille.jpg">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="apple-touch-icon" href="/assets/icon-192.svg">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --gold: #C8A35F; --gold-light: #D4B76A; --gold-dark: #A8873F; --navy: #1B2A4A; --navy-light: #2A3D66; --navy-dark: #0F1A2E; --cream: #FAF8F5; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', system-ui, sans-serif; color: #1a1a1a; background: var(--cream); -webkit-font-smoothing: antialiased; }
+    h1, h2, h3, h4 { font-family: 'Playfair Display', Georgia, serif; }
+    a { text-decoration: none; color: inherit; }
+    img { max-width: 100%; display: block; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+    /* Header (same as index) */
+    .header { position: sticky; top: 0; z-index: 90; background: rgba(255,255,255,0.95); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(0,0,0,0.05); }
+    .header .inner { display: flex; align-items: center; justify-content: space-between; height: 76px; max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+    .logo { display: flex; align-items: center; gap: 12px; }
+    .logo-icon { width: 48px; height: 48px; background: linear-gradient(135deg, var(--gold-light), var(--gold-dark)); border-radius: 14px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 800; font-size: 24px; font-family: 'Playfair Display', serif; }
+    .logo-text .name { font-weight: 700; font-size: 20px; color: var(--navy); }
+    .logo-text .name span { color: var(--gold); }
+    .logo-text .tagline { font-size: 10px; color: #999; text-transform: uppercase; letter-spacing: 2px; }
+    .nav { display: flex; align-items: center; gap: 4px; }
+    .nav a { padding: 8px 16px; font-size: 14px; font-weight: 500; color: #555; border-radius: 8px; transition: all 0.3s; }
+    .nav a:hover { color: var(--navy); background: rgba(200,163,95,0.08); }
+    .nav a.active { color: var(--gold); font-weight: 600; }
+    .btn-primary { display: inline-flex; align-items: center; gap: 8px; padding: 12px 28px; background: linear-gradient(135deg, var(--gold), var(--gold-dark)); color: white; font-weight: 700; font-size: 14px; border-radius: 12px; border: none; cursor: pointer; transition: all 0.3s; box-shadow: 0 4px 15px rgba(200,163,95,0.3); }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(200,163,95,0.4); }
+
+    /* Page Hero */
+    .page-hero { position: relative; padding: 100px 0 80px; overflow: hidden; }
+    .page-hero-bg { position: absolute; inset: 0; }
+    .page-hero-bg img { width: 100%; height: 100%; object-fit: cover; }
+    .page-hero-overlay { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(15,26,46,0.88), rgba(27,42,74,0.75)); }
+    .page-hero .content { position: relative; text-align: center; color: white; }
+    .page-hero .label { color: var(--gold); font-weight: 600; font-size: 13px; text-transform: uppercase; letter-spacing: 3px; }
+    .page-hero h1 { font-size: clamp(32px, 5vw, 56px); margin: 12px 0 16px; }
+    .divider { width: 60px; height: 3px; background: linear-gradient(90deg, var(--gold), var(--gold-dark)); border-radius: 3px; margin: 16px auto; }
+    .page-hero p { color: rgba(255,255,255,0.6); font-size: 18px; max-width: 600px; margin: 0 auto; }
+
+    /* Story Section */
+    .story { padding: 100px 0; background: white; }
+    .story-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+    .story-img { border-radius: 20px; overflow: hidden; height: 450px; box-shadow: 0 20px 50px rgba(0,0,0,0.1); }
+    .story-img img { width: 100%; height: 100%; object-fit: cover; }
+    .story h2 { font-size: 36px; color: var(--navy); margin-bottom: 20px; }
+    .story p { color: #666; line-height: 1.8; font-size: 16px; margin-bottom: 16px; }
+    .story .highlight { background: rgba(200,163,95,0.1); border-left: 4px solid var(--gold); padding: 20px 24px; border-radius: 0 12px 12px 0; margin: 24px 0; font-style: italic; color: var(--navy); }
+
+    /* Values */
+    .values { padding: 100px 0; background: var(--cream); }
+    .values-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; margin-top: 48px; }
+    .value-card { background: white; border-radius: 20px; padding: 32px; text-align: center; border: 1px solid #f0f0f0; transition: all 0.4s; }
+    .value-card:hover { transform: translateY(-8px); box-shadow: 0 15px 40px rgba(0,0,0,0.08); border-color: rgba(200,163,95,0.2); }
+    .value-icon { width: 64px; height: 64px; border-radius: 16px; background: linear-gradient(135deg, rgba(200,163,95,0.12), rgba(200,163,95,0.05)); display: flex; align-items: center; justify-content: center; font-size: 28px; margin: 0 auto 16px; }
+    .value-card h3 { font-size: 18px; color: var(--navy); margin-bottom: 8px; }
+    .value-card p { font-size: 13px; color: #888; line-height: 1.6; }
+
+    /* Team */
+    .team { padding: 100px 0; background: white; }
+    .team-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 28px; margin-top: 48px; }
+    .team-card { text-align: center; }
+    .team-avatar { width: 160px; height: 160px; border-radius: 50%; margin: 0 auto 16px; overflow: hidden; border: 4px solid var(--gold); box-shadow: 0 8px 25px rgba(200,163,95,0.2); }
+    .team-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .team-card h3 { font-family: 'Inter', sans-serif; font-size: 16px; font-weight: 700; color: var(--navy); }
+    .team-card .role { font-size: 13px; color: var(--gold); font-weight: 600; margin-top: 4px; }
+    .team-card .langs { font-size: 11px; color: #999; margin-top: 6px; }
+
+    /* Stats bar */
+    .stats-bar { padding: 60px 0; background: var(--navy); }
+    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; text-align: center; color: white; }
+    .stats-grid .number { font-family: 'Playfair Display', serif; font-size: 48px; font-weight: 800; color: var(--gold); }
+    .stats-grid .label { font-size: 14px; color: rgba(255,255,255,0.5); margin-top: 4px; }
+
+    /* CTA */
+    .page-cta { padding: 80px 0; background: var(--cream); text-align: center; }
+    .page-cta h2 { font-size: 36px; color: var(--navy); margin-bottom: 16px; }
+    .page-cta p { color: #888; font-size: 16px; margin-bottom: 32px; max-width: 500px; margin-left: auto; margin-right: auto; }
+
+    /* Footer */
+    .footer { background: var(--navy-dark); padding: 40px 0; color: rgba(255,255,255,0.5); text-align: center; font-size: 13px; border-top: 1px solid rgba(255,255,255,0.05); }
+
+    /* WhatsApp */
+    .whatsapp-fixed { position: fixed; bottom: 24px; right: 24px; z-index: 999; width: 60px; height: 60px; background: #25D366; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 28px; box-shadow: 0 4px 20px rgba(37,211,102,0.4); cursor: pointer; }
+
+    .section-header { text-align: center; }
+    .section-label { color: var(--gold); font-weight: 600; font-size: 13px; text-transform: uppercase; letter-spacing: 3px; }
+    .section-title { font-size: clamp(28px, 4vw, 44px); color: var(--navy); margin: 12px 0 16px; }
+
+    @media (max-width: 768px) {
+      .story-grid { grid-template-columns: 1fr; }
+      .values-grid, .team-grid { grid-template-columns: repeat(2, 1fr); }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 24px; }
+      .nav { display: none; }
+    }
+  
+    /* ── PREMIUM GLOBAL ── */
+    #scroll-progress { position: fixed; top: 0; left: 0; height: 3px; background: linear-gradient(90deg, #C8A35F, #A8873F); width: 0%; z-index: 9999; transition: width 0.1s linear; pointer-events: none; }
+    #back-to-top { position: fixed; bottom: 100px; right: 28px; z-index: 998; width: 48px; height: 48px; background: linear-gradient(135deg, #C8A35F, #A8873F); border: none; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 20px; color: white; box-shadow: 0 4px 20px rgba(200,163,95,0.4); opacity: 0; pointer-events: none; transition: opacity 0.3s, transform 0.3s; }
+    #back-to-top:hover { transform: translateY(-3px); }
+    #cookie-banner { position: fixed; bottom: 0; left: 0; right: 0; background: #0F1A2E; border-top: 1px solid rgba(200,163,95,0.2); padding: 20px 32px; z-index: 9990; display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; transform: translateY(100%); transition: transform 0.4s cubic-bezier(0.16,1,0.3,1); }
+    #cookie-banner.visible { transform: translateY(0); }
+    #cookie-banner.hiding { transform: translateY(100%); }
+    #cookie-banner p { color: rgba(255,255,255,0.8); font-size: 14px; margin: 0; flex: 1; }
+    #cookie-banner p a { color: #C8A35F; }
+    .cookie-btns { display: flex; gap: 12px; }
+    .cookie-btn-accept { padding: 10px 24px; background: #C8A35F; color: white; font-weight: 700; font-size: 14px; border: none; border-radius: 8px; cursor: pointer; }
+    .cookie-btn-decline { padding: 10px 24px; background: transparent; color: rgba(255,255,255,0.5); font-size: 14px; border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; cursor: pointer; }
+    @keyframes pageEnter { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    body { animation: pageEnter 0.35s ease both; }
+    body.page-exit { opacity: 0; transition: opacity 0.2s; }
+    :focus-visible { outline: 2px solid #C8A35F; outline-offset: 3px; border-radius: 4px; }
+    .header.scrolled { box-shadow: 0 4px 30px rgba(0,0,0,0.1); }
+    .skip-link { position: absolute; top: -100px; left: 0; padding: 12px 20px; background: #C8A35F; color: white; font-weight: 700; z-index: 99999; transition: top 0.2s; }
+    .skip-link:focus { top: 0; }
+    @media (max-width: 768px) { .nav { position: fixed; inset: 0; top: 76px; background: white; flex-direction: column; align-items: flex-start; padding: 32px 24px; gap: 8px; transform: translateX(100%); transition: transform 0.35s cubic-bezier(0.16,1,0.3,1); z-index: 89; } .nav.nav-open { transform: translateX(0); } .nav a { width: 100%; padding: 14px 16px; font-size: 16px; border-radius: 12px; } }
+
+  </style>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Accueil","item":"https://soshubcanada.com/"},{"@type":"ListItem","position":2,"name":"À propos","item":"https://soshubcanada.com/a-propos"}]}</script>
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Aller au contenu principal</a>
+  <div id="scroll-progress" role="progressbar" aria-hidden="true"></div>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="inner">
+      <a href="/" class="logo">
+        <div class="logo-icon">S</div>
+        <div class="logo-text">
+          <div class="name">SOS Hub <span>Canada</span></div>
+          <div class="tagline">Votre nouvelle vie au Canada</div>
+        </div>
+      </a>
+      <nav class="nav">
+        <a href="/">Accueil</a>
+        <a href="/services">Nos services</a>
+        <a href="/a-propos" class="active">À propos</a>
+        <a href="/blog">Blog</a>
+        <a href="/contact">Contact</a>
+              <a href="/employeurs">Employeurs</a>
+      </nav>
+      <a href="https://soshubca.vercel.app/inscription" target="_blank" class="btn-primary">Mon espace client →</a>
+    </div>
+  </header>
+
+  <!-- Page Hero -->
+  <section class="page-hero">
+    <div class="page-hero-bg">
+      <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=1920&h=600&fit=crop" alt="Bureau SOS Hub Canada" loading="lazy">
+    </div>
+    <div class="page-hero-overlay"></div>
+    <div class="container content">
+      <div class="label">Qui sommes-nous</div>
+      <h1>Une équipe passionnée à Montréal</h1>
+      <div class="divider"></div>
+      <p>Depuis 2019, nous accompagnons des familles du monde entier dans leur rêve canadien. Voici notre histoire.</p>
+    </div>
+  </section>
+
+  <!-- Notre histoire -->
+  <section class="story">
+    <div class="container">
+      <div class="story-grid">
+        <div class="story-img">
+          <img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=600&h=500&fit=crop&crop=faces" alt="Équipe SOS Hub Canada" loading="lazy">
+        </div>
+        <div>
+          <div class="section-label">Notre histoire</div>
+          <h2>Fondée en 2019, guidée par la passion</h2>
+          <div class="divider" style="margin:16px 0;"></div>
+          <p>SOS Hub Canada est née d'une conviction simple : chaque personne mérite un accompagnement humain, professionnel et transparent dans son projet de vie au Canada.</p>
+          <p>Basés à Montréal, au cœur du Québec, nous comprenons les défis que représente un nouveau départ dans un nouveau pays. Beaucoup de membres de notre équipe ont eux-mêmes vécu cette expérience.</p>
+          <div class="highlight">
+            « Notre mission est de transformer un projet complexe en un parcours clair, simple et rassurant pour chaque famille que nous accompagnons. »
+          </div>
+          <p>Aujourd'hui, avec plus de 500 familles accompagnées et un taux de satisfaction de 95%, nous sommes fiers d'être le partenaire de confiance de milliers de francophones à travers le monde.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Nos valeurs -->
+  <section class="values">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label">Nos valeurs</div>
+        <h2 class="section-title">Ce qui nous guide au quotidien</h2>
+        <div class="divider"></div>
+      </div>
+      <div class="values-grid">
+        <div class="value-card">
+          <div class="value-icon">🤝</div>
+          <h3>Humanité</h3>
+          <p>Chaque client est une personne, pas un dossier. Nous traitons chaque famille avec respect, écoute et empathie.</p>
+        </div>
+        <div class="value-card">
+          <div class="value-icon">🔒</div>
+          <h3>Transparence</h3>
+          <p>Pas de promesses vides. Nous vous donnons une vision claire et honnête de vos options et de nos honoraires.</p>
+        </div>
+        <div class="value-card">
+          <div class="value-icon">🎯</div>
+          <h3>Excellence</h3>
+          <p>95% de taux de satisfaction. Nous visons l'excellence dans chaque dossier que nous traitons.</p>
+        </div>
+        <div class="value-card">
+          <div class="value-icon">🌍</div>
+          <h3>Diversité</h3>
+          <p>Équipe multilingue (FR, EN, AR, ES) qui comprend les réalités culturelles de chaque communauté.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- L'équipe -->
+  <section class="team">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label">L'équipe</div>
+        <h2 class="section-title">Les visages derrière SOS Hub Canada</h2>
+        <div class="divider"></div>
+      </div>
+      <div class="team-grid">
+        <div class="team-card">
+          <div class="team-avatar"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=face" alt="Patrick C." loading="lazy"></div>
+          <h3>Patrick C.</h3>
+          <div class="role">Fondateur & Directeur</div>
+          <div class="langs">🇫🇷 🇬🇧 🇸🇦</div>
+        </div>
+        <div class="team-card">
+          <div class="team-avatar"><img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=200&h=200&fit=crop&crop=face" alt="Coordinatrice" loading="lazy"></div>
+          <h3>Amira K.</h3>
+          <div class="role">Coordinatrice</div>
+          <div class="langs">🇫🇷 🇸🇦 🇬🇧</div>
+        </div>
+        <div class="team-card">
+          <div class="team-avatar"><img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?w=200&h=200&fit=crop&crop=face" alt="Conseillère" loading="lazy"></div>
+          <h3>Sophie G.</h3>
+          <div class="role">Conseillère principale</div>
+          <div class="langs">🇫🇷 🇬🇧</div>
+        </div>
+        <div class="team-card">
+          <div class="team-avatar"><img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=200&h=200&fit=crop&crop=face" alt="Conseiller" loading="lazy"></div>
+          <h3>Farid M.</h3>
+          <div class="role">Réception & accueil</div>
+          <div class="langs">🇫🇷 🇸🇦 🇪🇸</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats -->
+  <section class="stats-bar">
+    <div class="container">
+      <div class="stats-grid">
+        <div><div class="number">500+</div><div class="label">Familles accompagnées</div></div>
+        <div><div class="number">95%</div><div class="label">Taux de satisfaction</div></div>
+        <div><div class="number">2019</div><div class="label">Fondée à Montréal</div></div>
+        <div><div class="number">4</div><div class="label">Langues parlées</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="page-cta">
+    <div class="container">
+      <h2>Envie de nous rencontrer?</h2>
+      <p>Prenez rendez-vous pour une évaluation gratuite et découvrez comment nous pouvons vous aider.</p>
+      <a href="/#quiz" class="btn-primary" style="font-size:16px; padding:16px 36px;">✨ Évaluation gratuite →</a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; 2026 SOS Hub Canada Inc. — 3737 Crémazie Est #402, Montréal, QC H1Z 2K4 — +1 (514) 533-0482</p>
+    </div>
+  </footer>
+
+  <a href="https://wa.me/15145330482" target="_blank" class="whatsapp-fixed">💬</a>
+
+
+  <!-- ── BACK TO TOP ── -->
+  <button id="back-to-top" aria-label="Retour en haut de page" title="Retour en haut">↑</button>
+
+  <!-- ── COOKIE BANNER ── -->
+  <div id="cookie-banner" role="dialog" aria-label="Gestion des cookies">
+    <p>🍪 Nous utilisons des cookies pour améliorer votre expérience. <a href="/confidentialite">En savoir plus</a>.</p>
+    <div class="cookie-btns">
+      <button class="cookie-btn-decline" onclick="declineCookies()">Refuser</button>
+      <button class="cookie-btn-accept" onclick="acceptCookies()">Accepter</button>
+    </div>
+  </div>
+
+  <!-- ── PREMIUM JS ── -->
+  <script src="/js/premium.js" defer></script>
+
+</body>
+</html>

@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="64" fill="#ffffff"/>
+  <rect x="16" y="16" width="480" height="480" rx="48" fill="#ffffff" stroke="#1B2A4A" stroke-width="28"/>
+  <text x="256" y="290" text-anchor="middle" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="240" fill="#1B2A4A">SOS</text>
+  <text x="256" y="430" text-anchor="middle" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="140" fill="#C8A35F">HUB</text>
+</svg>

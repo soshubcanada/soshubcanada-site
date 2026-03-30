@@ -1,0 +1,20 @@
+# SOS Hub Canada - robots.txt
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /_vercel/
+Disallow: /crm/
+Disallow: /rdv/
+
+# Sitemaps
+Sitemap: https://soshubcanada.com/sitemap.xml
+
+# Crawl-delay (politeness)
+User-agent: AhrefsBot
+Crawl-delay: 10
+
+User-agent: SemrushBot
+Crawl-delay: 10
+
+User-agent: MJ12bot
+Crawl-delay: 10

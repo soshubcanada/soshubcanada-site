@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="google-site-verification" content="IDtoGjbhbdc8FMx4Mct-WEWTOqxpe5MFtiPPxdxsnqw">
+  <title>Réserver une consultation gratuite | SOS Hub Canada</title>
+  <meta name="description" content="Réservez votre consultation gratuite de 30 minutes avec un conseiller SOS Hub Canada. Analyse de votre profil, options disponibles et plan d'action personnalisé.">
+  <meta name="author" content="SOS Hub Canada">
+  <meta name="theme-color" content="#1B2A4A">
+  <link rel="canonical" href="https://soshubcanada.com/book-online">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="SOS Hub Canada">
+  <meta property="og:title" content="Réserver une consultation gratuite | SOS Hub Canada">
+  <meta property="og:description" content="30 minutes gratuites avec un conseiller. On analyse votre profil et on vous explique vos options.">
+  <meta property="og:url" content="https://soshubcanada.com/book-online">
+  <meta property="og:image" content="https://soshubcanada.com/assets/hero-famille.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Réserver une consultation gratuite | SOS Hub Canada">
+  <meta name="twitter:description" content="30 minutes gratuites avec un conseiller. On analyse votre profil et on vous explique vos options.">
+  <meta name="twitter:image" content="https://soshubcanada.com/assets/hero-famille.jpg">
+  <!-- Schema.org Booking -->
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Service","name":"Consultation gratuite - SOS Hub Canada","url":"https://soshubcanada.com/book-online","provider":{"@type":"Organization","name":"SOS Hub Canada","telephone":"+1-514-533-0482"},"description":"Réservez une consultation gratuite de 30 minutes. Analyse de votre profil et plan d'action personnalisé.","offers":{"@type":"Offer","price":"0","priceCurrency":"CAD","description":"Consultation initiale gratuite de 30 minutes"}}</script>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="apple-touch-icon" href="/assets/icon-192.svg">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --gold: #C8A35F; --gold-light: #D4B76A; --gold-dark: #A8873F; --navy: #1B2A4A; --navy-light: #2A3D66; --navy-dark: #0F1A2E; --cream: #FAF8F5; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', system-ui, sans-serif; color: #1a1a1a; background: var(--cream); -webkit-font-smoothing: antialiased; }
+    h1, h2, h3, h4 { font-family: 'Playfair Display', Georgia, serif; }
+    a { text-decoration: none; color: inherit; }
+    img { max-width: 100%; display: block; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+    .header { position: sticky; top: 0; z-index: 90; background: rgba(255,255,255,0.95); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(0,0,0,0.05); }
+    .header .inner { display: flex; align-items: center; justify-content: space-between; height: 76px; max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+    .logo { display: flex; align-items: center; gap: 12px; }
+    .logo-icon { width: 48px; height: 48px; background: linear-gradient(135deg, var(--gold-light), var(--gold-dark)); border-radius: 14px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 800; font-size: 24px; font-family: 'Playfair Display', serif; }
+    .logo-text .name { font-weight: 700; font-size: 20px; color: var(--navy); }
+    .logo-text .name span { color: var(--gold); }
+    .logo-text .tagline { font-size: 10px; color: #999; text-transform: uppercase; letter-spacing: 2px; }
+    .nav { display: flex; align-items: center; gap: 4px; }
+    .nav a { padding: 8px 16px; font-size: 14px; font-weight: 500; color: #555; border-radius: 8px; transition: all 0.3s; }
+    .nav a:hover { color: var(--navy); background: rgba(200,163,95,0.08); }
+    .nav a.active { color: var(--gold); font-weight: 600; }
+    .btn-primary { display: inline-flex; align-items: center; gap: 8px; padding: 12px 28px; background: linear-gradient(135deg, var(--gold), var(--gold-dark)); color: white; font-weight: 700; font-size: 14px; border-radius: 12px; border: none; cursor: pointer; transition: all 0.3s; box-shadow: 0 4px 15px rgba(200,163,95,0.3); }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(200,163,95,0.4); }
+
+    /* Booking page layout */
+    .booking-page { padding: 60px 0 80px; background: white; }
+    .booking-header { text-align: center; margin-bottom: 48px; }
+    .booking-header .label { color: var(--gold); font-weight: 600; font-size: 13px; text-transform: uppercase; letter-spacing: 3px; margin-bottom: 12px; }
+    .booking-header h1 { font-size: clamp(28px, 4vw, 44px); color: var(--navy); margin-bottom: 16px; }
+    .booking-header p { color: #888; font-size: 16px; max-width: 600px; margin: 0 auto; line-height: 1.8; }
+
+    .booking-layout { display: grid; grid-template-columns: 320px 1fr; gap: 48px; align-items: start; }
+
+    /* Left sidebar - info */
+    .booking-sidebar { background: var(--cream); border-radius: 20px; padding: 32px; border: 1px solid rgba(200,163,95,0.1); }
+    .booking-sidebar h3 { font-family: 'Inter', sans-serif; font-size: 16px; color: var(--navy); font-weight: 700; margin-bottom: 20px; }
+    .sidebar-features { list-style: none; }
+    .sidebar-features li { display: flex; align-items: flex-start; gap: 12px; padding: 12px 0; font-size: 14px; color: #555; line-height: 1.6; border-bottom: 1px solid rgba(0,0,0,0.04); }
+    .sidebar-features li:last-child { border-bottom: none; }
+    .sidebar-features .icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+
+    .sidebar-contact { margin-top: 28px; padding-top: 24px; border-top: 1px solid rgba(200,163,95,0.15); }
+    .sidebar-contact h4 { font-family: 'Inter', sans-serif; font-size: 13px; color: var(--navy); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px; }
+    .sidebar-contact a { display: flex; align-items: center; gap: 10px; padding: 10px 16px; border-radius: 12px; font-size: 14px; font-weight: 600; transition: all 0.3s; margin-bottom: 8px; }
+    .wa-link { background: rgba(37,211,102,0.08); color: #128C7E; }
+    .wa-link:hover { background: rgba(37,211,102,0.15); }
+    .tel-link { background: rgba(59,130,246,0.08); color: #2563EB; }
+    .tel-link:hover { background: rgba(59,130,246,0.15); }
+
+    /* Right side - CRM booking embed */
+    .cal-embed-container { background: white; border-radius: 20px; border: 1px solid rgba(0,0,0,0.06); overflow: hidden; min-height: 600px; }
+    .cal-embed-container iframe { width: 100%; border: none; }
+
+    /* Loading placeholder */
+    .cal-placeholder { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 600px; padding: 40px; text-align: center; }
+    .cal-placeholder .spinner { width: 40px; height: 40px; border: 3px solid rgba(200,163,95,0.2); border-top-color: var(--gold); border-radius: 50%; animation: spin 0.8s linear infinite; margin-bottom: 20px; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .cal-placeholder p { color: #999; font-size: 14px; }
+
+    .footer { background: var(--navy-dark); padding: 40px 0; color: rgba(255,255,255,0.5); text-align: center; font-size: 13px; }
+    .whatsapp-fixed { position: fixed; bottom: 24px; right: 24px; z-index: 999; width: 60px; height: 60px; background: #25D366; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 28px; box-shadow: 0 4px 20px rgba(37,211,102,0.4); }
+
+    @media (max-width: 768px) {
+      .nav { display: none; }
+      .booking-layout { grid-template-columns: 1fr; }
+      .booking-sidebar { order: 2; }
+      .cal-embed-container { order: 1; }
+    }
+
+    /* ── PREMIUM GLOBAL ── */
+    #scroll-progress { position: fixed; top: 0; left: 0; height: 3px; background: linear-gradient(90deg, #C8A35F, #A8873F); width: 0%; z-index: 9999; transition: width 0.1s linear; pointer-events: none; }
+    @keyframes pageEnter { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    body { animation: pageEnter 0.35s ease both; }
+    :focus-visible { outline: 2px solid #C8A35F; outline-offset: 3px; border-radius: 4px; }
+    .header.scrolled { box-shadow: 0 4px 30px rgba(0,0,0,0.1); }
+  </style>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Accueil","item":"https://soshubcanada.com/"},{"@type":"ListItem","position":2,"name":"Réservation","item":"https://soshubcanada.com/book-online"}]}</script>
+</head>
+<body>
+  <div id="scroll-progress" role="progressbar" aria-hidden="true"></div>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="inner">
+      <a href="/" class="logo">
+        <div class="logo-icon">S</div>
+        <div class="logo-text">
+          <div class="name">SOS Hub <span>Canada</span></div>
+          <div class="tagline">Votre nouvelle vie au Canada</div>
+        </div>
+      </a>
+      <nav class="nav">
+        <a href="/">Accueil</a>
+        <a href="/services">Nos services</a>
+        <a href="/a-propos">À propos</a>
+        <a href="/blog">Blog</a>
+        <a href="/contact">Contact</a>
+        <a href="/employeurs">Employeurs</a>
+      </nav>
+      <a href="https://soshubca.vercel.app/inscription" target="_blank" class="btn-primary">Mon espace client →</a>
+    </div>
+  </header>
+
+  <!-- Booking Content -->
+  <section class="booking-page">
+    <div class="container">
+      <div class="booking-header">
+        <div class="label">Consultation gratuite</div>
+        <h1>Réservez votre séance en ligne</h1>
+        <p>Choisissez un créneau qui vous convient. 30 minutes gratuites avec un conseiller pour analyser votre profil et explorer vos options.</p>
+      </div>
+
+      <div class="booking-layout">
+        <!-- Left sidebar -->
+        <aside class="booking-sidebar">
+          <h3>Ce qui est inclus</h3>
+          <ul class="sidebar-features">
+            <li><span class="icon">⏱️</span> 30 minutes avec un conseiller</li>
+            <li><span class="icon">🔍</span> Analyse personnalisée de votre profil</li>
+            <li><span class="icon">🎯</span> Identification des programmes adaptés</li>
+            <li><span class="icon">📋</span> Plan d'action clair et transparent</li>
+            <li><span class="icon">📱</span> Par téléphone, vidéo ou en personne</li>
+            <li><span class="icon">🆓</span> 100% gratuit, sans engagement</li>
+          </ul>
+
+          <div class="sidebar-contact">
+            <h4>Ou contactez-nous directement</h4>
+            <a href="https://wa.me/15145330482?text=Bonjour%2C%20je%20souhaite%20r%C3%A9server%20une%20consultation%20gratuite." target="_blank" class="wa-link">💬 WhatsApp</a>
+            <a href="tel:+15145330482" class="tel-link">📞 +1 (514) 533-0482</a>
+          </div>
+        </aside>
+
+        <!-- Right - CRM booking embed -->
+        <div class="cal-embed-container">
+          <iframe
+            id="crm-booking"
+            src="https://soshubca.vercel.app/rdv/equipe-sos"
+            style="width:100%; min-height:700px; border:none; border-radius:20px;"
+            title="Réserver une consultation gratuite"
+            loading="lazy"
+            allow="clipboard-write"
+          ></iframe>
+
+          <!-- Fallback si iframe ne charge pas -->
+          <noscript>
+            <div style="padding:60px 40px; text-align:center;">
+              <p style="font-size:18px; color:var(--navy); font-weight:600; margin-bottom:16px;">JavaScript est nécessaire pour afficher le calendrier</p>
+              <p style="color:#888; margin-bottom:24px;">Vous pouvez aussi nous contacter directement :</p>
+              <a href="https://wa.me/15145330482" style="display:inline-block; padding:14px 32px; background:#25D366; color:white; font-weight:700; border-radius:12px;">💬 Réserver via WhatsApp</a>
+            </div>
+          </noscript>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; 2026 SOS Hub Canada Inc. — 3737 Crémazie Est #402, Montréal, QC H1Z 2K4 — +1 (514) 533-0482</p>
+    </div>
+  </footer>
+
+  <a href="https://wa.me/15145330482" target="_blank" class="whatsapp-fixed">💬</a>
+
+  <!-- ── PREMIUM JS ── -->
+  <script src="/js/premium.js" defer></script>
+
+</body>
+</html>
