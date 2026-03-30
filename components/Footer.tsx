@@ -72,9 +72,9 @@ export function Footer() {
           <div>
             <h4 className="text-white font-semibold mb-5 text-sm uppercase tracking-wider font-sans">Services</h4>
             <ul className="space-y-3">
-              {['Entrée Express', 'PEQ Québec', 'Permis de travail', 'Permis d\'études', 'Parrainage familial', 'Relocalisation'].map(s => (
+              {['Entrée Express', 'PEQ Québec', 'Permis de travail', 'Permis d\'études', 'Parrainage familial', 'Relocalisation', 'Services employeurs'].map(s => (
                 <li key={s}>
-                  <Link href="/services" className="text-sm hover:text-gold transition-colors font-sans">{s}</Link>
+                  <Link href={s === 'Services employeurs' ? '/employeurs' : '/services'} className="text-sm hover:text-gold transition-colors font-sans">{s}</Link>
                 </li>
               ))}
             </ul>

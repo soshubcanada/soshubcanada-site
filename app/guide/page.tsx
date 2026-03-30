@@ -8,18 +8,18 @@ import {
 } from 'lucide-react';
 
 const chapters = [
-  { icon: Globe2, title: 'Choisir le bon programme', desc: 'Entree Express, PEQ, permis de travail, parrainage — lequel est fait pour vous?' },
-  { icon: FileText, title: 'Documents requis', desc: 'Liste complete des documents exiges par IRCC et MIFI selon votre programme.' },
-  { icon: Award, title: 'Maximiser votre score CRS', desc: 'Strategies concretes pour gagner jusqu\'a 100+ points supplementaires.' },
-  { icon: BookOpen, title: 'Tests de langue (IELTS/TEF)', desc: 'Comment preparer et reussir vos tests pour maximiser vos points.' },
-  { icon: Users, title: 'Erreurs courantes a eviter', desc: 'Les 10 erreurs qui retardent ou font refuser les dossiers chaque annee.' },
-  { icon: Clock, title: 'Delais et calendrier 2026', desc: 'Tirages prevus, dates limites et fenetres d\'opportunite a ne pas manquer.' },
-  { icon: Sparkles, title: 'Plan d\'action personnalise', desc: 'Votre feuille de route etape par etape pour les 12 prochains mois.' },
+  { icon: Globe2, title: 'Choisir le bon programme', desc: 'Entrée Express, PEQ, permis de travail, parrainage — lequel est fait pour vous?' },
+  { icon: FileText, title: 'Documents requis', desc: 'Liste complète des documents exigés par IRCC et MIFI selon votre programme.' },
+  { icon: Award, title: 'Maximiser votre score CRS', desc: 'Stratégies concrètes pour gagner jusqu\'à 100+ points supplémentaires.' },
+  { icon: BookOpen, title: 'Tests de langue (IELTS/TEF)', desc: 'Comment préparer et réussir vos tests pour maximiser vos points.' },
+  { icon: Users, title: 'Erreurs courantes à éviter', desc: 'Les 10 erreurs qui retardent ou font refuser les dossiers chaque année.' },
+  { icon: Clock, title: 'Délais et calendrier 2026', desc: 'Tirages prévus, dates limites et fenêtres d\'opportunité à ne pas manquer.' },
+  { icon: Sparkles, title: 'Plan d\'action personnalisé', desc: 'Votre feuille de route étape par étape pour les 12 prochains mois.' },
 ];
 
 const socialProof = [
-  { name: 'Karim M.', origin: 'Algerie', text: 'Ce guide m\'a aide a comprendre exactement quoi faire. J\'ai eu mon ITA 2 mois apres!' },
-  { name: 'Fatima Z.', origin: 'Tunisie', text: 'Tres clair et bien structure. J\'ai evite des erreurs qui m\'auraient coute des mois.' },
+  { name: 'Karim M.', origin: 'Algérie', text: 'Ce guide m\'a aidé à comprendre exactement quoi faire. J\'ai eu mon ITA 2 mois après!' },
+  { name: 'Fatima Z.', origin: 'Tunisie', text: 'Très clair et bien structuré. J\'ai évité des erreurs qui m\'auraient coûté des mois.' },
   { name: 'Youssef E.', origin: 'Maroc', text: 'Le chapitre sur le score CRS m\'a permis de gagner 60 points. Merci SOS Hub!' },
 ];
 
@@ -71,11 +71,11 @@ export default function GuidePage() {
                 <Download className="w-3.5 h-3.5" /> Guide gratuit 2026
               </div>
               <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white leading-tight mb-5">
-                Les 7 etapes pour <span className="text-gold">immigrer au Canada</span> en 2026
+                Les 7 étapes pour <span className="text-gold">immigrer au Canada</span> en 2026
               </h1>
               <p className="text-gray-300 text-lg font-sans leading-relaxed mb-6">
-                Le guide complet utilise par +500 familles pour reussir leur projet
-                d&apos;immigration. Programmes, documents, delais, strategies — tout est la.
+                Le guide complet utilisé par +500 familles pour réussir leur projet
+                d&apos;immigration. Programmes, documents, délais, stratégies — tout est là.
               </p>
               <div className="flex flex-wrap gap-4 text-sm text-gray-400 font-sans">
                 <span className="flex items-center gap-1.5"><FileText className="w-4 h-4 text-gold" /> 32 pages</span>
@@ -88,11 +88,11 @@ export default function GuidePage() {
             <div className="bg-white rounded-2xl p-6 md:p-8 shadow-2xl">
               {!submitted ? (
                 <>
-                  <h2 className="text-navy font-bold text-xl mb-1">Telechargez le guide</h2>
-                  <p className="text-gray-400 text-sm font-sans mb-5">Recevez-le instantanement par courriel.</p>
+                  <h2 className="text-navy font-bold text-xl mb-1">Téléchargez le guide</h2>
+                  <p className="text-gray-400 text-sm font-sans mb-5">Recevez-le instantanément par courriel.</p>
                   <form onSubmit={handleSubmit} className="space-y-4">
                     <div>
-                      <label className="text-xs font-semibold text-navy mb-1 block font-sans">Prenom et nom *</label>
+                      <label className="text-xs font-semibold text-navy mb-1 block font-sans">Prénom et nom *</label>
                       <input
                         type="text"
                         required
@@ -114,7 +114,7 @@ export default function GuidePage() {
                       />
                     </div>
                     <div>
-                      <label className="text-xs font-semibold text-navy mb-1 block font-sans">Telephone (optionnel)</label>
+                      <label className="text-xs font-semibold text-navy mb-1 block font-sans">Téléphone (optionnel)</label>
                       <input
                         type="tel"
                         value={form.phone}
@@ -136,7 +136,7 @@ export default function GuidePage() {
                     </button>
                     <p className="text-xs text-gray-400 text-center font-sans">
                       <Shield className="w-3 h-3 inline mr-1" />
-                      Vos donnees sont protegees. Aucun spam.
+                      Vos données sont protégées. Aucun spam.
                     </p>
                   </form>
                 </>
@@ -145,15 +145,15 @@ export default function GuidePage() {
                   <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-4">
                     <CheckCircle2 className="w-8 h-8 text-green-600" />
                   </div>
-                  <h3 className="text-navy font-bold text-xl mb-2">Guide envoye!</h3>
+                  <h3 className="text-navy font-bold text-xl mb-2">Guide envoyé!</h3>
                   <p className="text-gray-500 text-sm font-sans mb-6">
-                    Verifiez votre boite courriel ({form.email}). Le guide arrive dans quelques secondes.
+                    Vérifiez votre boîte courriel ({form.email}). Le guide arrive dans quelques secondes.
                   </p>
                   <Link
                     href="/admissibilite"
                     className="inline-flex items-center gap-2 px-6 py-3 bg-navy text-white font-semibold rounded-xl hover:bg-navy-light transition-all text-sm font-sans"
                   >
-                    Tester mon admissibilite maintenant <ArrowRight className="w-4 h-4" />
+                    Tester mon admissibilité maintenant <ArrowRight className="w-4 h-4" />
                   </Link>
                 </div>
               )}
@@ -187,7 +187,7 @@ export default function GuidePage() {
       {/* Social proof */}
       <section className="py-16 bg-white">
         <div className="max-w-4xl mx-auto px-6">
-          <h2 className="text-2xl font-bold text-navy text-center mb-8">Ils ont telecharge le guide</h2>
+          <h2 className="text-2xl font-bold text-navy text-center mb-8">Ils ont téléchargé le guide</h2>
           <div className="grid md:grid-cols-3 gap-6">
             {socialProof.map((t, i) => (
               <div key={i} className="bg-cream rounded-xl p-5 border border-gray-100">
@@ -207,15 +207,15 @@ export default function GuidePage() {
       {/* Final CTA */}
       <section className="py-16 bg-navy text-center">
         <div className="max-w-2xl mx-auto px-6">
-          <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">Pret a commencer votre projet?</h2>
+          <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">Prêt à commencer votre projet?</h2>
           <p className="text-gray-300 font-sans mb-8">
-            Testez votre admissibilite gratuitement et recevez votre plan d&apos;action personnalise.
+            Testez votre admissibilité gratuitement et recevez votre plan d&apos;action personnalisé.
           </p>
           <Link
             href="/admissibilite"
             className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-gold to-gold-dark text-white font-bold rounded-xl hover:shadow-lg hover:shadow-gold/25 transition-all font-sans"
           >
-            Tester mon admissibilite <ArrowRight className="w-4 h-4" />
+            Tester mon admissibilité <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
       </section>

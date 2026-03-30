@@ -16,6 +16,7 @@ const navLinks = [
       { href: '/services#permis-etudes', label: 'Permis d\'études' },
       { href: '/services#parrainage', label: 'Parrainage familial' },
       { href: '/services#relocalisation', label: 'Relocalisation' },
+      { href: '/employeurs', label: 'Services employeurs' },
     ],
   },
   { href: '/admissibilite', label: 'Admissibilité gratuite' },

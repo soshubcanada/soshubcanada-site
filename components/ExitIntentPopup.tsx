@@ -94,14 +94,14 @@ export function ExitIntentPopup() {
         {/* Content */}
         <div className="px-6 py-5">
           <h4 className="font-bold text-navy text-lg mb-3">
-            Les 7 etapes pour immigrer au Canada en 2026
+            Les 7 étapes pour immigrer au Canada en 2026
           </h4>
           <ul className="space-y-2 mb-5">
             {[
               'Programmes disponibles selon votre profil',
               'Documents requis par IRCC et MIFI',
               'Comment maximiser votre score CRS',
-              'Erreurs courantes a eviter',
+              'Erreurs courantes à éviter',
             ].map((item, i) => (
               <li key={i} className="flex items-start gap-2 text-sm text-gray-600 font-sans">
                 <CheckCircle2 className="w-4 h-4 text-gold flex-shrink-0 mt-0.5" />
@@ -116,11 +116,11 @@ export function ExitIntentPopup() {
             onClick={() => setVisible(false)}
             className="flex items-center justify-center gap-2 w-full px-6 py-3.5 bg-gradient-to-r from-gold to-gold-dark text-white font-bold rounded-xl hover:shadow-lg hover:shadow-gold/25 transition-all text-sm font-sans"
           >
-            Tester mon admissibilite gratuitement <ArrowRight className="w-4 h-4" />
+            Tester mon admissibilité gratuitement <ArrowRight className="w-4 h-4" />
           </Link>
 
           <p className="text-center text-xs text-gray-400 mt-3 font-sans">
-            +500 familles accompagnees — Resultat en 2 minutes
+            +500 familles accompagnées — Résultat en 2 minutes
           </p>
         </div>
       </div>

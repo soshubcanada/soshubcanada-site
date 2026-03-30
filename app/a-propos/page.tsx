@@ -101,7 +101,7 @@ export default function AProposPage() {
                 <h3 className="text-xl font-bold text-white mb-4">Notre vision</h3>
                 <p className="text-white/70 text-sm leading-relaxed mb-4 font-sans">
                   Être la référence en relocalisation et intégration au Canada, reconnu pour notre expertise,
-                  son éthique et la qualité de son accompagnement.
+                  notre éthique et la qualité de notre accompagnement.
                 </p>
                 <ul className="space-y-2">
                   {[

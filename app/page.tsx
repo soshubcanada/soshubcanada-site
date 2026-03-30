@@ -2,6 +2,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { AnimatedCounter } from '@/components/AnimatedCounter';
 import { NewsletterForm } from '@/components/NewsletterForm';
+import { CommunautesSection } from '@/components/CommunautesSection';
 import {
   ArrowRight, CheckCircle2, Users, FileText, Globe2, Shield,
   Star, TrendingUp, TrendingDown, Award, MapPin, Clock, Sparkles, ChevronRight,
@@ -421,6 +422,9 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* ========== COMMUNAUTÉS ========== */}
+      <CommunautesSection />
 
       {/* ========== LEAD MAGNET ========== */}
       <section className="py-24 md:py-32 bg-cream relative overflow-hidden">
