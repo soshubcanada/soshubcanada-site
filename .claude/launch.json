@@ -31,6 +31,13 @@
       "runtimeExecutable": "npx",
       "runtimeArgs": ["serve", "-l", "3003", "soshubcanada-site/wix-maquette"],
       "port": 3003
+    },
+    {
+      "name": "aidoqc-dev",
+      "runtimeExecutable": "/usr/local/bin/node",
+      "runtimeArgs": ["/Users/grp255/Downloads/aidoqc-app/node_modules/next/dist/bin/next", "dev", "--port", "3004"],
+      "cwd": "../aidoqc-app",
+      "port": 3004
     }
   ]
 }

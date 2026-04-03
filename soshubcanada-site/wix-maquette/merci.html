@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Merci! Votre demande a été reçue | SOS Hub Canada</title>
+  <meta name="description" content="Merci pour votre demande. Notre équipe analyse votre profil et vous contacte dans les 24h. Réservez votre consultation gratuite maintenant.">
+  <meta name="author" content="SOS Hub Canada">
+  <meta name="theme-color" content="#1B2A4A">
+  <link rel="canonical" href="https://soshubcanada.com/merci">
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="SOS Hub Canada">
+  <meta property="og:title" content="Merci! Votre demande a été reçue | SOS Hub Canada">
+  <meta property="og:url" content="https://soshubcanada.com/merci">
+  <meta property="og:locale" content="fr_CA">
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="apple-touch-icon" href="/assets/icon-192.svg">
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --gold: #C8A35F;
+      --gold-light: #D4B76A;
+      --gold-dark: #A8873F;
+      --navy: #1B2A4A;
+      --navy-light: #2A3D66;
+      --navy-dark: #0F1A2E;
+      --cream: #FAF8F5;
+      --white: #FFFFFF;
+      --red: #DC2626;
+      --green: #16A34A;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      color: #1a1a1a;
+      background: var(--cream);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    h1, h2, h3, h4 { font-family: 'Playfair Display', Georgia, serif; }
+    a { text-decoration: none; color: inherit; }
+    img { max-width: 100%; display: block; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+    /* ===== ANIMATIONS ===== */
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes pulseGold { 0%, 100% { box-shadow: 0 0 0 0 rgba(200,163,95,0.4); } 50% { box-shadow: 0 0 0 16px rgba(200,163,95,0); } }
+    @keyframes scaleIn { from { opacity: 0; transform: scale(0.5); } to { opacity: 1; transform: scale(1); } }
+    @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+
+    .animate-fade-in-up { animation: fadeInUp 0.8s ease-out forwards; }
+    .animate-fade-in { animation: fadeIn 0.6s ease-out forwards; }
+    .animate-pulse-gold { animation: pulseGold 2s ease-in-out infinite; }
+    .delay-100 { animation-delay: 0.1s; }
+    .delay-200 { animation-delay: 0.2s; }
+    .delay-300 { animation-delay: 0.3s; }
+    .delay-400 { animation-delay: 0.4s; }
+    .delay-500 { animation-delay: 0.5s; }
+
+    /* ===== CHECKMARK ANIMATION ===== */
+    @keyframes checkDraw {
+      0% { stroke-dashoffset: 100; }
+      100% { stroke-dashoffset: 0; }
+    }
+    @keyframes circleGrow {
+      0% { transform: scale(0); opacity: 0; }
+      50% { transform: scale(1.15); }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    @keyframes ringPulse {
+      0% { transform: scale(1); opacity: 0.6; }
+      100% { transform: scale(1.8); opacity: 0; }
+    }
+    .checkmark-wrap {
+      position: relative;
+      width: 120px;
+      height: 120px;
+      margin: 0 auto 32px;
+    }
+    .checkmark-circle {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #16A34A, #15803D);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: circleGrow 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+      box-shadow: 0 8px 32px rgba(22,163,74,0.3);
+    }
+    .checkmark-circle svg {
+      width: 56px;
+      height: 56px;
+    }
+    .checkmark-circle svg path {
+      fill: none;
+      stroke: white;
+      stroke-width: 4;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-dasharray: 100;
+      stroke-dashoffset: 100;
+      animation: checkDraw 0.5s 0.4s ease-out forwards;
+    }
+    .checkmark-ring {
+      position: absolute;
+      top: 0; left: 0;
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      border: 3px solid rgba(22,163,74,0.3);
+      animation: ringPulse 1.5s 0.6s ease-out infinite;
+    }
+
+    /* ===== CONFETTI ===== */
+    @keyframes confettiFall {
+      0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+    }
+    .confetti-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 100;
+      overflow: hidden;
+    }
+    .confetti {
+      position: absolute;
+      top: -10px;
+      width: 10px;
+      height: 10px;
+      opacity: 0;
+      animation: confettiFall linear forwards;
+    }
+    .confetti:nth-child(1) { left: 5%; background: var(--gold); animation-duration: 3.2s; animation-delay: 0.1s; width: 8px; height: 14px; border-radius: 2px; }
+    .confetti:nth-child(2) { left: 15%; background: var(--navy); animation-duration: 2.8s; animation-delay: 0.3s; width: 12px; height: 8px; border-radius: 50%; }
+    .confetti:nth-child(3) { left: 25%; background: #16A34A; animation-duration: 3.5s; animation-delay: 0s; width: 6px; height: 12px; border-radius: 1px; }
+    .confetti:nth-child(4) { left: 35%; background: var(--gold-light); animation-duration: 2.6s; animation-delay: 0.5s; width: 10px; height: 10px; border-radius: 50%; }
+    .confetti:nth-child(5) { left: 45%; background: var(--navy-light); animation-duration: 3.1s; animation-delay: 0.2s; width: 8px; height: 6px; border-radius: 2px; }
+    .confetti:nth-child(6) { left: 55%; background: var(--gold); animation-duration: 3.4s; animation-delay: 0.4s; width: 14px; height: 8px; border-radius: 1px; }
+    .confetti:nth-child(7) { left: 65%; background: #16A34A; animation-duration: 2.9s; animation-delay: 0.1s; width: 8px; height: 12px; border-radius: 50%; }
+    .confetti:nth-child(8) { left: 75%; background: var(--gold-dark); animation-duration: 3.3s; animation-delay: 0.6s; width: 10px; height: 6px; border-radius: 2px; }
+    .confetti:nth-child(9) { left: 85%; background: var(--navy); animation-duration: 2.7s; animation-delay: 0.3s; width: 6px; height: 10px; border-radius: 1px; }
+    .confetti:nth-child(10) { left: 95%; background: var(--gold-light); animation-duration: 3.6s; animation-delay: 0s; width: 12px; height: 12px; border-radius: 50%; }
+    .confetti:nth-child(11) { left: 10%; background: #16A34A; animation-duration: 3s; animation-delay: 0.7s; width: 7px; height: 11px; border-radius: 2px; }
+    .confetti:nth-child(12) { left: 50%; background: var(--gold); animation-duration: 2.5s; animation-delay: 0.8s; width: 11px; height: 7px; border-radius: 1px; }
+
+    /* ===== HEADER ===== */
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 90;
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(0,0,0,0.05);
+      transition: all 0.4s;
+    }
+    .header.scrolled { box-shadow: 0 4px 30px rgba(27,42,74,0.08); }
+    .header .inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 76px;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .logo-icon {
+      width: 48px; height: 48px;
+      background: linear-gradient(135deg, var(--gold-light), var(--gold-dark));
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 800;
+      font-size: 24px;
+      font-family: 'Playfair Display', serif;
+      box-shadow: 0 4px 15px rgba(200,163,95,0.3);
+    }
+    .logo-text { line-height: 1.2; }
+    .logo-text .name { font-weight: 700; font-size: 20px; color: var(--navy); }
+    .logo-text .name span { color: var(--gold); }
+    .logo-text .tagline { font-size: 10px; color: #999; text-transform: uppercase; letter-spacing: 2px; }
+
+    .nav { display: flex; align-items: center; gap: 4px; }
+    .nav a {
+      padding: 8px 16px;
+      font-size: 14px;
+      font-weight: 500;
+      color: #555;
+      border-radius: 8px;
+      transition: all 0.3s;
+    }
+    .nav a:hover { color: var(--navy); background: rgba(200,163,95,0.08); }
+
+    .header-actions { display: flex; align-items: center; gap: 12px; }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 28px;
+      background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+      color: white;
+      font-weight: 700;
+      font-size: 14px;
+      border-radius: 12px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s;
+      box-shadow: 0 4px 15px rgba(200,163,95,0.3);
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(200,163,95,0.4); }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 28px;
+      background: var(--navy);
+      color: white;
+      font-weight: 600;
+      font-size: 14px;
+      border-radius: 12px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .btn-secondary:hover { background: var(--navy-light); transform: translateY(-2px); }
+
+    .btn-outline-dark {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 28px;
+      background: transparent;
+      color: var(--navy);
+      font-weight: 600;
+      font-size: 14px;
+      border-radius: 12px;
+      border: 2px solid rgba(27,42,74,0.15);
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .btn-outline-dark:hover { border-color: var(--gold); color: var(--gold); transform: translateY(-2px); }
+
+    .mobile-toggle {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      width: 32px;
+      height: 32px;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+    }
+    .mobile-toggle span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--navy);
+      border-radius: 2px;
+      transition: all 0.3s;
+    }
+
+    /* ===== HERO SECTION ===== */
+    .hero-merci {
+      text-align: center;
+      padding: 80px 0 60px;
+      background: linear-gradient(180deg, rgba(22,163,74,0.04) 0%, var(--cream) 100%);
+      position: relative;
+    }
+    .hero-merci h1 {
+      font-size: 42px;
+      color: var(--navy);
+      margin-bottom: 16px;
+      line-height: 1.2;
+    }
+    .hero-merci h1 .gold { color: var(--gold); }
+    .hero-merci .subtitle {
+      font-size: 18px;
+      color: #555;
+      max-width: 540px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+
+    /* ===== BOOKING SECTION ===== */
+    .booking-section {
+      padding: 80px 0;
+      background: linear-gradient(135deg, var(--navy-dark), var(--navy));
+      position: relative;
+      overflow: hidden;
+    }
+    .booking-section::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -20%;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(200,163,95,0.08) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+    .booking-inner {
+      text-align: center;
+      position: relative;
+      z-index: 2;
+    }
+    .booking-inner .section-label {
+      display: inline-block;
+      padding: 6px 16px;
+      background: rgba(200,163,95,0.15);
+      color: var(--gold);
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      border-radius: 50px;
+      margin-bottom: 20px;
+    }
+    .booking-inner h2 {
+      font-size: 36px;
+      color: white;
+      margin-bottom: 12px;
+      line-height: 1.3;
+    }
+    .booking-inner .booking-sub {
+      font-size: 16px;
+      color: rgba(255,255,255,0.6);
+      margin-bottom: 40px;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .booking-iframe-wrap {
+      max-width: 900px;
+      margin: 0 auto 32px;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      background: white;
+    }
+    .booking-or {
+      color: rgba(255,255,255,0.4);
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+    .booking-section .btn-primary {
+      font-size: 16px;
+      padding: 16px 40px;
+    }
+
+    /* ===== TIMELINE SECTION ===== */
+    .timeline-section {
+      padding: 80px 0;
+      background: white;
+    }
+    .timeline-section .section-header {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+    .timeline-section .section-label {
+      display: inline-block;
+      padding: 6px 16px;
+      background: rgba(200,163,95,0.1);
+      color: var(--gold-dark);
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      border-radius: 50px;
+      margin-bottom: 16px;
+    }
+    .timeline-section h2 {
+      font-size: 34px;
+      color: var(--navy);
+    }
+    .timeline-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 40px;
+      max-width: 900px;
+      margin: 0 auto;
+      position: relative;
+    }
+    .timeline-grid::before {
+      content: '';
+      position: absolute;
+      top: 40px;
+      left: calc(16.66% + 20px);
+      right: calc(16.66% + 20px);
+      height: 3px;
+      background: linear-gradient(90deg, var(--gold), var(--gold-dark));
+      border-radius: 3px;
+    }
+    .timeline-step {
+      text-align: center;
+      position: relative;
+    }
+    .timeline-icon {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: var(--cream);
+      border: 3px solid var(--gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      margin: 0 auto 20px;
+      position: relative;
+      z-index: 2;
+    }
+    .timeline-step h3 {
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 8px;
+    }
+    .timeline-step p {
+      font-size: 14px;
+      color: #777;
+      line-height: 1.6;
+    }
+    .timeline-step .timeline-delay {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 4px 12px;
+      background: rgba(22,163,74,0.08);
+      color: var(--green);
+      font-size: 12px;
+      font-weight: 600;
+      border-radius: 50px;
+    }
+
+    /* ===== SOCIAL PROOF ===== */
+    .proof-section {
+      padding: 80px 0;
+      background: var(--cream);
+    }
+    .proof-section .section-header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+    .proof-section .section-label {
+      display: inline-block;
+      padding: 6px 16px;
+      background: rgba(200,163,95,0.1);
+      color: var(--gold-dark);
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      border-radius: 50px;
+      margin-bottom: 16px;
+    }
+    .proof-section h2 {
+      font-size: 34px;
+      color: var(--navy);
+      margin-bottom: 8px;
+    }
+    .proof-section .proof-sub {
+      font-size: 16px;
+      color: #777;
+    }
+    .proof-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      max-width: 800px;
+      margin: 0 auto 48px;
+    }
+    .testimonial-card {
+      background: white;
+      border-radius: 20px;
+      padding: 32px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+      border: 1px solid rgba(0,0,0,0.04);
+      transition: all 0.3s;
+    }
+    .testimonial-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,0.08); }
+    .testimonial-stars {
+      color: var(--gold);
+      font-size: 16px;
+      margin-bottom: 16px;
+      letter-spacing: 2px;
+    }
+    .testimonial-card p {
+      font-size: 15px;
+      color: #444;
+      line-height: 1.7;
+      margin-bottom: 20px;
+      font-style: italic;
+    }
+    .testimonial-author {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .testimonial-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Playfair Display', serif;
+      font-weight: 800;
+      font-size: 16px;
+      color: white;
+      flex-shrink: 0;
+    }
+    .testimonial-name {
+      font-weight: 700;
+      font-size: 14px;
+      color: var(--navy);
+    }
+    .testimonial-origin {
+      font-size: 12px;
+      color: #999;
+    }
+
+    .google-badge {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      background: white;
+      padding: 20px 32px;
+      border-radius: 16px;
+      max-width: 420px;
+      margin: 0 auto;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+      border: 1px solid rgba(0,0,0,0.04);
+    }
+    .google-badge .g-logo {
+      font-size: 28px;
+      font-weight: 800;
+    }
+    .google-badge .g-logo span:nth-child(1) { color: #4285F4; }
+    .google-badge .g-logo span:nth-child(2) { color: #EA4335; }
+    .google-badge .g-logo span:nth-child(3) { color: #FBBC05; }
+    .google-badge .g-logo span:nth-child(4) { color: #4285F4; }
+    .google-badge .g-logo span:nth-child(5) { color: #34A853; }
+    .google-badge .g-logo span:nth-child(6) { color: #EA4335; }
+    .google-rating {
+      text-align: left;
+    }
+    .google-rating .stars {
+      color: #FBBC05;
+      font-size: 18px;
+      letter-spacing: 2px;
+    }
+    .google-rating .rating-text {
+      font-size: 13px;
+      color: #555;
+      font-weight: 500;
+    }
+    .google-rating .rating-text strong {
+      color: var(--navy);
+    }
+
+    /* ===== SHARE SECTION ===== */
+    .share-section {
+      padding: 60px 0;
+      background: white;
+      text-align: center;
+    }
+    .share-section h2 {
+      font-size: 30px;
+      color: var(--navy);
+      margin-bottom: 12px;
+    }
+    .share-section .share-sub {
+      font-size: 15px;
+      color: #777;
+      margin-bottom: 32px;
+    }
+    .share-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .share-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 28px;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 15px;
+      cursor: pointer;
+      transition: all 0.3s;
+      border: none;
+      color: white;
+    }
+    .share-btn:hover { transform: translateY(-2px); }
+    .share-btn.whatsapp {
+      background: #25D366;
+      box-shadow: 0 4px 15px rgba(37,211,102,0.3);
+    }
+    .share-btn.whatsapp:hover { box-shadow: 0 8px 25px rgba(37,211,102,0.4); }
+    .share-btn.facebook {
+      background: #1877F2;
+      box-shadow: 0 4px 15px rgba(24,119,242,0.3);
+    }
+    .share-btn.facebook:hover { box-shadow: 0 8px 25px rgba(24,119,242,0.4); }
+
+    /* ===== CLIENT PORTAL ===== */
+    .portal-section {
+      padding: 60px 0;
+      background: var(--cream);
+      text-align: center;
+    }
+    .portal-card {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 40px;
+      background: white;
+      border-radius: 20px;
+      border: 2px solid rgba(200,163,95,0.15);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+    }
+    .portal-card h3 {
+      font-family: 'Inter', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 8px;
+    }
+    .portal-card p {
+      font-size: 14px;
+      color: #777;
+      margin-bottom: 24px;
+    }
+
+    /* ===== FOOTER ===== */
+    .footer {
+      background: var(--navy-dark);
+      border-top: 1px solid rgba(255,255,255,0.05);
+      padding: 60px 0 30px;
+      color: rgba(255,255,255,0.5);
+    }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 40px;
+      margin-bottom: 40px;
+    }
+    .footer h4 { color: white; font-family: 'Inter', sans-serif; font-weight: 700; font-size: 14px; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px; }
+    .footer-brand p { font-size: 13px; line-height: 1.7; margin-top: 16px; }
+    .footer ul { list-style: none; padding: 0; }
+    .footer li { margin-bottom: 10px; }
+    .footer li a { font-size: 13px; color: rgba(255,255,255,0.5); transition: color 0.3s; }
+    .footer li a:hover { color: var(--gold); }
+    .footer-social { display: flex; gap: 12px; margin-top: 20px; }
+    .footer-social a {
+      width: 40px; height: 40px;
+      border-radius: 10px;
+      background: rgba(255,255,255,0.05);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(255,255,255,0.5);
+      font-size: 18px;
+      transition: all 0.3s;
+    }
+    .footer-social a:hover { background: var(--gold); color: white; }
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,0.05);
+      padding-top: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    /* ===== WHATSAPP FIXED ===== */
+    .whatsapp-fixed {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 999;
+      width: 60px; height: 60px;
+      background: #25D366;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 28px;
+      box-shadow: 0 4px 20px rgba(37,211,102,0.4);
+      cursor: pointer;
+      transition: all 0.3s;
+      animation: pulseGold 2s infinite;
+    }
+    .whatsapp-fixed:hover { transform: scale(1.1); box-shadow: 0 8px 30px rgba(37,211,102,0.5); }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 1024px) {
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+      .proof-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 768px) {
+      .nav { display: none; }
+      .mobile-toggle { display: flex; }
+      .hero-merci { padding: 60px 0 40px; }
+      .hero-merci h1 { font-size: 28px; }
+      .hero-merci .subtitle { font-size: 16px; }
+      .booking-inner h2 { font-size: 26px; }
+      .timeline-grid {
+        grid-template-columns: 1fr;
+        gap: 32px;
+        max-width: 400px;
+      }
+      .timeline-grid::before { display: none; }
+      .proof-grid { grid-template-columns: 1fr; }
+      .proof-section h2, .share-section h2 { font-size: 26px; }
+      .footer-grid { grid-template-columns: 1fr; gap: 32px; }
+      .share-buttons { flex-direction: column; align-items: center; }
+      .share-btn { width: 100%; max-width: 300px; justify-content: center; }
+      .portal-card { padding: 28px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== CONFETTI ===== -->
+  <div class="confetti-container" id="confettiContainer">
+    <div class="confetti"></div>
+    <div class="confetti"></div>
+    <div class="confetti"></div>
+    <div class="confetti"></div>
+    <div class="confetti"></div>
+    <div class="confetti"></div>
+    <div class="confetti"></div>
+    <div class="confetti"></div>
+    <div class="confetti"></div>
+    <div class="confetti"></div>
+    <div class="confetti"></div>
+    <div class="confetti"></div>
+  </div>
+
+  <!-- ===== HEADER ===== -->
+  <header class="header">
+    <div class="container inner">
+      <a href="/" class="logo" aria-label="SOS Hub Canada - Retour à l'accueil">
+        <div class="logo-icon">S</div>
+        <div class="logo-text">
+          <div class="name">SOS Hub <span>Canada</span></div>
+          <div class="tagline">Votre nouvelle vie au Canada</div>
+        </div>
+      </a>
+
+      <nav class="nav" role="navigation" aria-label="Navigation principale">
+        <a href="/">Accueil</a>
+        <a href="/services">Nos services</a>
+        <a href="/a-propos">A propos</a>
+        <a href="/blog">Blog</a>
+        <a href="/contact">Contact</a>
+      </nav>
+
+      <div class="header-actions">
+        <a href="https://soshubca.vercel.app/inscription" target="_blank" class="btn-primary">Mon espace client</a>
+      </div>
+
+      <button class="mobile-toggle" id="mobileToggle" aria-label="Ouvrir le menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+
+  <!-- ===== 1. CONFIRMATION HERO ===== -->
+  <section class="hero-merci">
+    <div class="container">
+      <div class="checkmark-wrap animate-fade-in">
+        <div class="checkmark-circle">
+          <svg viewBox="0 0 52 52">
+            <path d="M14 27 L22 35 L38 17" />
+          </svg>
+        </div>
+        <div class="checkmark-ring"></div>
+      </div>
+
+      <h1 class="animate-fade-in-up delay-200">
+        Merci! Votre demande a ete recue
+      </h1>
+
+      <p class="subtitle animate-fade-in-up delay-300">
+        Notre equipe analyse votre profil et vous contacte dans les prochaines <strong>24 heures</strong>. Vous avez fait le premier pas vers votre nouvelle vie au Canada.
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== 2. BOOKING UPSELL ===== -->
+  <section class="booking-section">
+    <div class="container booking-inner">
+      <div class="section-label animate-fade-in">Ne perdez pas de temps</div>
+      <h2 class="animate-fade-in-up delay-100">
+        Pourquoi attendre? Reservez votre<br>consultation gratuite maintenant
+      </h2>
+      <p class="booking-sub animate-fade-in-up delay-200">
+        Les creneaux se remplissent vite &mdash; securisez votre place des aujourd'hui.
+      </p>
+
+      <div class="booking-iframe-wrap animate-fade-in-up delay-300">
+        <iframe
+          src="https://soshubca.vercel.app/rdv/equipe-sos"
+          style="width:100%;min-height:600px;border:none;border-radius:16px;"
+          title="Reserver une consultation gratuite avec SOS Hub Canada"
+          loading="lazy"
+        ></iframe>
+      </div>
+
+      <p class="booking-or">ou</p>
+
+      <a href="/book-online" class="btn-primary animate-pulse-gold" style="font-size:16px; padding:16px 40px;">
+        Reserver ma consultation gratuite &rarr;
+      </a>
+    </div>
+  </section>
+
+  <!-- ===== 3. WHAT HAPPENS NEXT ===== -->
+  <section class="timeline-section">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label">Prochaines etapes</div>
+        <h2>Que se passe-t-il maintenant?</h2>
+      </div>
+
+      <div class="timeline-grid">
+        <div class="timeline-step">
+          <div class="timeline-icon">&#x1F4E7;</div>
+          <h3>Email de confirmation</h3>
+          <p>Vous recevez un email recapitulatif avec toutes les informations utiles pour la suite.</p>
+          <span class="timeline-delay">Dans les 5 minutes</span>
+        </div>
+
+        <div class="timeline-step">
+          <div class="timeline-icon">&#x1F4DE;</div>
+          <h3>Un expert vous appelle</h3>
+          <p>Un conseiller specialise analyse votre profil et vous contacte pour discuter de vos options.</p>
+          <span class="timeline-delay">Dans les 24h</span>
+        </div>
+
+        <div class="timeline-step">
+          <div class="timeline-icon">&#x1F4CB;</div>
+          <h3>Votre plan d'action</h3>
+          <p>Vous recevez un plan d'action personnalise avec les programmes et demarches adaptes a votre profil.</p>
+          <span class="timeline-delay">Apres l'appel</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 4. SOCIAL PROOF ===== -->
+  <section class="proof-section">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label">Ils nous font confiance</div>
+        <h2>Rejoignez +2000 familles accompagnees</h2>
+        <p class="proof-sub">Des histoires de reussite qui commencent comme la votre.</p>
+      </div>
+
+      <div class="proof-grid">
+        <div class="testimonial-card">
+          <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <p>&laquo; Grace a SOS Hub, nous avons obtenu notre residence permanente en seulement 8 mois. L'equipe a ete disponible a chaque etape et a su nous rassurer dans les moments de doute. Merci infiniment! &raquo;</p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar" style="background: linear-gradient(135deg, var(--gold), var(--gold-dark));">A</div>
+            <div>
+              <div class="testimonial-name">Amina &amp; Karim B.</div>
+              <div class="testimonial-origin">Casablanca &#8594; Montreal</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-card">
+          <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <p>&laquo; Je ne savais pas par ou commencer. SOS Hub m'a guide du debut a la fin: evaluation, dossier, preparation a l'entrevue. Aujourd'hui, je vis et travaille a Montreal. Un service exceptionnel. &raquo;</p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar" style="background: linear-gradient(135deg, var(--navy), var(--navy-light));">T</div>
+            <div>
+              <div class="testimonial-name">Thomas L.</div>
+              <div class="testimonial-origin">Paris &#8594; Montreal</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Google Rating Badge -->
+      <div class="google-badge">
+        <div class="g-logo">
+          <span>G</span><span>o</span><span>o</span><span>g</span><span>l</span><span>e</span>
+        </div>
+        <div class="google-rating">
+          <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <div class="rating-text"><strong>4.9/5</strong> &mdash; 127+ avis verifies</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 5. SHARE CTA ===== -->
+  <section class="share-section">
+    <div class="container">
+      <h2>Aidez vos proches a immigrer aussi</h2>
+      <p class="share-sub">Partagez cette ressource avec quelqu'un qui reve du Canada.</p>
+
+      <div class="share-buttons">
+        <a href="https://wa.me/?text=Je%20viens%20de%20tester%20mes%20chances%20d%27immigrer%20au%20Canada%20avec%20SOS%20Hub%20%E2%80%94%20c%27est%20gratuit!%20https%3A%2F%2Fsoshubcanada.com" target="_blank" rel="noopener" class="share-btn whatsapp">
+          &#x1F4AC; Partager sur WhatsApp
+        </a>
+        <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fsoshubcanada.com&quote=Je%20viens%20de%20tester%20mes%20chances%20d%27immigrer%20au%20Canada%20avec%20SOS%20Hub%20%E2%80%94%20c%27est%20gratuit!" target="_blank" rel="noopener" class="share-btn facebook">
+          f Partager sur Facebook
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. CLIENT PORTAL CTA ===== -->
+  <section class="portal-section">
+    <div class="container">
+      <div class="portal-card">
+        <h3>Deja client? Accedez a votre espace</h3>
+        <p>Suivez l'avancement de votre dossier, telechargez vos documents et communiquez avec votre conseiller.</p>
+        <a href="https://soshubca.vercel.app/client" target="_blank" class="btn-secondary" style="padding:14px 32px; font-size:15px;">
+          Acceder a mon espace client &rarr;
+        </a>
+      </div>
+    </div>
+  </section>
+
+  </main>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="logo" style="margin-bottom:12px;">
+            <div class="logo-icon">S</div>
+            <div class="logo-text">
+              <div class="name" style="color:white;">SOS Hub <span>Canada</span></div>
+              <div class="tagline">Votre nouvelle vie au Canada</div>
+            </div>
+          </div>
+          <p>Depuis 2019, nous accompagnons des familles du monde entier dans leur projet de vie au Canada. Service personnalise, equipe multilingue, resultats concrets.</p>
+          <div class="footer-social">
+            <a href="https://facebook.com/soshubcanada" target="_blank" rel="noopener" title="Facebook" aria-label="Facebook SOS Hub Canada">f</a>
+            <a href="https://instagram.com/soshubcanada" target="_blank" rel="noopener" title="Instagram" aria-label="Instagram SOS Hub Canada">ig</a>
+            <a href="https://linkedin.com/company/soshubcanada" target="_blank" rel="noopener" title="LinkedIn" aria-label="LinkedIn SOS Hub Canada">in</a>
+            <a href="https://youtube.com/@soshubcanada" target="_blank" rel="noopener" title="YouTube" aria-label="YouTube SOS Hub Canada">yt</a>
+            <a href="https://tiktok.com/@soshubcanada" target="_blank" rel="noopener" title="TikTok" aria-label="TikTok SOS Hub Canada">tk</a>
+          </div>
+        </div>
+
+        <div>
+          <h4>Nos services</h4>
+          <ul>
+            <li><a href="/services#travailler">Travailler au Canada</a></li>
+            <li><a href="/services#etudier">Etudier au Canada</a></li>
+            <li><a href="/services#sinstaller">S'installer definitivement</a></li>
+            <li><a href="/services#famille">Rejoindre sa famille</a></li>
+            <li><a href="/services#commencer">Commencer sa vie</a></li>
+            <li><a href="/employeurs">Entreprises</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4>Liens utiles</h4>
+          <ul>
+            <li><a href="/#quiz">Test d'admissibilite</a></li>
+            <li><a href="/a-propos">Notre equipe</a></li>
+            <li><a href="/blog">Blog et actualites</a></li>
+            <li><a href="https://soshubca.vercel.app/portail" target="_blank">Mon espace client</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4>Contact</h4>
+          <ul>
+            <li>&#x1F4CD; 3737 Cremazie Est #402</li>
+            <li>Montreal, QC H1Z 2K4</li>
+            <li><a href="tel:+15145330482">&#x1F4DE; +1 (514) 533-0482</a></li>
+            <li><a href="https://wa.me/15145330482" target="_blank">&#x1F4AC; WhatsApp</a></li>
+            <li><a href="mailto:info@soshubcanada.com">&#x2709;&#xFE0F; info@soshubcanada.com</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span>&copy; 2026 SOS Hub Canada Inc. &mdash; Tous droits reserves.</span>
+        <div style="display:flex; gap:20px;">
+          <a href="/confidentialite" style="color:rgba(255,255,255,0.4);">Politique de confidentialite</a>
+          <a href="/conditions" style="color:rgba(255,255,255,0.4);">Conditions d'utilisation</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ===== WHATSAPP FIXED BUTTON ===== -->
+  <a href="https://wa.me/15145330482?text=Bonjour%2C%20je%20viens%20de%20soumettre%20mon%20formulaire%20et%20j%27aimerais%20en%20savoir%20plus." target="_blank" class="whatsapp-fixed" title="Ecrire sur WhatsApp">
+    &#x1F4AC;
+  </a>
+
+  <!-- ===== CONVERSION TRACKING ===== -->
+  <script>
+    // Track conversion event if analytics is loaded
+    if (typeof gtag === 'function') {
+      gtag('event', 'generate_lead', {
+        event_category: 'form',
+        event_label: 'thank_you_page',
+        value: 1,
+        currency: 'CAD'
+      });
+    }
+
+    // Remove confetti after animation completes
+    setTimeout(function() {
+      var confetti = document.getElementById('confettiContainer');
+      if (confetti) confetti.style.display = 'none';
+    }, 5000);
+
+    // Header scroll effect
+    window.addEventListener('scroll', function() {
+      var header = document.querySelector('.header');
+      if (window.scrollY > 20) {
+        header.classList.add('scrolled');
+      } else {
+        header.classList.remove('scrolled');
+      }
+    });
+  </script>
+
+  <!-- Premium JS -->
+  <script src="/js/premium.js"></script>
+
+</body>
+</html>

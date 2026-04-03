@@ -1,15 +1,9 @@
 import type { Metadata } from 'next';
 import { Inter, Playfair_Display } from 'next/font/google';
 import './globals.css';
-import { Header } from '@/components/Header';
-import { Footer } from '@/components/Footer';
-import { WhatsAppButton } from '@/components/WhatsAppButton';
-import { StickyMobileCTA } from '@/components/StickyMobileCTA';
-import { SocialProofToast } from '@/components/SocialProofToast';
 import { ScrollAnimator } from '@/components/ScrollAnimator';
 import { AnalyticsProvider } from '@/components/Analytics';
 import { CookieBanner } from '@/components/CookieBanner';
-import { ExitIntentPopup } from '@/components/ExitIntentPopup';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -158,16 +152,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body className="min-h-screen flex flex-col font-sans">
-        <Header />
-        <main className="flex-1">{children}</main>
-        <Footer />
-        <WhatsAppButton />
-        <StickyMobileCTA />
-        <SocialProofToast />
+        {children}
         <ScrollAnimator />
         <AnalyticsProvider />
         <CookieBanner />
-        <ExitIntentPopup />
       </body>
     </html>
   );

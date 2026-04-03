@@ -3,6 +3,9 @@
 // POST: receive leads from website forms (admissibility, contact, CRS)
 // GET: list leads for CRM dashboard
 // PUT: update lead status
+//
+// DEDUP: Same email within 24h → MERGE (update existing lead, not create new)
+// CLIENT: Same email → UPDATE existing client (never create duplicate)
 // ========================================================
 
 import { NextRequest, NextResponse } from 'next/server';
@@ -66,11 +69,13 @@ export async function POST(req: NextRequest) {
 
   try {
     const body = await req.json();
-    const { source, name, email, phone, subject, message, formData } = body;
+    const { source, email, phone, subject, message, formData } = body;
+    // Accept 'name' from multiple possible field names (landing pages use different formats)
+    const name = body.name || body.nom || body.full_name || (email ? email.split('@')[0] : '');
 
-    if (!email || !name) {
+    if (!email) {
       return NextResponse.json(
-        { error: 'Nom et email requis' },
+        { error: 'Email requis' },
         { status: 400, headers: getCorsHeaders(req) }
       );
     }
@@ -112,8 +117,8 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ success: true, id: 'filtered' }, { status: 200, headers: getCorsHeaders(req) });
     }
 
-    // Anti-spam: Name validation
-    if (name.length < 2 || /https?:\/\/|www\.|<script/i.test(name)) {
+    // Anti-spam: Name validation (skip if name is auto-derived from email)
+    if (name && name.includes('@') === false && (/https?:\/\/|www\.|<script/i.test(name))) {
       return NextResponse.json(
         { error: 'Nom invalide' },
         { status: 400, headers: getCorsHeaders(req) }
@@ -123,14 +128,24 @@ export async function POST(req: NextRequest) {
     // Sanitize inputs
     const sanitize = (s: string) => s?.replace(/[<>]/g, '').trim().slice(0, 2000) || '';
 
+    // Normalize form data from different landing page formats
+    const normalizedFormData = formData || {};
+    if (body.age_range && !normalizedFormData.age) normalizedFormData.age = body.age_range;
+    if (body.education && !normalizedFormData.education) normalizedFormData.education = body.education;
+    if (body.experience && !normalizedFormData.workExperience) normalizedFormData.workExperience = body.experience;
+    if (body.french_level && !normalizedFormData.frenchLevel) normalizedFormData.frenchLevel = body.french_level;
+    if (body.english_level && !normalizedFormData.englishLevel) normalizedFormData.englishLevel = body.english_level;
+    if (body.referral) normalizedFormData.referral = body.referral;
+    if (body.interest) normalizedFormData.interest = body.interest;
+
     const lead = {
-      source: sanitize(source || 'website'),
-      name: sanitize(name),
+      source: sanitize(source || body.interest || 'website'),
+      name: sanitize(name || ''),
       email: sanitize(email).toLowerCase(),
-      phone: sanitize(phone || ''),
+      phone: sanitize(phone || body.telephone || ''),
       subject: sanitize(subject || ''),
       message: sanitize(message || ''),
-      form_data: formData || null,
+      form_data: Object.keys(normalizedFormData).length > 0 ? normalizedFormData : null,
       status: 'new',
       ip_address: ip,
       created_at: new Date().toISOString(),
@@ -141,40 +156,86 @@ export async function POST(req: NextRequest) {
       try {
         const db = createServiceClient() as any;
 
-        // 1. Insert lead into leads table
-        const { data: leadData, error: insertError } = await db
+        // ============================================================
+        // DEDUP CHECK: Same email within 24h → MERGE into existing lead
+        // ============================================================
+        const twentyFourHoursAgo = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+        const { data: recentLead } = await db
           .from('leads')
-          .insert({ ...lead, tag: 'prospect' })
-          .select('id')
+          .select('id, source, form_data, name, phone, subject, message')
+          .eq('email', lead.email)
+          .gte('created_at', twentyFourHoursAgo)
+          .order('created_at', { ascending: false })
+          .limit(1)
           .single();
 
-        let leadId = leadData?.id;
+        let leadId: string | null = null;
 
-        if (insertError) {
-          if (process.env.NODE_ENV === 'development') console.error('Lead insert error:', insertError.message);
-          // Fallback: try without tag column (in case it doesn't exist yet)
-          const { data: fallbackLead, error: fallbackErr } = await db
+        if (recentLead) {
+          // ── MERGE: Update existing lead with new data ──
+          leadId = recentLead.id;
+
+          // Merge sources (track all sources this person came from)
+          const existingSources = (recentLead.source || '').split(',').map((s: string) => s.trim());
+          if (!existingSources.includes(lead.source)) {
+            existingSources.push(lead.source);
+          }
+          const mergedSource = [...new Set(existingSources.filter(Boolean))].join(', ');
+
+          // Merge form data (new data takes priority, but keep old fields)
+          const mergedFormData = { ...(recentLead.form_data || {}), ...(lead.form_data || {}) };
+
+          // Merge other fields (fill blanks, don't overwrite)
+          const mergedName = lead.name || recentLead.name || '';
+          const mergedPhone = lead.phone || recentLead.phone || '';
+          const mergedSubject = [recentLead.subject, lead.subject].filter(Boolean).join(' | ');
+          const mergedMessage = [recentLead.message, lead.message].filter(Boolean).join('\n---\n');
+
+          await db.from('leads').update({
+            source: mergedSource,
+            name: mergedName,
+            phone: mergedPhone,
+            subject: mergedSubject.slice(0, 2000),
+            message: mergedMessage.slice(0, 4000),
+            form_data: Object.keys(mergedFormData).length > 0 ? mergedFormData : null,
+            updated_at: new Date().toISOString(),
+          }).eq('id', leadId);
+
+          console.log(`[leads] DEDUP: Merged lead ${lead.email} (source: ${lead.source}) into existing lead ${leadId}`);
+        } else {
+          // ── NEW LEAD: Insert fresh record ──
+          const { data: leadData, error: insertError } = await db
             .from('leads')
-            .insert(lead)
+            .insert({ ...lead, tag: 'prospect' })
             .select('id')
             .single();
-          leadId = fallbackLead?.id;
-          if (fallbackErr && process.env.NODE_ENV === 'development') console.error('Lead insert fallback error:', fallbackErr.message);
+
+          leadId = leadData?.id;
+
+          if (insertError) {
+            // Fallback: try without tag column
+            const { data: fallbackLead } = await db
+              .from('leads')
+              .insert(lead)
+              .select('id')
+              .single();
+            leadId = fallbackLead?.id;
+          }
         }
 
-        // 2. Create/update client record tagged as "prospect"
+        // ============================================================
+        // CLIENT UPSERT: Find by email → update OR create (never duplicate)
+        // ============================================================
         const nameParts = lead.name.split(' ');
         const firstName = nameParts[0] || '';
         const lastName = nameParts.slice(1).join(' ') || '';
 
-        // Check if client already exists by email
-        const { data: existingClient } = await db
-          .from('clients')
-          .select('id')
-          .eq('email', lead.email)
-          .single();
-
-        let clientId = existingClient?.id;
+        // Detect source for CRM tagging
+        const isFromTest = lead.source === 'admissibility_test' || lead.source === 'test_admissibilite';
+        const isFromSite = ['website_contact', 'contact_form', 'site_web', 'exit_popup_homepage',
+          'exit_popup_maghreb', 'exit_popup_latino', 'lp_maghreb', 'lp_latino', 'lp_main',
+          'guide_immigration', 'hero_form', 'newsletter'].includes(lead.source);
+        const clientSource = isFromTest ? 'test_admissibilite' : isFromSite ? 'site_web' : 'autre';
 
         const initialNote = `═══ NOUVEAU PROSPECT ═══\n` +
           `Date: ${new Date().toLocaleDateString('fr-CA', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' })}\n` +
@@ -184,12 +245,56 @@ export async function POST(req: NextRequest) {
           `${lead.form_data ? `\n── Données du formulaire ──\n${formatFormData(lead.form_data)}\n` : ''}` +
           `\n── Notes de suivi ──\n(Ajouter vos notes ici)\n`;
 
-        // Detect admissibility test source
-        const isFromTest = lead.source === 'admissibility_test' || lead.source === 'test_admissibilite';
-        const clientSource = isFromTest ? 'test_admissibilite' : (lead.source === 'contact_form' ? 'site_web' : 'autre');
+        // Check if client already exists by email
+        const { data: existingClient } = await db
+          .from('clients')
+          .select('id, notes, status, first_name, last_name, phone, language_french, language_english, education, work_experience, marital_status, source')
+          .eq('email', lead.email)
+          .limit(1)
+          .single();
 
-        if (!clientId) {
-          // Create new client as prospect
+        let clientId = existingClient?.id;
+
+        if (existingClient) {
+          // ── UPDATE existing client — enrich data, never overwrite ──
+          const updates: Record<string, unknown> = {
+            updated_at: new Date().toISOString(),
+            date_dernier_contact: new Date().toISOString().split('T')[0],
+          };
+
+          // Fill blank fields only (never overwrite existing data)
+          if (firstName && !existingClient.first_name) updates.first_name = firstName;
+          if (lastName && !existingClient.last_name) updates.last_name = lastName;
+          if (lead.phone && !existingClient.phone) updates.phone = lead.phone;
+          if (lead.form_data?.frenchLevel && !existingClient.language_french) updates.language_french = lead.form_data.frenchLevel;
+          if (lead.form_data?.englishLevel && !existingClient.language_english) updates.language_english = lead.form_data.englishLevel;
+          if (lead.form_data?.education && !existingClient.education) updates.education = lead.form_data.education;
+          if (lead.form_data?.workExperience && !existingClient.work_experience) updates.work_experience = lead.form_data.workExperience;
+          if (lead.form_data?.maritalStatus && !existingClient.marital_status) updates.marital_status = lead.form_data.maritalStatus;
+
+          // Track all sources
+          const existingSrc = existingClient.source || '';
+          if (clientSource && !existingSrc.includes(clientSource)) {
+            updates.source = existingSrc ? `${existingSrc}, ${clientSource}` : clientSource;
+          }
+
+          // Escalate status only (lead → prospect, never downgrade)
+          const statusPriority: Record<string, number> = { lead: 0, prospect: 1, nouveau: 2, actif: 3, en_traitement: 4 };
+          if ((statusPriority[existingClient.status] ?? 5) < (statusPriority['prospect'] ?? 0)) {
+            updates.status = 'prospect';
+            updates.current_status = 'prospect';
+          }
+
+          // Append note only if this is a new source (avoid duplicate notes from dedup)
+          if (!recentLead) {
+            const updatedNotes = (existingClient.notes || '') + '\n\n' + initialNote;
+            updates.notes = updatedNotes;
+          }
+
+          await db.from('clients').update(updates).eq('id', clientId);
+          console.log(`[leads] Client ${lead.email} updated (existing ID: ${clientId})`);
+        } else {
+          // ── CREATE new client as prospect ──
           const { data: newClient, error: clientError } = await db.from('clients').insert({
             first_name: firstName,
             last_name: lastName,
@@ -207,31 +312,32 @@ export async function POST(req: NextRequest) {
           }).select('id').single();
 
           if (clientError) {
-            if (process.env.NODE_ENV === 'development') console.error('Client create error:', clientError.message);
+            // Handle race condition: another request created this client simultaneously
+            if (clientError.code === '23505') {
+              // Unique constraint violation — client was just created, fetch it
+              const { data: raceClient } = await db
+                .from('clients')
+                .select('id')
+                .eq('email', lead.email)
+                .single();
+              clientId = raceClient?.id;
+              console.log(`[leads] Race condition resolved for ${lead.email} → ${clientId}`);
+            } else {
+              console.error('[leads] Client create error:', clientError.message);
+            }
           } else {
             clientId = newClient?.id;
+            console.log(`[leads] New client created: ${lead.email} → ${clientId}`);
           }
-        } else {
-          // Update existing client — append note
-          const { data: clientRecord } = await db
-            .from('clients')
-            .select('notes, status')
-            .eq('id', clientId)
-            .single();
-
-          const updatedNotes = (clientRecord?.notes || '') + '\n\n' + initialNote;
-          await db.from('clients').update({
-            notes: updatedNotes,
-            status: clientRecord?.status === 'lead' ? 'prospect' : clientRecord?.status,
-          }).eq('id', clientId);
         }
 
-        // 3. Create follow-up task
-        if (clientId) {
+        // ============================================================
+        // FOLLOW-UP TASK: Only create if this is the FIRST lead (not a dedup merge)
+        // ============================================================
+        if (clientId && !recentLead) {
           const dueDate = new Date();
-          dueDate.setHours(dueDate.getHours() + 24); // Due in 24h
+          dueDate.setHours(dueDate.getHours() + 24);
 
-          // Try tasks table first, fallback to timeline_events
           const taskData = {
             client_id: clientId,
             lead_id: leadId || null,
@@ -248,9 +354,7 @@ export async function POST(req: NextRequest) {
           const { error: taskError } = await db.from('tasks').insert(taskData);
           if (taskError) {
             // Fallback: create timeline event instead
-            if (process.env.NODE_ENV === 'development') console.warn('Tasks table not found, using timeline_events:', taskError.message);
             if (clientId) {
-              // Find or create a case for this client to attach timeline event
               const { data: existingCase } = await db
                 .from('cases')
                 .select('id')
@@ -270,7 +374,7 @@ export async function POST(req: NextRequest) {
         }
 
       } catch (dbErr) {
-        if (process.env.NODE_ENV === 'development') console.error('DB error:', dbErr);
+        console.error('[leads] DB error:', dbErr);
       }
     }
 
@@ -280,7 +384,7 @@ export async function POST(req: NextRequest) {
       { status: 200, headers: getCorsHeaders(req) }
     );
   } catch (err: any) {
-    if (process.env.NODE_ENV === 'development') console.error('Lead API error:', err);
+    console.error('[leads] API error:', err);
     return NextResponse.json(
       { error: 'Erreur serveur' },
       { status: 500, headers: getCorsHeaders(req) }
@@ -290,9 +394,7 @@ export async function POST(req: NextRequest) {
 
 // GET: List leads (authenticated CRM users only)
 export async function GET(req: NextRequest) {
-  // Import auth functions dynamically to avoid issues if module not found
   try {
-    const { authenticateRequest, requireCrmRole } = await import('@/lib/api-auth');
     const auth = await authenticateRequest(req);
     if (!auth.authenticated) return auth.error!;
     const roleCheck = await requireCrmRole(auth.userId!, ['superadmin', 'coordinatrice', 'receptionniste']);
@@ -314,7 +416,6 @@ export async function GET(req: NextRequest) {
 
     const { data, error } = await query.limit(200);
     if (error) {
-      // Fallback: get leads from clients table
       const { data: clients, error: cErr } = await db
         .from('clients')
         .select('*')

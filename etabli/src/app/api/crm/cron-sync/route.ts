@@ -82,7 +82,59 @@ export async function GET(request: Request) {
     results.expiringStatuses = expErr ? { error: expErr.message } : { count: expiringClients?.length ?? 0 };
 
     // -------------------------------------------------------
-    // 4. Stats snapshot (pour rapports)
+    // 4. Sync orphaned leads → clients
+    // -------------------------------------------------------
+    try {
+      // Find leads with emails not in clients table
+      const { data: allLeads } = await supabase
+        .from("leads")
+        .select("id, email, name, phone, source, form_data, subject, message, created_at")
+        .order("created_at", { ascending: true });
+
+      const { data: allClientEmails } = await supabase
+        .from("clients")
+        .select("email");
+
+      const existingEmails = new Set(
+        (allClientEmails || []).map((c: { email?: string }) => c.email?.toLowerCase()).filter(Boolean)
+      );
+
+      const seenEmails = new Set<string>();
+      const orphans = (allLeads || []).filter((l: { email?: string }) => {
+        if (!l.email || existingEmails.has(l.email.toLowerCase())) return false;
+        const lower = l.email.toLowerCase();
+        if (seenEmails.has(lower)) return false;
+        seenEmails.add(lower);
+        return true;
+      });
+
+      let syncedCount = 0;
+      for (const lead of orphans as Array<{ email: string; name?: string; phone?: string; source?: string; form_data?: Record<string, string>; created_at?: string }>) {
+        const nameParts = (lead.name || "").split(" ");
+        const { error: insErr } = await supabase.from("clients").insert({
+          first_name: nameParts[0] || lead.email.split("@")[0],
+          last_name: nameParts.slice(1).join(" ") || "",
+          email: lead.email.toLowerCase(),
+          phone: lead.phone || null,
+          status: "prospect",
+          current_status: "prospect",
+          source: lead.source || "website",
+          notes: `═══ PROSPECT (sync cron) ═══\nDate lead: ${lead.created_at || today}\nSource: ${lead.source || "website"}`,
+          language_french: lead.form_data?.frenchLevel || null,
+          language_english: lead.form_data?.englishLevel || null,
+          education: lead.form_data?.education || null,
+          created_at: lead.created_at || new Date().toISOString(),
+        });
+        if (!insErr) syncedCount++;
+      }
+
+      results.leadSync = { orphansFound: orphans.length, synced: syncedCount };
+    } catch (syncErr) {
+      results.leadSync = { error: syncErr instanceof Error ? syncErr.message : "Unknown sync error" };
+    }
+
+    // -------------------------------------------------------
+    // 5. Stats snapshot (pour rapports)
     // -------------------------------------------------------
     const [{ count: totalClients }, { count: totalCases }, { count: totalLeads }] = await Promise.all([
       supabase.from("clients").select("*", { count: "exact", head: true }),

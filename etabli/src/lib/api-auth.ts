@@ -13,6 +13,8 @@ import { isSupabaseReady } from './supabase';
 const PROD_ORIGINS = [
   'https://soshubca.vercel.app',
   'https://crm.soshub.ca',
+  'https://soshub.ca',
+  'https://www.soshub.ca',
   'https://soshubcanada.com',
   'https://www.soshubcanada.com',
 ];
@@ -20,8 +22,10 @@ const DEV_ORIGINS = ['http://localhost:3000', 'http://localhost:3001', 'http://l
 
 function getAllowedOrigins(): string[] {
   const base = process.env.NEXT_PUBLIC_BASE_URL;
+  const vercelUrl = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : null;
   const origins = [...PROD_ORIGINS];
   if (base && !origins.includes(base)) origins.push(base);
+  if (vercelUrl && !origins.includes(vercelUrl)) origins.push(vercelUrl);
   if (process.env.NODE_ENV === 'development') origins.push(...DEV_ORIGINS);
   return origins;
 }
@@ -38,15 +42,17 @@ export async function authenticateRequest(req: NextRequest): Promise<{
   email?: string;
   error?: NextResponse;
 }> {
-  // In demo mode (Supabase not configured), allow only in dev with explicit opt-in
+  // Production without Supabase = always reject (never fall back to demo)
   if (!isSupabaseReady()) {
-    if (process.env.NODE_ENV === 'development' && process.env.ALLOW_DEMO_AUTH === 'true') {
+    if (process.env.NODE_ENV === 'production') {
+      console.error('[api-auth] CRITICAL: Supabase not configured in production!');
+      return { authenticated: false, error: NextResponse.json({ error: 'Service non disponible — configuration manquante' }, { status: 503 }) };
+    }
+    // Dev only: demo mode with explicit opt-in
+    if (process.env.ALLOW_DEMO_AUTH === 'true') {
       return { authenticated: true, userId: 'demo', email: 'demo@soshub.ca' };
     }
-    if (process.env.NODE_ENV === 'development') {
-      // Demo mode without explicit opt-in: still require a token if available
-      console.warn('[api-auth] Supabase not configured. Set ALLOW_DEMO_AUTH=true to enable demo bypass.');
-    }
+    console.warn('[api-auth] Supabase not configured. Set ALLOW_DEMO_AUTH=true to enable demo bypass.');
     return { authenticated: false, error: NextResponse.json({ error: 'Service non disponible' }, { status: 503 }) };
   }
 

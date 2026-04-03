@@ -30,6 +30,42 @@ export default function CrmDashboard() {
   const [newsError, setNewsError] = useState(false);
   const [lastFetched, setLastFetched] = useState("");
 
+  // Sync & consolidation state
+  const [syncing, setSyncing] = useState(false);
+  const [syncResult, setSyncResult] = useState<{ synced?: number; alreadyExist?: number; message: string } | null>(null);
+
+  const handleSyncLeads = async () => {
+    setSyncing(true);
+    setSyncResult(null);
+    try {
+      const res = await crmFetch("/api/crm/sync-leads", { method: "POST" });
+      const data = await res.json();
+      setSyncResult({ message: data.message || data.error || "Terminé" });
+    } catch {
+      setSyncResult({ message: "Erreur réseau" });
+    } finally {
+      setSyncing(false);
+    }
+  };
+
+  const handleConsolidate = async (dryRun: boolean) => {
+    setSyncing(true);
+    setSyncResult(null);
+    try {
+      const res = await crmFetch("/api/crm/consolidate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ dryRun }),
+      });
+      const data = await res.json();
+      setSyncResult({ message: data.message || data.error || "Terminé" });
+    } catch {
+      setSyncResult({ message: "Erreur réseau" });
+    } finally {
+      setSyncing(false);
+    }
+  };
+
   // Email tracking state
   interface EmailLog {
     id: string;
@@ -206,10 +242,50 @@ export default function CrmDashboard() {
     <div className="space-y-6">
       {/* Banniere de bienvenue */}
       <div className="bg-gradient-to-r from-[#1B2559] to-[#242E6B] rounded-2xl p-6 text-white">
-        <h1 className="text-2xl font-bold">Bonjour, {currentUser.name.split(' ')[0]}</h1>
-        <p className="text-white/70 text-sm mt-1">
-          {new Date().toLocaleDateString('fr-CA', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
-        </p>
+        <div className="flex items-start justify-between">
+          <div>
+            <h1 className="text-2xl font-bold">Bonjour, {currentUser.name.split(' ')[0]}</h1>
+            <p className="text-white/70 text-sm mt-1">
+              {new Date().toLocaleDateString('fr-CA', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+            </p>
+          </div>
+          {(currentUser.role === 'superadmin' || currentUser.role === 'coordinatrice') && (
+            <div className="flex items-center gap-2">
+              <button
+                onClick={handleSyncLeads}
+                disabled={syncing}
+                className="flex items-center gap-2 px-3 py-2 bg-white/15 hover:bg-white/25 rounded-lg text-sm transition-colors disabled:opacity-50"
+                title="Synchroniser les leads orphelins vers les clients"
+              >
+                {syncing ? <Loader2 size={14} className="animate-spin" /> : <RefreshCw size={14} />}
+                Sync
+              </button>
+              <button
+                onClick={() => handleConsolidate(true)}
+                disabled={syncing}
+                className="flex items-center gap-2 px-3 py-2 bg-white/15 hover:bg-white/25 rounded-lg text-sm transition-colors disabled:opacity-50"
+                title="Vérifier les doublons (simulation)"
+              >
+                🔍 Doublons
+              </button>
+              {currentUser.role === 'superadmin' && (
+                <button
+                  onClick={() => { if (confirm('Fusionner tous les doublons? Cette action est irréversible.')) handleConsolidate(false); }}
+                  disabled={syncing}
+                  className="flex items-center gap-2 px-3 py-2 bg-red-500/30 hover:bg-red-500/50 rounded-lg text-sm transition-colors disabled:opacity-50"
+                  title="Fusionner les doublons (action réelle)"
+                >
+                  🔗 Consolider
+                </button>
+              )}
+            </div>
+          )}
+        </div>
+        {syncResult && (
+          <div className="mt-3 px-4 py-2 rounded-lg text-sm bg-white/10 text-white/80">
+            {syncResult.message}
+          </div>
+        )}
       </div>
 
       {/* Row 1: 6 stat cards */}

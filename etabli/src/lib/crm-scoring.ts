@@ -753,18 +753,24 @@ export function getMifiImprovementAdvice(profile: ScoringProfile, breakdown: Mif
 // ============================================================
 
 export const CRS_RECENT_CUTOFFS = [
-  { date: '2025-12-19', program: 'Général', score: 529, invitations: 4750 },
-  { date: '2025-11-21', program: 'Général', score: 524, invitations: 5000 },
+  // 2026 — Plus aucun tirage général depuis avril 2024, uniquement par catégorie
+  { date: '2026-03-18', program: 'Francophone', score: 393, invitations: 4000 },
+  { date: '2026-01-26', program: 'CEC', score: 520, invitations: 1000 },
+  // 2025
+  { date: '2025-12-19', program: 'Francophone', score: 399, invitations: 4750 },
+  { date: '2025-12-12', program: 'CEC', score: 515, invitations: 1000 },
+  { date: '2025-11-12', program: 'CEC', score: 533, invitations: 1000 },
   { date: '2025-10-29', program: 'Francophone', score: 410, invitations: 3200 },
-  { date: '2025-09-19', program: 'Général', score: 531, invitations: 4000 },
+  { date: '2025-09-19', program: 'Francophone', score: 446, invitations: 4000 },
   { date: '2025-08-27', program: 'STEM', score: 496, invitations: 2000 },
-  { date: '2025-07-24', program: 'Santé', score: 431, invitations: 3000 },
-  { date: '2025-06-19', program: 'Général', score: 520, invitations: 6000 },
+  { date: '2025-08-07', program: 'CEC', score: 534, invitations: 1000 },
+  { date: '2025-07-24', program: 'Santé', score: 476, invitations: 3000 },
   { date: '2025-05-31', program: 'Transport', score: 435, invitations: 1000 },
-  { date: '2025-04-23', program: 'Francophone', score: 388, invitations: 4000 },
+  { date: '2025-03-21', program: 'Francophone', score: 379, invitations: 4000 },
 ];
 
-export const MIFI_THRESHOLD_ESTIMATE = 50; // Score indicatif minimum pour invitation Arrima
+// Score compétitif PSTQ/Arrima : 590-760 pts selon le volet (dernier tirage mars 2026 : 2522 invitations)
+export const MIFI_THRESHOLD_ESTIMATE = 590; // Score compétitif estimé pour invitation Arrima PSTQ
 
 // ============================================================
 // PROFIL PAR DÉFAUT

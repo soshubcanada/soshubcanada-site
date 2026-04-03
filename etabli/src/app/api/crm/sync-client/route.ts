@@ -88,17 +88,18 @@ export async function POST(req: NextRequest) {
 
     const db = createServiceClient() as any;
 
-    // 1. Chercher le client existant par email
-    const { data: existing, error: findErr } = await db
+    // 1. Chercher le client existant par email (use limit(1) instead of single() to avoid error on duplicates)
+    const { data: existingList, error: findErr } = await db
       .from('clients')
       .select('id, status, notes, first_name, last_name, phone')
       .eq('email', sanitizedEmail)
-      .single();
+      .order('created_at', { ascending: true })
+      .limit(1);
 
-    if (findErr && findErr.code !== 'PGRST116') {
-      // PGRST116 = no rows found (normal)
+    if (findErr) {
       console.error('[sync-client] Find error:', findErr.message);
     }
+    const existing = existingList?.[0] || null;
 
     let clientId: string | null = null;
 

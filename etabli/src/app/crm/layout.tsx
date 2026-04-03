@@ -7,7 +7,7 @@ import {
   BarChart3, Settings, LogOut, ChevronLeft, ChevronRight,
   Shield, Bell, Search, DollarSign, Bot, UserCircle, Building2, FileSignature, Calculator,
   Mail, Lock, Eye, EyeOff, Loader2, AlertCircle, Briefcase, MessageSquare, Wallet,
-  Menu, X, ChevronDown, Database, Download,
+  Menu, X, ChevronDown, Database, Download, BookOpen,
 } from "lucide-react";
 import { CrmContext } from "@/lib/crm-store";
 import { useAuth } from "@/lib/useAuth";
@@ -99,6 +99,7 @@ const NAV: NavEntry[] = [
     groupLabel: "Administration", icon: Settings, perm: "canManageSettings", items: [
       { href: "/crm/parametres", icon: Settings, label: "Paramètres" },
       { href: "/crm/backup", icon: Database, label: "Sauvegarde & Export", perm: "canAccessBackup" },
+      { href: "/crm/guide-staff", icon: BookOpen, label: "Guide Staff" },
     ],
   },
 ];
@@ -151,7 +152,7 @@ export default function CrmLayout({ children }: { children: ReactNode }) {
       '/crm/portail-employeurs': 'Portail Employeurs', '/crm/agent-ai': 'SOSIA', '/crm/marketing': 'Marketing',
       '/crm/rapports': 'Rapports', '/crm/parametres': 'Paramètres',
       '/crm/ressources-humaines': 'Gestion RH', '/crm/paie': 'Paie', '/crm/messagerie': 'Messagerie',
-      '/crm/backup': 'Sauvegarde',
+      '/crm/backup': 'Sauvegarde', '/crm/guide-staff': 'Guide Staff',
     };
     const label = segments[pathname] || 'CRM';
     document.title = `${label} — SOS Hub Canada CRM`;
@@ -199,14 +200,22 @@ export default function CrmLayout({ children }: { children: ReactNode }) {
     }
   }, [isDemo]);
 
+  // Data load error tracking
+  const [dataLoadError, setDataLoadError] = useState<string | null>(null);
+  const [dataLoadRetries, setDataLoadRetries] = useState(0);
+
   // Load data ONLY after login (lazy import to speed up initial page load)
   useEffect(() => {
     if (!currentUser || dataLoaded) return;
     let cancelled = false;
+    setDataLoadError(null);
     const loadTimeout = setTimeout(() => {
-      // If data takes more than 10s, just mark as loaded with empty data
-      if (!cancelled) setDataLoaded(true);
-    }, 10000);
+      // If data takes more than 15s, mark loaded but show warning
+      if (!cancelled) {
+        setDataLoadError('Chargement lent — données partielles possibles');
+        setDataLoaded(true);
+      }
+    }, 15000);
     (async () => {
       try {
         if (isDemo) {
@@ -225,12 +234,20 @@ export default function CrmLayout({ children }: { children: ReactNode }) {
             svc.fetchClients(), svc.fetchCases(), svc.fetchAppointments(), svc.fetchContracts(),
           ]);
           if (cancelled) return;
+          // Validate: warn if Supabase returned empty but we expected data
+          if (dbClients.length === 0 && dbCases.length === 0) {
+            console.warn('[CRM Layout] Supabase returned 0 clients and 0 cases — possible connection issue');
+            setDataLoadError('Base de données: aucun client trouvé. Vérifiez la connexion Supabase.');
+          }
           setClients(dbClients);
           setCases(dbCases);
           setAppointments(dbAppts);
           setContracts(dbContracts);
         }
-      } catch { /* continue with empty data */ }
+      } catch (err: any) {
+        console.error('[CRM Layout] Data load error:', err);
+        setDataLoadError(`Erreur de chargement: ${err?.message || 'connexion échouée'}. Les données affichées peuvent être incomplètes.`);
+      }
       if (!cancelled) {
         clearTimeout(loadTimeout);
         setDataLoaded(true);
@@ -238,7 +255,7 @@ export default function CrmLayout({ children }: { children: ReactNode }) {
     })();
     return () => { cancelled = true; clearTimeout(loadTimeout); };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentUser, isDemo]);
+  }, [currentUser, isDemo, dataLoadRetries]);
 
   // --- Supabase Realtime + Polling (auto-refresh clients & data) ---
   const realtimeTables = useMemo(() => ['clients', 'cases', 'appointments', 'contracts', 'leads'], []);
@@ -403,7 +420,14 @@ export default function CrmLayout({ children }: { children: ReactNode }) {
               {(loginError || error) && (
                 <div className="flex items-center gap-2 p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700">
                   <AlertCircle size={16} className="shrink-0" />
-                  <span>{loginError || error}</span>
+                  <div className="flex-1">
+                    <span>{loginError || error}</span>
+                    {(error?.includes('introuvable') || error?.includes('non disponible')) && (
+                      <button type="button" onClick={() => window.location.reload()} className="ml-2 underline font-medium hover:text-red-900">
+                        Réessayer
+                      </button>
+                    )}
+                  </div>
                 </div>
               )}
 
@@ -769,6 +793,20 @@ export default function CrmLayout({ children }: { children: ReactNode }) {
               </div>
             </div>
           </header>
+          {dataLoadError && (
+            <div className="mx-4 mt-4 md:mx-6 md:mt-6 bg-amber-50 border border-amber-200 rounded-lg p-3 flex items-center justify-between">
+              <div className="flex items-center gap-2 text-amber-800 text-sm">
+                <svg className="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4.5c-.77-.833-2.694-.833-3.464 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z" /></svg>
+                <span>{dataLoadError}</span>
+              </div>
+              <button
+                onClick={() => { setDataLoaded(false); setDataLoadError(null); setDataLoadRetries(r => r + 1); }}
+                className="px-3 py-1 bg-amber-600 text-white text-xs rounded hover:bg-amber-700 transition-colors flex-shrink-0"
+              >
+                Réessayer
+              </button>
+            </div>
+          )}
           <main className="p-4 md:p-6">{children}</main>
         </div>
       </div>

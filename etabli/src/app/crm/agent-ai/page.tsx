@@ -10,11 +10,22 @@ import {
   ChevronDown, ChevronRight, Copy, Check, ListChecks, Mail, Scale,
   Bell, ClipboardList, Globe, MapPin, GraduationCap, Briefcase,
   Heart, FileCheck, Timer, MessageSquare, ExternalLink, Info,
+  Paperclip, X as XIcon, FileImage, File, Loader2,
 } from "lucide-react";
+import { crmFetch } from "@/lib/crm-fetch";
 
 // ========================================================
 // TYPES
 // ========================================================
+
+interface AttachedFile {
+  name: string;
+  type: string;
+  size: number;
+  textContent?: string; // extracted text for AI analysis
+  base64?: string; // base64 data for images (vision API)
+  mediaType?: string; // MIME type for vision API
+}
 
 interface Message {
   id: string;
@@ -22,6 +33,7 @@ interface Message {
   content: string;
   timestamp: string;
   suggestions?: string[];
+  files?: AttachedFile[];
 }
 
 // ========================================================
@@ -390,8 +402,97 @@ export default function AgentAIPage() {
   const [selectedCaseId, setSelectedCaseId] = useState("");
   const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({});
   const [copiedId, setCopiedId] = useState<string | null>(null);
+  const [attachedFiles, setAttachedFiles] = useState<AttachedFile[]>([]);
+  const [isDragging, setIsDragging] = useState(false);
+  const [aiLoading, setAiLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const ACCEPTED_TYPES = [
+    "application/pdf",
+    "text/plain",
+    "text/csv",
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    "image/png", "image/jpeg", "image/webp",
+  ];
+  const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB
+  const MAX_FILES = 5;
+
+  const extractPdfText = async (file: globalThis.File): Promise<string> => {
+    try {
+      const pdfjsLib = await import("pdfjs-dist");
+      pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.mjs`;
+      const arrayBuffer = await file.arrayBuffer();
+      const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+      const pages: string[] = [];
+      const maxPages = Math.min(pdf.numPages, 30);
+      for (let i = 1; i <= maxPages; i++) {
+        const page = await pdf.getPage(i);
+        const content = await page.getTextContent();
+        const text = content.items.map((item: any) => item.str).join(" ");
+        if (text.trim()) pages.push(`[Page ${i}]\n${text}`);
+      }
+      const result = pages.join("\n\n");
+      return result.slice(0, 30000) || `[PDF sans texte extractible: ${file.name}]`;
+    } catch (err) {
+      console.error("PDF extraction error:", err);
+      return `[Erreur extraction PDF: ${file.name}]`;
+    }
+  };
+
+  const readFileAsBase64 = (file: globalThis.File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const dataUrl = reader.result as string;
+        resolve(dataUrl.split(",")[1] || "");
+      };
+      reader.onerror = () => reject(new Error("Lecture fichier échouée"));
+      reader.readAsDataURL(file);
+    });
+  };
+
+  const readFileAsText = (file: globalThis.File): Promise<string> => {
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve((reader.result as string).slice(0, 30000));
+      reader.onerror = () => resolve(`[Fichier: ${file.name}]`);
+      reader.readAsText(file);
+    });
+  };
+
+  const handleFileSelect = async (files: FileList | null) => {
+    if (!files) return;
+    const newFiles: AttachedFile[] = [];
+    for (let i = 0; i < Math.min(files.length, MAX_FILES - attachedFiles.length); i++) {
+      const f = files[i];
+      if (f.size > MAX_FILE_SIZE) continue;
+
+      if (f.type === "application/pdf") {
+        const textContent = await extractPdfText(f);
+        newFiles.push({ name: f.name, type: f.type, size: f.size, textContent });
+      } else if (f.type.startsWith("image/")) {
+        const base64 = await readFileAsBase64(f);
+        const mediaType = f.type as string;
+        newFiles.push({ name: f.name, type: f.type, size: f.size, base64, mediaType, textContent: `[Image: ${f.name}]` });
+      } else {
+        const textContent = await readFileAsText(f);
+        newFiles.push({ name: f.name, type: f.type, size: f.size, textContent });
+      }
+    }
+    setAttachedFiles(prev => [...prev, ...newFiles].slice(0, MAX_FILES));
+  };
+
+  const removeFile = (idx: number) => {
+    setAttachedFiles(prev => prev.filter((_, i) => i !== idx));
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+    handleFileSelect(e.dataTransfer.files);
+  };
 
   const scrollToBottom = useCallback(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -1077,36 +1178,245 @@ export default function AgentAIPage() {
   };
 
   // ========================================================
+  // LOAD DOSSIER DOCUMENTS FOR AI ANALYSIS
+  // ========================================================
+
+  const getDossierDocuments = useCallback(() => {
+    const docs: { name: string; category: string; status: string; notes?: string; caseId?: string; expiryDate?: string; uploadedAt: string }[] = [];
+
+    if (selectedContext === "dossier" && selectedCaseId) {
+      const caseItem = cases.find(c => c.id === selectedCaseId);
+      if (caseItem) {
+        const client = clients.find(c => c.id === caseItem.clientId);
+        if (client) {
+          client.documents
+            .filter(d => !d.caseId || d.caseId === selectedCaseId)
+            .forEach(d => docs.push({
+              name: d.name,
+              category: d.category || "autre",
+              status: d.status || "televerse",
+              notes: d.notes,
+              caseId: d.caseId,
+              expiryDate: d.expiryDate,
+              uploadedAt: d.uploadedAt,
+            }));
+        }
+      }
+    } else if (selectedContext === "client" && selectedClientId) {
+      const client = clients.find(c => c.id === selectedClientId);
+      if (client) {
+        client.documents.forEach(d => docs.push({
+          name: d.name,
+          category: d.category || "autre",
+          status: d.status || "televerse",
+          notes: d.notes,
+          caseId: d.caseId,
+          expiryDate: d.expiryDate,
+          uploadedAt: d.uploadedAt,
+        }));
+      }
+    }
+    return docs;
+  }, [selectedContext, selectedCaseId, selectedClientId, clients, cases]);
+
+  const handleLoadDossierDocs = () => {
+    const docs = getDossierDocuments();
+    if (docs.length === 0) return;
+
+    const clientName = selectedClientId
+      ? getClientName(selectedClientId)
+      : selectedCaseId
+        ? getClientName(cases.find(c => c.id === selectedCaseId)?.clientId || "")
+        : "";
+
+    const caseTitle = selectedCaseId ? cases.find(c => c.id === selectedCaseId)?.title || "" : "";
+
+    // Build a rich document inventory for AI analysis
+    const docSummary = docs.map(d =>
+      `- **${d.name}** | Catégorie: ${d.category} | Statut: ${d.status}${d.expiryDate ? ` | Expiration: ${d.expiryDate}` : ""}${d.notes ? ` | Notes: ${d.notes}` : ""}`
+    ).join("\n");
+
+    const prompt = `Analysez le dossier documentaire ${caseTitle ? `du dossier "${caseTitle}"` : ""} ${clientName ? `de ${clientName}` : ""} et identifiez :\n` +
+      `1. Documents manquants ou incomplets\n` +
+      `2. Documents expirés ou bientôt expirés\n` +
+      `3. Recommandations pour compléter le dossier\n` +
+      `4. Points d'attention avant soumission\n\n` +
+      `📂 INVENTAIRE DES DOCUMENTS AU DOSSIER (${docs.length}) :\n${docSummary}`;
+
+    handleSend(prompt);
+  };
+
+  const dossierDocCount = getDossierDocuments().length;
+
+  // ========================================================
   // SEND MESSAGE
   // ========================================================
 
-  const handleSend = (text?: string) => {
+  const handleSend = async (text?: string) => {
     const msg = text || input.trim();
-    if (!msg) return;
+    if (!msg && attachedFiles.length === 0) return;
+
+    const hasFiles = attachedFiles.length > 0;
+    const currentFiles = [...attachedFiles];
 
     const userMessage: Message = {
       id: `m${Date.now()}`,
       role: "user",
-      content: msg,
+      content: msg || (hasFiles ? `Analysez ${currentFiles.map(f => f.name).join(", ")}` : ""),
       timestamp: new Date().toLocaleTimeString("fr-CA", { hour: "2-digit", minute: "2-digit" }),
+      files: hasFiles ? currentFiles.map(f => ({ name: f.name, type: f.type, size: f.size })) : undefined,
     };
 
     setMessages(prev => [...prev, userMessage]);
     setInput("");
+    setAttachedFiles([]);
     setIsTyping(true);
 
-    setTimeout(() => {
-      const response = generateResponse(msg);
-      const aiMessage: Message = {
-        id: `m${Date.now() + 1}`,
-        role: "assistant",
-        content: response.content,
-        timestamp: new Date().toLocaleTimeString("fr-CA", { hour: "2-digit", minute: "2-digit" }),
-        suggestions: response.suggestions,
-      };
-      setMessages(prev => [...prev, aiMessage]);
+    // If files are attached, use AI API for deep analysis
+    if (hasFiles) {
+      setAiLoading(true);
+      try {
+        // Separate images (send as vision) from text documents
+        const imageFiles = currentFiles.filter(f => f.base64 && f.mediaType?.startsWith("image/"));
+        const textFiles = currentFiles.filter(f => !f.base64 || !f.mediaType?.startsWith("image/"));
+
+        // Build text document context
+        const textContext = textFiles.length > 0
+          ? "\n\n📎 DOCUMENTS TEXTE JOINTS:\n" + textFiles.map(f =>
+              `\n--- DOCUMENT: ${f.name} (${f.type}, ${(f.size / 1024).toFixed(0)} Ko) ---\n${f.textContent || "[Contenu non extractible]"}\n--- FIN DOCUMENT ---`
+            ).join("\n")
+          : "";
+
+        // Build image descriptions for the text part
+        const imageDesc = imageFiles.length > 0
+          ? `\n\n🖼️ IMAGES JOINTES: ${imageFiles.map(f => f.name).join(", ")} — Analysez le contenu visuel de chaque image.`
+          : "";
+
+        const fullMessage = `${msg || "Analysez les documents joints et donnez-moi une analyse complète."}${textContext}${imageDesc}`;
+
+        // Build images array for vision API
+        const images = imageFiles
+          .filter(f => f.base64 && f.mediaType)
+          .map(f => ({ base64: f.base64!, mediaType: f.mediaType! }));
+
+        // Build context
+        const context: Record<string, string> = {};
+        if (selectedClientId) {
+          const client = clients.find(c => c.id === selectedClientId);
+          if (client) context.clientName = `${client.firstName} ${client.lastName}`;
+        }
+        if (selectedCaseId) {
+          const caseItem = cases.find(c => c.id === selectedCaseId);
+          if (caseItem) {
+            const prog = IMMIGRATION_PROGRAMS.find(p => p.id === caseItem.programId);
+            context.program = prog?.name || caseItem.programId;
+            context.status = caseItem.status;
+          }
+        }
+
+        const history = messages.filter(m => m.role === "user" || m.role === "assistant").slice(-10).map(m => ({
+          role: m.role,
+          content: m.content,
+        }));
+
+        const res = await crmFetch("/api/crm/ai-chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message: fullMessage, history, context, mode: "staff", images }),
+        });
+
+        const data = await res.json();
+        const reply = data.reply || data.error || "Erreur lors de l'analyse du document.";
+
+        const aiMessage: Message = {
+          id: `m${Date.now() + 1}`,
+          role: "assistant",
+          content: reply,
+          timestamp: new Date().toLocaleTimeString("fr-CA", { hour: "2-digit", minute: "2-digit" }),
+          suggestions: ["Analyser un autre document", "Points faibles du dossier?", "Recommandations?"],
+        };
+        setMessages(prev => [...prev, aiMessage]);
+      } catch (err) {
+        console.error("AI analysis error:", err);
+        setMessages(prev => [...prev, {
+          id: `m${Date.now() + 1}`,
+          role: "assistant",
+          content: "**Erreur** : Impossible de contacter le service d'analyse IA. Vérifiez votre connexion et réessayez.\n\nSi le problème persiste, vous pouvez copier le contenu du document et le coller directement dans le chat.",
+          timestamp: new Date().toLocaleTimeString("fr-CA", { hour: "2-digit", minute: "2-digit" }),
+        }]);
+      }
+      setAiLoading(false);
       setIsTyping(false);
-    }, 600 + Math.random() * 1000);
+    } else {
+      // No files — use local response engine first, fallback to AI API for unknown questions
+      const response = generateResponse(msg);
+
+      if (response.content.includes("Je n'ai pas trouve") || response.content.includes("question plus specifique")) {
+        // Local engine couldn't answer — forward to AI API
+        setAiLoading(true);
+        try {
+          const context: Record<string, string> = {};
+          if (selectedClientId) {
+            const client = clients.find(c => c.id === selectedClientId);
+            if (client) context.clientName = `${client.firstName} ${client.lastName}`;
+          }
+          if (selectedCaseId) {
+            const caseItem = cases.find(c => c.id === selectedCaseId);
+            if (caseItem) {
+              const prog = IMMIGRATION_PROGRAMS.find(p => p.id === caseItem.programId);
+              context.program = prog?.name || caseItem.programId;
+              context.status = caseItem.status;
+            }
+          }
+
+          const history = messages.filter(m => m.role === "user" || m.role === "assistant").slice(-10).map(m => ({
+            role: m.role,
+            content: m.content,
+          }));
+
+          const res = await crmFetch("/api/crm/ai-chat", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ message: msg, history, context, mode: "staff" }),
+          });
+
+          const data = await res.json();
+          const reply = data.reply || data.error || "Désolé, je n'ai pas pu générer une réponse.";
+
+          setMessages(prev => [...prev, {
+            id: `m${Date.now() + 1}`,
+            role: "assistant",
+            content: reply,
+            timestamp: new Date().toLocaleTimeString("fr-CA", { hour: "2-digit", minute: "2-digit" }),
+            suggestions: ["Autre question", "Analyser un dossier"],
+          }]);
+        } catch {
+          // If API fails, show local response anyway
+          setMessages(prev => [...prev, {
+            id: `m${Date.now() + 1}`,
+            role: "assistant",
+            content: response.content,
+            timestamp: new Date().toLocaleTimeString("fr-CA", { hour: "2-digit", minute: "2-digit" }),
+            suggestions: response.suggestions,
+          }]);
+        }
+        setAiLoading(false);
+        setIsTyping(false);
+      } else {
+        // Local engine answered — use it directly
+        setTimeout(() => {
+          const aiMessage: Message = {
+            id: `m${Date.now() + 1}`,
+            role: "assistant",
+            content: response.content,
+            timestamp: new Date().toLocaleTimeString("fr-CA", { hour: "2-digit", minute: "2-digit" }),
+            suggestions: response.suggestions,
+          };
+          setMessages(prev => [...prev, aiMessage]);
+          setIsTyping(false);
+        }, 400 + Math.random() * 600);
+      }
+    }
   };
 
   const resetConversation = () => {
@@ -1506,6 +1816,16 @@ export default function AgentAIPage() {
                     }`}
                   >
                     {msg.role === "assistant" ? renderContent(msg.content) : <span className="whitespace-pre-wrap">{msg.content}</span>}
+                    {msg.files && msg.files.length > 0 && (
+                      <div className="flex flex-wrap gap-1.5 mt-2 pt-2 border-t border-white/20">
+                        {msg.files.map((f, i) => (
+                          <span key={i} className="inline-flex items-center gap-1 text-[11px] bg-white/15 rounded px-2 py-0.5">
+                            {f.type.startsWith("image/") ? <FileImage size={11} /> : <File size={11} />}
+                            {f.name.length > 25 ? f.name.slice(0, 22) + "..." : f.name}
+                          </span>
+                        ))}
+                      </div>
+                    )}
                   </div>
                   {msg.role === "assistant" && (
                     <div className="flex items-center gap-2 mt-1.5">
@@ -1565,32 +1885,109 @@ export default function AgentAIPage() {
             <div ref={messagesEndRef} />
           </div>
 
-          {/* Input Area */}
-          <div className="mt-3 flex gap-2">
-            <input
-              ref={inputRef}
-              type="text"
-              value={input}
-              onChange={e => setInput(e.target.value)}
-              onKeyDown={e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); handleSend(); } }}
-              placeholder={
-                selectedContext === "client" && selectedClientId
-                  ? `Question sur ${getClientName(selectedClientId)}...`
-                  : selectedContext === "dossier" && selectedCaseId
-                    ? "Question sur ce dossier..."
-                    : "Posez une question sur l'immigration, les delais, les programmes..."
-              }
-              className="flex-1 px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#D4A03C]/30 focus:border-[#D4A03C] bg-white placeholder:text-gray-400"
-            />
-            <button
-              onClick={() => handleSend()}
-              disabled={!input.trim() || isTyping}
-              className="px-5 py-3 bg-[#1B2559] text-white rounded-xl hover:bg-[#242E6B] disabled:opacity-40 disabled:cursor-not-allowed transition-all flex items-center gap-2"
-            >
-              <Send size={16} />
-              <span className="text-sm font-medium hidden sm:inline">Envoyer</span>
-            </button>
+          {/* File Drop Zone */}
+          <div
+            className={`mt-3 transition-all ${isDragging ? "ring-2 ring-[#D4A03C] bg-amber-50/50 rounded-xl" : ""}`}
+            onDragOver={e => { e.preventDefault(); setIsDragging(true); }}
+            onDragLeave={() => setIsDragging(false)}
+            onDrop={handleDrop}
+          >
+            {isDragging && (
+              <div className="flex items-center justify-center gap-2 py-4 text-sm text-[#D4A03C] font-medium">
+                <Paperclip size={16} />
+                Deposez vos fichiers ici pour analyse IA
+              </div>
+            )}
+
+            {/* Attached Files Preview */}
+            {attachedFiles.length > 0 && (
+              <div className="flex flex-wrap gap-2 mb-2 px-1">
+                {attachedFiles.map((f, idx) => (
+                  <div key={idx} className="flex items-center gap-2 bg-blue-50 border border-blue-200 rounded-lg px-3 py-1.5 text-xs group">
+                    {f.type.startsWith("image/") ? <FileImage size={14} className="text-blue-500" /> : f.type === "application/pdf" ? <FileText size={14} className="text-red-500" /> : <File size={14} className="text-gray-500" />}
+                    <span className="max-w-[140px] truncate font-medium text-gray-700">{f.name}</span>
+                    <span className="text-gray-400">{(f.size / 1024).toFixed(0)} Ko</span>
+                    <button onClick={() => removeFile(idx)} className="p-0.5 rounded hover:bg-red-100 text-gray-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition">
+                      <XIcon size={12} />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* Input Area */}
+            <div className="flex gap-2">
+              {/* File Upload Button */}
+              <input
+                ref={fileInputRef}
+                type="file"
+                multiple
+                accept=".pdf,.txt,.csv,.docx,.png,.jpg,.jpeg,.webp"
+                className="hidden"
+                onChange={e => { handleFileSelect(e.target.files); e.target.value = ""; }}
+              />
+              <button
+                onClick={() => fileInputRef.current?.click()}
+                disabled={attachedFiles.length >= MAX_FILES || isTyping}
+                className="px-3 py-3 border border-gray-200 rounded-xl hover:bg-gray-50 hover:border-[#D4A03C] disabled:opacity-40 disabled:cursor-not-allowed transition-all text-gray-500 hover:text-[#D4A03C] relative group"
+                title={`Joindre un fichier (${attachedFiles.length}/${MAX_FILES}) — PDF, images, texte`}
+              >
+                <Paperclip size={16} />
+                {attachedFiles.length > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-[#D4A03C] text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center">{attachedFiles.length}</span>
+                )}
+              </button>
+
+              {/* Load Dossier Documents Button */}
+              {dossierDocCount > 0 && (
+                <button
+                  onClick={handleLoadDossierDocs}
+                  disabled={isTyping}
+                  className="px-3 py-3 border border-[#D4A03C]/30 bg-amber-50 rounded-xl hover:bg-amber-100 hover:border-[#D4A03C] disabled:opacity-40 disabled:cursor-not-allowed transition-all text-[#D4A03C] relative group"
+                  title={`Analyser ${dossierDocCount} document(s) du dossier`}
+                >
+                  <FolderOpen size={16} />
+                  <span className="absolute -top-1 -right-1 bg-[#1B2559] text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center">{dossierDocCount}</span>
+                </button>
+              )}
+
+              <input
+                ref={inputRef}
+                type="text"
+                value={input}
+                onChange={e => setInput(e.target.value)}
+                onKeyDown={e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); handleSend(); } }}
+                placeholder={
+                  attachedFiles.length > 0
+                    ? "Decrivez ce que vous voulez analyser dans ces fichiers..."
+                    : selectedContext === "client" && selectedClientId
+                      ? `Question sur ${getClientName(selectedClientId)}...`
+                      : selectedContext === "dossier" && selectedCaseId
+                        ? "Question sur ce dossier..."
+                        : "Posez une question ou joignez un document pour analyse..."
+                }
+                className="flex-1 px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#D4A03C]/30 focus:border-[#D4A03C] bg-white placeholder:text-gray-400"
+              />
+              <button
+                onClick={() => handleSend()}
+                disabled={(!input.trim() && attachedFiles.length === 0) || isTyping}
+                className="px-5 py-3 bg-[#1B2559] text-white rounded-xl hover:bg-[#242E6B] disabled:opacity-40 disabled:cursor-not-allowed transition-all flex items-center gap-2"
+              >
+                {aiLoading ? <Loader2 size={16} className="animate-spin" /> : <Send size={16} />}
+                <span className="text-sm font-medium hidden sm:inline">{aiLoading ? "Analyse..." : "Envoyer"}</span>
+              </button>
+            </div>
           </div>
+
+          {/* File upload hint */}
+          {attachedFiles.length === 0 && !isDragging && (
+            <div className="flex items-center gap-2 mt-1.5 px-1">
+              <Paperclip size={10} className="text-gray-300" />
+              <span className="text-[10px] text-gray-400">
+                Glissez-deposez ou cliquez 📎 pour joindre des fichiers{dossierDocCount > 0 ? " | 📂 Cliquez le dossier pour analyser les documents du client" : ""} (PDF, images, texte — max 10 Mo)
+              </span>
+            </div>
+          )}
 
           {/* Footer disclaimer */}
           <div className="flex items-center justify-center gap-1.5 mt-2">

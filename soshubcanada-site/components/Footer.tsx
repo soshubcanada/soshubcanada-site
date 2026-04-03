@@ -97,6 +97,11 @@ export function Footer() {
                   Portail client <ExternalLink className="w-3 h-3" />
                 </a>
               </li>
+              <li className="pt-2 mt-2 border-t border-white/10">
+                <a href="https://www.aidoqc.ca" target="_blank" rel="noopener noreferrer" className="text-sm hover:text-gold transition-colors flex items-center gap-1 font-sans font-semibold">
+                  AidoQC — Aide à domicile <ExternalLink className="w-3 h-3" />
+                </a>
+              </li>
             </ul>
           </div>
 

@@ -219,7 +219,7 @@
 
       const data = {};
       new FormData(form).forEach((val, key) => data[key] = val);
-      data.source = window.location.href;
+      data.source = form.dataset.source || formId;
       data.created_at = new Date().toISOString();
 
       try {

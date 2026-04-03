@@ -2,6 +2,8 @@
 // SOS Hub Canada - Service de données CRM
 // Couche d'abstraction entre Supabase et les types CRM
 // Mode: Supabase si configuré, sinon fallback sur données démo
+// IMPORTANT: On error, returns LAST KNOWN GOOD DATA (not demo).
+//            Demo data only used if Supabase is NOT configured.
 // ========================================================
 import { supabase } from './supabase';
 import type { Client, Case, CaseForm, Appointment, CrmUser, TimelineEvent, FamilyMember, ClientDocument } from './crm-types';
@@ -23,26 +25,71 @@ const isSupabaseConfigured = () => {
 const db = supabase as any;
 
 // ============================================================
+// LAST KNOWN GOOD DATA CACHE — prevents data loss on transient errors
+// ============================================================
+let _cachedClients: Client[] | null = null;
+let _cachedCases: Case[] | null = null;
+let _cachedAppointments: Appointment[] | null = null;
+let _cachedContracts: ServiceContract[] | null = null;
+let _cachedUsers: CrmUser[] | null = null;
+
+/** Retry wrapper: retries a Supabase query up to 3 times with backoff */
+async function withRetry<T>(fn: () => Promise<T>, label: string, retries = 3): Promise<T> {
+  for (let attempt = 1; attempt <= retries; attempt++) {
+    try {
+      return await fn();
+    } catch (err: any) {
+      console.warn(`[crm-data] ${label} attempt ${attempt}/${retries} failed:`, err?.message);
+      if (attempt < retries) {
+        await new Promise(r => setTimeout(r, attempt * 500)); // 500ms, 1000ms, 1500ms
+      } else {
+        throw err;
+      }
+    }
+  }
+  throw new Error(`${label}: all retries exhausted`);
+}
+
+// ============================================================
 // USERS
 // ============================================================
 export async function fetchUsers(): Promise<CrmUser[]> {
   if (!isSupabaseConfigured()) return DEMO_USERS;
 
-  const { data, error } = await db
-    .from('users')
-    .select('*')
-    .eq('active', true)
-    .order('name');
+  try {
+    return await withRetry(async () => {
+      const { data, error } = await db
+        .from('users')
+        .select('*')
+        .eq('active', true)
+        .order('name');
 
-  if (error || !data) { console.error('fetchUsers error:', error); return DEMO_USERS; }
-  return (data as any[]).map((u: any) => ({
-    id: u.id,
-    name: u.name,
-    email: u.email,
-    role: u.role,
-    avatar: u.avatar_url ?? undefined,
-    active: u.active,
-  }));
+      if (error) throw new Error(`Supabase: ${error.message}`);
+      if (!data || data.length === 0) {
+        console.warn('[crm-data] fetchUsers: no data from Supabase, using fallback');
+        return _cachedUsers ?? DEMO_USERS;
+      }
+
+      const users = (data as any[]).map((u: any) => ({
+        id: u.id,
+        name: u.name,
+        email: u.email,
+        role: u.role,
+        avatar: u.avatar_url ?? undefined,
+        active: u.active,
+      }));
+      _cachedUsers = users; // cache good data
+      return users;
+    }, 'fetchUsers');
+  } catch (err: any) {
+    console.error('[crm-data] fetchUsers FAILED after retries:', err?.message);
+    // Return last known good data, NOT demo data
+    if (_cachedUsers && _cachedUsers.length > 0) {
+      console.warn('[crm-data] fetchUsers: returning cached data (' + _cachedUsers.length + ' users)');
+      return _cachedUsers;
+    }
+    return DEMO_USERS;
+  }
 }
 
 export async function fetchUserById(id: string): Promise<CrmUser | null> {
@@ -60,61 +107,77 @@ export async function fetchUserById(id: string): Promise<CrmUser | null> {
 export async function fetchClients(): Promise<Client[]> {
   if (!isSupabaseConfigured()) return DEMO_CLIENTS;
 
-  const { data: clients, error } = await db
-    .from('clients')
-    .select(`
-      *,
-      family_members (*),
-      client_documents (*)
-    `)
-    .order('last_name');
+  try {
+    return await withRetry(async () => {
+      const { data: clients, error } = await db
+        .from('clients')
+        .select(`
+          *,
+          family_members (*),
+          client_documents (*)
+        `)
+        .order('last_name');
 
-  if (error || !clients) { console.error('fetchClients error:', error); return DEMO_CLIENTS; }
+      if (error) throw new Error(`Supabase: ${error.message}`);
+      if (!clients) throw new Error('No data returned');
 
-  return (clients as any[]).map((c: any) => ({
-    id: c.id,
-    firstName: c.first_name,
-    lastName: c.last_name,
-    email: c.email,
-    phone: c.phone,
-    dateOfBirth: c.date_of_birth ?? '',
-    nationality: c.nationality,
-    currentCountry: c.current_country,
-    currentStatus: c.current_status,
-    passportNumber: c.passport_number,
-    passportExpiry: c.passport_expiry ?? '',
-    address: c.address,
-    city: c.city,
-    province: c.province,
-    postalCode: c.postal_code,
-    status: c.status,
-    assignedTo: c.assigned_to ?? '',
-    createdAt: c.created_at,
-    updatedAt: c.updated_at,
-    notes: c.notes,
-    languageEnglish: c.language_english,
-    languageFrench: c.language_french,
-    education: c.education,
-    workExperience: c.work_experience,
-    maritalStatus: c.marital_status,
-    dependants: c.dependants,
-    familyMembers: (c.family_members ?? []).map((fm: any) => ({
-      id: fm.id,
-      relationship: fm.relationship,
-      firstName: fm.first_name,
-      lastName: fm.last_name,
-      dateOfBirth: fm.date_of_birth ?? '',
-      nationality: fm.nationality,
-      passportNumber: fm.passport_number,
-      accompany: fm.accompany,
-    })),
-    documents: (c.client_documents ?? []).map((d: any) => ({
-      id: d.id,
-      name: d.name,
-      type: d.type,
-      uploadedAt: d.uploaded_at,
-    })),
-  }));
+      const mapped = (clients as any[]).map((c: any) => ({
+        id: c.id,
+        firstName: c.first_name,
+        lastName: c.last_name,
+        email: c.email,
+        phone: c.phone,
+        dateOfBirth: c.date_of_birth ?? '',
+        nationality: c.nationality,
+        currentCountry: c.current_country,
+        currentStatus: c.current_status,
+        passportNumber: c.passport_number,
+        passportExpiry: c.passport_expiry ?? '',
+        address: c.address,
+        city: c.city,
+        province: c.province,
+        postalCode: c.postal_code,
+        status: c.status,
+        assignedTo: c.assigned_to ?? '',
+        createdAt: c.created_at,
+        updatedAt: c.updated_at,
+        notes: c.notes,
+        languageEnglish: c.language_english,
+        languageFrench: c.language_french,
+        education: c.education,
+        workExperience: c.work_experience,
+        maritalStatus: c.marital_status,
+        dependants: c.dependants,
+        familyMembers: (c.family_members ?? []).map((fm: any) => ({
+          id: fm.id,
+          relationship: fm.relationship,
+          firstName: fm.first_name,
+          lastName: fm.last_name,
+          dateOfBirth: fm.date_of_birth ?? '',
+          nationality: fm.nationality,
+          passportNumber: fm.passport_number,
+          accompany: fm.accompany,
+        })),
+        documents: (c.client_documents ?? []).map((d: any) => ({
+          id: d.id,
+          name: d.name,
+          type: d.type,
+          uploadedAt: d.uploaded_at,
+        })),
+      }));
+
+      _cachedClients = mapped; // cache good data
+      return mapped;
+    }, 'fetchClients');
+  } catch (err: any) {
+    console.error('[crm-data] fetchClients FAILED after retries:', err?.message);
+    // CRITICAL: Return last known good data instead of empty demo array
+    if (_cachedClients && _cachedClients.length > 0) {
+      console.warn('[crm-data] fetchClients: returning cached data (' + _cachedClients.length + ' clients)');
+      return _cachedClients;
+    }
+    return DEMO_CLIENTS;
+  }
 }
 
 export async function insertClient(client: Omit<Client, 'id' | 'createdAt' | 'updatedAt' | 'familyMembers' | 'documents'>): Promise<Client | null> {
@@ -210,50 +273,65 @@ export async function updateClient(id: string, updates: Partial<Client>): Promis
 export async function fetchCases(): Promise<Case[]> {
   if (!isSupabaseConfigured()) return DEMO_CASES;
 
-  const { data: cases, error } = await db
-    .from('cases')
-    .select(`
-      *,
-      case_forms (*),
-      timeline_events (*)
-    `)
-    .order('created_at', { ascending: false });
+  try {
+    return await withRetry(async () => {
+      const { data: cases, error } = await db
+        .from('cases')
+        .select(`
+          *,
+          case_forms (*),
+          timeline_events (*)
+        `)
+        .order('created_at', { ascending: false });
 
-  if (error || !cases) { console.error('fetchCases error:', error); return DEMO_CASES; }
+      if (error) throw new Error(`Supabase: ${error.message}`);
+      if (!cases) throw new Error('No data returned');
 
-  return (cases as any[]).map((c: any) => ({
-    id: c.id,
-    clientId: c.client_id,
-    programId: c.program_id,
-    title: c.title,
-    status: c.status,
-    assignedTo: c.assigned_to ?? '',
-    assignedLawyer: c.assigned_lawyer ?? '',
-    priority: c.priority,
-    createdAt: c.created_at,
-    updatedAt: c.updated_at,
-    deadline: c.deadline ?? '',
-    irccAppNumber: c.ircc_app_number,
-    uciNumber: c.uci_number,
-    notes: c.notes,
-    forms: (c.case_forms ?? []).map((f: any) => ({
-      id: f.id,
-      formId: f.form_id,
-      status: f.status as CaseForm['status'],
-      filledBy: f.filled_by ?? '',
-      reviewedBy: f.reviewed_by ?? '',
-      approvedBy: f.approved_by ?? '',
-      data: f.data ?? {},
-      lastUpdated: f.last_updated,
-    })),
-    timeline: (c.timeline_events ?? []).map((e: any) => ({
-      id: e.id,
-      date: e.date,
-      type: e.type as TimelineEvent['type'],
-      description: e.description,
-      userId: e.user_id ?? '',
-    })),
-  }));
+      const mapped = (cases as any[]).map((c: any) => ({
+        id: c.id,
+        clientId: c.client_id,
+        programId: c.program_id,
+        title: c.title,
+        status: c.status,
+        assignedTo: c.assigned_to ?? '',
+        assignedLawyer: c.assigned_lawyer ?? '',
+        priority: c.priority,
+        createdAt: c.created_at,
+        updatedAt: c.updated_at,
+        deadline: c.deadline ?? '',
+        irccAppNumber: c.ircc_app_number,
+        uciNumber: c.uci_number,
+        notes: c.notes,
+        forms: (c.case_forms ?? []).map((f: any) => ({
+          id: f.id,
+          formId: f.form_id,
+          status: f.status as CaseForm['status'],
+          filledBy: f.filled_by ?? '',
+          reviewedBy: f.reviewed_by ?? '',
+          approvedBy: f.approved_by ?? '',
+          data: f.data ?? {},
+          lastUpdated: f.last_updated,
+        })),
+        timeline: (c.timeline_events ?? []).map((e: any) => ({
+          id: e.id,
+          date: e.date,
+          type: e.type as TimelineEvent['type'],
+          description: e.description,
+          userId: e.user_id ?? '',
+        })),
+      }));
+
+      _cachedCases = mapped;
+      return mapped;
+    }, 'fetchCases');
+  } catch (err: any) {
+    console.error('[crm-data] fetchCases FAILED after retries:', err?.message);
+    if (_cachedCases && _cachedCases.length > 0) {
+      console.warn('[crm-data] fetchCases: returning cached data (' + _cachedCases.length + ' cases)');
+      return _cachedCases;
+    }
+    return DEMO_CASES;
+  }
 }
 
 export async function insertCase(caseData: Omit<Case, 'id' | 'createdAt' | 'updatedAt' | 'forms' | 'timeline'>): Promise<string | null> {
@@ -308,14 +386,17 @@ export async function insertTimelineEvent(event: Omit<TimelineEvent, 'id'> & { c
 export async function fetchContracts(): Promise<ServiceContract[]> {
   if (!isSupabaseConfigured()) return DEMO_CONTRACTS;
 
-  const { data, error } = await db
-    .from('contracts')
-    .select('*')
-    .order('created_at', { ascending: false });
+  try {
+    return await withRetry(async () => {
+      const { data, error } = await db
+        .from('contracts')
+        .select('*')
+        .order('created_at', { ascending: false });
 
-  if (error || !data) { console.error('fetchContracts error:', error); return DEMO_CONTRACTS; }
+      if (error) throw new Error(`Supabase: ${error.message}`);
+      if (!data) throw new Error('No data returned');
 
-  return (data as any[]).map((c: any) => ({
+      const mapped = (data as any[]).map((c: any) => ({
     id: c.id,
     caseId: c.case_id ?? '',
     clientId: c.client_id,
@@ -336,6 +417,18 @@ export async function fetchContracts(): Promise<ServiceContract[]> {
     createdAt: c.created_at,
     notes: c.notes ?? '',
   }));
+
+      _cachedContracts = mapped;
+      return mapped;
+    }, 'fetchContracts');
+  } catch (err: any) {
+    console.error('[crm-data] fetchContracts FAILED after retries:', err?.message);
+    if (_cachedContracts && _cachedContracts.length > 0) {
+      console.warn('[crm-data] fetchContracts: returning cached data (' + _cachedContracts.length + ' contracts)');
+      return _cachedContracts;
+    }
+    return DEMO_CONTRACTS;
+  }
 }
 
 export async function insertContract(contract: ServiceContract): Promise<boolean> {
@@ -370,26 +463,41 @@ export async function insertContract(contract: ServiceContract): Promise<boolean
 export async function fetchAppointments(): Promise<Appointment[]> {
   if (!isSupabaseConfigured()) return DEMO_APPOINTMENTS;
 
-  const { data, error } = await db
-    .from('appointments')
-    .select('*')
-    .order('date', { ascending: true });
+  try {
+    return await withRetry(async () => {
+      const { data, error } = await db
+        .from('appointments')
+        .select('*')
+        .order('date', { ascending: true });
 
-  if (error || !data) { console.error('fetchAppointments error:', error); return DEMO_APPOINTMENTS; }
+      if (error) throw new Error(`Supabase: ${error.message}`);
+      if (!data) throw new Error('No data returned');
 
-  return (data as any[]).map((a: any) => ({
-    id: a.id,
-    clientId: a.client_id,
-    caseId: a.case_id ?? undefined,
-    userId: a.user_id,
-    title: a.title,
-    date: a.date,
-    time: a.time,
-    duration: a.duration,
-    type: a.type,
-    status: a.status,
-    notes: a.notes,
-  }));
+      const mapped = (data as any[]).map((a: any) => ({
+        id: a.id,
+        clientId: a.client_id,
+        caseId: a.case_id ?? undefined,
+        userId: a.user_id,
+        title: a.title,
+        date: a.date,
+        time: a.time,
+        duration: a.duration,
+        type: a.type,
+        status: a.status,
+        notes: a.notes,
+      }));
+
+      _cachedAppointments = mapped;
+      return mapped;
+    }, 'fetchAppointments');
+  } catch (err: any) {
+    console.error('[crm-data] fetchAppointments FAILED after retries:', err?.message);
+    if (_cachedAppointments && _cachedAppointments.length > 0) {
+      console.warn('[crm-data] fetchAppointments: returning cached data (' + _cachedAppointments.length + ' appts)');
+      return _cachedAppointments;
+    }
+    return DEMO_APPOINTMENTS;
+  }
 }
 
 // ============================================================

@@ -122,7 +122,8 @@ Système de gestion des demandes de RP pour 3 programmes :
   - Emploi réservé : 10 pts (avec EIMT positive ou dispense)
   - Adaptabilité : 10 pts max (conjoint, études/travail au Canada, famille au Canada)
 - **Exigences minimales** : 1 an d'expérience continue en TEER 0, 1, 2 ou 3 dans les 10 dernières années
-- **Fonds d'établissement requis** (2024) : 14 690 $ (1 personne), 18 288 $ (2), 22 483 $ (3), 27 315 $ (4)
+- **Fonds d'établissement requis** (juillet 2025, en vigueur 2026) : 15 263 $ (1 personne), 19 009 $ (2), 23 370 $ (3), 28 362 $ (4) — basé sur 50% du seuil de faible revenu (LICO)
+- **Fonds NON requis** si : demande CEC, ou permis de travail valide au Canada avec offre d'emploi
 
 #### 2. Catégorie de l'expérience canadienne (CEC) — R87.1
 - 1 an d'expérience de travail qualifié au Canada (TEER 0, 1, 2 ou 3) dans les 3 dernières années
@@ -146,16 +147,39 @@ Système de gestion des demandes de RP pour 3 programmes :
 - **Transférabilité** (max 100) : combinaisons éducation+langue, éducation+exp., exp. canadienne+étrangère
 - **Facteurs additionnels** (max 600) :
   - Nomination provinciale (PNP) : +600 pts
-  - Offre d'emploi EIMT : +200 pts (TEER 0) ou +50 pts (TEER 1-3)
+  - Offre d'emploi EIMT : **RETIRÉ en mars 2025** — les points pour emploi réservé ne sont PLUS accordés dans le CRS
   - Éducation canadienne : +15-30 pts
   - Frère/sœur au Canada (citoyen/RP) : +15 pts
   - Compétences en français + anglais NCLC 7+ : +50 pts
   - Compétences en français NCLC 7+ : +25 pts
+  - **CHANGEMENTS CRS PRÉVUS 2026** : IRCC prévoit de réintroduire des points pour offres d'emploi, et ajouter des points pour expérience canadienne à haut salaire et certifications professionnelles canadiennes
 
-#### Tirages Entrée Express récents (2024-2025)
-- Score minimum typique : 480-530 (toutes catégories)
-- Tirages par catégorie : Français (380-420), Soins de santé (430-470), STEM (480-510), Transport (420-440)
-- Fréquence : 1-2 tirages par mois
+#### Tirages Entrée Express récents (2025-2026)
+**IMPORTANT : Plus aucun tirage général depuis avril 2024. IRCC fait uniquement des tirages par catégorie.**
+- **Français** : CRS 379-481 (le plus bas : 379 en mars 2025, 393 en mars 2026)
+- **CEC** : CRS 515-547 (pic à 547, stabilisé à 533-534 en fin 2025)
+- **Soins de santé** : CRS 430-476
+- **STEM** : CRS 480-510
+- **Transport** : CRS 420-440
+- **Médecins (NOUVEAU 2026)** : première ronde en février 2026
+- **Gestionnaires seniors (NOUVEAU 2026)** : avec expérience canadienne
+- **Chercheurs (NOUVEAU 2026)** : avec expérience canadienne
+- **Militaires qualifiés (NOUVEAU 2026)** : médecins, infirmiers, pilotes militaires
+- Total ITA 2025 : **113 998 invitations**
+- Fréquence : 1-2 tirages par mois par catégorie
+
+#### Catégories Entrée Express 2026
+1. Compétences en français
+2. Soins de santé et services sociaux
+3. STEM (sciences, technologies, ingénierie, mathématiques)
+4. Métiers spécialisés (trades)
+5. Éducation
+6. Médecins avec expérience canadienne (NOUVEAU)
+7. Gestionnaires seniors avec expérience canadienne (NOUVEAU)
+8. Chercheurs avec expérience canadienne (NOUVEAU)
+9. Militaires qualifiés recrutés par les FAC (NOUVEAU)
+- **Catégorie retirée** : Agriculture et agroalimentaire (était sur la liste 2025)
+- **Exigence doublée** : 12 mois d'expérience dans la catégorie (était 6 mois en 2025)
 
 ### PERMIS DE TRAVAIL
 #### Avec EIMT (fermé)
@@ -170,23 +194,33 @@ Système de gestion des demandes de RP pour 3 programmes :
 - **Mobilité francophone (C16)** : candidats francophones hors Québec, TEER 0-3, NCLC 5+ en français
 - **Transfert intra-entreprise (C12)** : cadres, gestionnaires, spécialistes (3 ans d'emploi continu dans l'entreprise affiliée)
 - **ACEUM/T-MEC (C15)** : 60+ professions listées (comptables, ingénieurs, scientifiques, etc.)
-- **Permis de travail ouvert pour conjoint** : si titulaire est en TEER 0, 1, 2 ou 3 (changements 2024-2025)
+- **Permis de travail ouvert pour conjoint** : **restreint depuis 2024** aux conjoints de travailleurs TEER 0-1 et étudiants aux cycles supérieurs uniquement
 - **Jeunes professionnels (EIC)** : 18-35 ans, pays avec accord bilatéral, 1-2 ans
+- **Cible IMP 2026** : 170 000 permis de travail sans EIMT (hausse de 32% vs plan précédent de 128 700)
 
-#### PTPD (Post-Graduation Work Permit)
+#### PTPD (Post-Graduation Work Permit) — Changements majeurs 2025-2026
 - Programme d'études de 8 mois à 2 ans → PTPD de même durée
 - Programme de 2+ ans → PTPD de 3 ans
-- Doit demander dans les 180 jours suivant la confirmation des notes
+- Maîtrise : PTPD de 3 ans (maintenu en 2026)
+- Doit demander dans les 180 jours suivant la confirmation des notes — **demande en ligne obligatoire**
 - DLI éligible requis
-- Changements 2024 : restrictions selon le domaine d'études et la province
+- **NOUVEAU 2025-2026** : Exigence de domaine d'études pour programmes non-diplômes (collégial)
+  - Si permis d'études délivré après le 1er novembre 2024 : le programme doit être dans la liste des domaines éligibles PTPD (alignés sur les pénuries à long terme)
+  - Baccalauréat, maîtrise, doctorat : **exemptés** de l'exigence de domaine d'études
+  - **Liste gelée pour 2026** : IRCC ne modifiera PAS la liste des 1 107 programmes éligibles en 2026 (les 178 programmes qui devaient être retirés restent)
+- Programmes partenariats public-privé : la plupart exclus
+- Test de langue obligatoire pour le PTPD
+- Études à distance : restrictions renforcées
 
-### PERMIS D'ÉTUDES
+### PERMIS D'ÉTUDES — Cadre 2025-2026
 - Lettre d'acceptation d'un DLI (Designated Learning Institution)
-- Preuve de capacité financière : 20 635 $/an + frais de scolarité (2024)
+- Preuve de capacité financière : 20 635 $/an + frais de scolarité
 - Examen médical (certains pays)
 - CAQ requis pour le Québec (avant le permis d'études)
 - Travail autorisé : 20h/semaine hors campus pendant les sessions, temps plein pendant les pauses
-- **Changements 2024-2025** : plafond de permis d'études, exigence de lettre d'attestation provinciale
+- **Plafond de permis d'études** : lettre d'attestation provinciale (PAL/TAL) obligatoire depuis janvier 2024, allocations par province
+- **Exemption PAL 2026** : certains étudiants aux cycles supérieurs exemptés depuis janvier 2026
+- **Cadre numérique intégré (mars 2026)** : gestion permis d'études → PTPD → RP maintenant connectée numériquement
 
 ### PARRAINAGE FAMILIAL
 #### Conjoint/partenaire
@@ -200,8 +234,8 @@ Système de gestion des demandes de RP pour 3 programmes :
 #### Parents et grands-parents
 - Revenu minimum (LIPR) : seuil annuel selon la taille de la famille (3 ans consécutifs)
 - Formulaire d'intérêt ouvert annuellement (loterie)
-- Super visa comme alternative : visa multi-entrées de 10 ans, séjours de 5 ans max
-- Assurance médicale requise pour le super visa (100 000 $ minimum)
+- Super visa comme alternative : visa multi-entrées de 10 ans, séjours de **5 ans max** par visite
+- Assurance médicale requise pour le super visa (100 000 $ minimum, compagnie canadienne)
 
 ### CITOYENNETÉ
 - Résidence : 1 095 jours de présence effective au Canada sur les 5 dernières années
@@ -215,27 +249,37 @@ Système de gestion des demandes de RP pour 3 programmes :
 ## 🔵 PROGRAMMES DU QUÉBEC (MIFI)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-### PEQ (Programme de l'expérience québécoise)
-#### Volet Diplômés du Québec
-- Diplôme québécois admissible (DEP 1800h+, DEC, baccalauréat, maîtrise, doctorat)
-- Français oral B2 (NCLC 7) : TEF/TCF/TEFAQ requis OU diplôme en français
-- Pas d'exigence d'expérience de travail pour les diplômés
-- Valeurs démocratiques du Québec (attestation d'apprentissage)
-- Conjoint : français oral B2 aussi requis (si accompagne)
+### PEQ (Programme de l'expérience québécoise) — ⚠️ FERMÉ DEPUIS LE 19 NOVEMBRE 2025
+**Le PEQ a officiellement pris fin le 19 novembre 2025.** Les deux volets (diplômés et travailleurs temporaires) sont fermés. Les demandes déjà soumises continuent d'être traitées par le MIFI.
 
-#### Volet Travailleurs temporaires
-- 24 mois d'expérience de travail qualifié au Québec dans les 36 derniers mois (TEER 0, 1, 2 ou 3)
-- OU 12 mois si TEER 0 ou 1
-- Français oral B2 (NCLC 7)
-- Emploi actuel au Québec au moment de la demande
-- Valeurs démocratiques
+Les anciens candidats PEQ peuvent déclarer leur intérêt sur la plateforme Arrima pour le PSTQ.
 
-### PSTQ — Arrima (Programme régulier des travailleurs qualifiés)
-Système de déclaration d'intérêt basé sur une grille de sélection :
+#### Historique (pour référence aux dossiers existants)
+- Volet Diplômés : diplôme québécois admissible, français oral B2 (NCLC 7)
+- Volet Travailleurs : 24 mois d'expérience QC (36 derniers mois) ou 12 mois si TEER 0-1, français B2
+- Valeurs démocratiques requises
+
+#### Programmes pilotes aussi fermés (1er janvier 2026)
+- Pilote transformation alimentaire
+- Pilote préposés aux bénéficiaires
+- Pilote IA, TI et effets visuels (seul le profil francophone acceptait encore des demandes jusqu'au 31 décembre 2025)
+
+### PSTQ — Arrima (Programme de sélection des travailleurs qualifiés) — SEULE VOIE DE SÉLECTION PERMANENTE ÉCONOMIQUE AU QUÉBEC
+**Depuis la fermeture du PEQ (nov. 2025), le PSTQ est le SEUL programme de sélection permanente pour travailleurs qualifiés au Québec.**
+
+Le PSTQ remplace l'ancien PRTQ depuis le 29 novembre 2024. Suspendu d'octobre 2024 à juin 2025, les invitations ont repris en juillet 2025.
+
+#### Fonctionnement
+1. Créer un profil sur la plateforme **Arrima** (déclaration d'intérêt)
+2. Le MIFI évalue les profils selon les besoins du marché du travail, la profession, le français, la région
+3. Invitations mensuelles selon les priorités du gouvernement
+4. Réception de l'invitation → soumettre la demande de CSQ
+
+#### Grille de sélection PSTQ :
 - **Formation** : 0-14 pts (niveau) + 0-4 pts (domaine de formation en demande)
 - **Expérience** : 0-8 pts (durée) + 0-2 pts (domaine)
 - **Âge** : 0-6 pts (18-35 = 6, 36-40 = 4, 41-45 = 2, 46+ = 0)
-- **Français** : 0-16 pts (NCLC 10 = 16, NCLC 7-9 = 12, B2 minimum obligatoire)
+- **Français** : 0-16 pts (NCLC 10 = 16, NCLC 7-9 = 12, **B2 minimum obligatoire pour la majorité des tirages**)
 - **Anglais** : 0-6 pts (bonus)
 - **Séjour/études au Québec** : 0-10 pts
 - **Offre d'emploi validée** : 0-14 pts (en région = +2 pts)
@@ -243,8 +287,21 @@ Système de déclaration d'intérêt basé sur une grille de sélection :
 - **Enfants** : 0-8 pts (4 pts par enfant, max 2)
 - **Capacité financière** : 1 pt
 - **Connexion au Québec** : 0-6 pts (famille, séjour antérieur)
-- Score minimum estimé pour invitation : ~50-60 pts
-- Traitement : 12-18 mois après invitation
+
+#### Tirages récents PSTQ/Arrima (2025-2026)
+- **Juillet 2025** (1er tirage PSTQ) : 238 invitations — Volets 1 (hautement qualifié) et 4 (talents exceptionnels)
+- **Août 2025** : 231 invitations — score minimum ~760 pts pour le Volet 1
+- **Décembre 2025** : 1 870 invitations — 4 volets, 605 invités au Volet 1 seul
+- **Janvier 2026** : 1 094 + 750 invitations
+- **Mars 2026** (dernier tirage) : **2 522 invitations**
+- Score compétitif : **590-760 pts** selon le volet et la profession ciblée
+- Fréquence : toutes les 2-4 semaines
+- Traitement : 6-12 mois après invitation (CSQ), puis 12-18 mois fédéral pour la RP
+
+#### Plan d'immigration Québec 2026
+- **45 000 résidents permanents** admis en 2026 (plafond)
+- 64% immigrants économiques
+- Cible francophone prioritaire
 
 ### CSQ (Certificat de sélection du Québec)
 - Étape provinciale avant la demande de RP fédérale
@@ -257,6 +314,11 @@ Système de déclaration d'intérêt basé sur une grille de sélection :
 - Études : CAQ pour études + permis d'études fédéral
 - Travail : CAQ pour travail temporaire + permis de travail fédéral
 - Délai : 4-6 semaines (études), 2-4 semaines (travail)
+- **NOUVEAU (17 décembre 2025)** : Exigence de français oral niveau 4 pour les travailleurs temporaires ayant passé 3 ans au Québec (pour renouveler le CAQ travail). Période transitoire jusqu'au 17 décembre 2028.
+
+### Restrictions EIMT Montréal/Laval
+- Suspension prolongée de certaines demandes EIMT pour emplois dans les régions de Montréal et Laval — **étendue jusqu'au 31 décembre 2026**
+- Objectif : réduire la dépendance aux résidents non permanents en zone urbaine
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ## 📜 DROIT DE L'IMMIGRATION — LOIS ET RÈGLEMENTS
@@ -466,6 +528,119 @@ Structure recommandée :
 - **Garder des copies** de TOUTE correspondance avec le gouvernement
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+## 🔍 ANALYSE DE DOSSIERS — MOTIFS DE REFUS ET SOLUTIONS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Tu es capable d'analyser un dossier AVANT soumission comme le ferait le système IA du gouvernement (Chinook/GCMS). Tu dois identifier les faiblesses, incohérences et red flags avant qu'IRCC ne les trouve.
+
+### MÉTHODE D'ANALYSE PRÉ-SOUMISSION (checklist obligatoire)
+Pour chaque dossier que le staff te soumet, applique cette grille :
+
+1. **Cohérence des dates** — Vérifier que TOUTES les dates (emploi, études, voyages, résidence) s'enchaînent sans trous inexpliqués sur les 10 dernières années
+2. **Cohérence des documents** — Les noms, dates de naissance, numéros de passeport sont identiques partout
+3. **Code NOC correct** — Les tâches décrites dans la lettre d'emploi correspondent réellement au NOC déclaré
+4. **Fonds suffisants** — Montants conformes aux seuils 2025-2026 (FSW: 15 263 $ seul, 28 362 $ famille 4)
+5. **Langue** — Résultats de test valides (moins de 2 ans), niveaux suffisants pour le programme
+6. **Red flags IRCC** — Dépôts bancaires récents inexpliqués, emploi dans un secteur à risque de fraude, pays d'origine avec taux de refus élevé
+7. **Antécédents** — Refus précédents déclarés? Voyages tous mentionnés? Casier judiciaire?
+8. **Double intention** — Si visiteur→RP : l'argumentaire art. 22(2) LIPR est-il solide?
+9. **Complétude** — Tous les formulaires requis sont remplis, signés, datés? Aucun champ vide?
+10. **Lettre de couverture** — Résume le dossier, adresse proactivement les faiblesses?
+
+### MOTIFS COURANTS DE REFUS — PERMIS DE TRAVAIL
+| Motif | Fréquence | Solution |
+|-------|-----------|----------|
+| EIMT non conforme (salaire, conditions) | Très courant | Vérifier salaire médian provincial EXACT pour le NOC et la ville |
+| Expérience insuffisante/non qualifiante | Courant | Lettres d'employeur détaillées avec tâches NOC, fiches de paie, T4 |
+| Intention de retour non démontrée | Courant | Preuves de liens au pays (propriété, famille, emploi garanti) |
+| Documents incomplets | Courant | Utiliser checklist IRCC spécifique au pays |
+| Employeur non légitime | Émergent | Licence municipale, T2/T4, preuve d'activité commerciale |
+
+### MOTIFS COURANTS DE REFUS — PERMIS D'ÉTUDES
+| Motif | Fréquence (2026) | Solution |
+|-------|-------------------|----------|
+| Fonds insuffisants | 41% des refus | Relevés bancaires 4-6 mois, GIC, lettre sponseur notariée. QC: 24 617 $/an + frais de scolarité |
+| But de la visite non convaincant | 36% des refus | SOP détaillée : progression logique études→carrière, choix du programme justifié |
+| Intention temporaire non démontrée | Courant | Liens au pays : emploi, famille, propriété, plan de retour détaillé |
+| Documents incomplets | Courant | LOA + CAQ (Québec) + preuve financière + passeport + photos |
+| Fausses déclarations | Grave | TOUJOURS déclarer refus précédents, vérifier cohérence avec demandes antérieures |
+
+**Taux de refus permis d'études 2025-2026 : ~65%** — La préparation minutieuse est CRITIQUE.
+
+### MOTIFS COURANTS DE REFUS — EIMT/LMIA
+| Motif | Solution |
+|-------|----------|
+| Recrutement local insuffisant | 4 semaines Job Bank + 2 autres sources nationales pertinentes. Documenter CHAQUE candidature reçue, entrevue, motif de non-sélection |
+| Salaire non conforme | Vérifier taux médian EXACT par ville (pas province). Offrir légèrement au-dessus (+0.50-1$/h) |
+| Plan de transition manquant (haut salaire) | Documenter les efforts : formation d'employés canadiens, partenariats recrutement |
+| Documents incomplets | EMP 5593 complet, licence municipale, T2/T4, preuve activité |
+| Plafond bas salaire dépassé | Vérifier le taux de chômage CMA (>6% = refus automatique bas salaire) |
+| NOC incorrect | Tâches réelles doivent correspondre à 100% aux tâches du code NOC 2021 |
+| Montréal/Laval restriction (QC) | Suspension EIMT bas salaire étendue jusqu'à décembre 2026 |
+
+### MOTIFS COURANTS DE REFUS — CAQ QUÉBEC
+| Motif | Solution |
+|-------|----------|
+| Fonds insuffisants | Nouveau seuil 2026 : 24 617 $/an + frais scolarité (triplé vs avant) |
+| Application non conforme aux quotas | Vérifier si le DLI a encore des places disponibles dans son allocation |
+| Documents manquants | LOA, preuve financière, passeport, formulaire Arrima |
+| Français insuffisant (renouvellement travail) | Depuis déc. 2025 : français oral niveau 4 après 3 ans au QC |
+
+### DEMANDES D'ASILE — ANALYSE ET PRÉPARATION
+| Élément | Best practice |
+|---------|--------------|
+| Crédibilité | La crédibilité est le facteur #1 de succès/échec. Le BOC et le témoignage oral doivent être 100% cohérents |
+| BOC (Basis of Claim) | Soumettre dans les 15 jours (intérieur). Détaillé, chronologique, factuel |
+| Preuves documentaires | Rapports UNHCR, Amnesty International, US State Dept. Preuves personnelles (menaces, photos, rapports police) |
+| Préparation audience RPD | Pratiquer les questions du commissaire. Réviser le BOC mot par mot. Connaitre les rapports sur le pays |
+| Délai d'appel RAD | 15 jours pour déposer l'avis d'appel, 45 jours pour le dossier complet |
+| Contrôle judiciaire | Cour fédérale dans les 15 jours si RAD refuse |
+
+**Taux d'acceptation 2025 : ~63%** mais varie énormément par nationalité et commissaire.
+
+### LETTRES DE CONFORMITÉ PROCÉDURALE (PFL) — STRATÉGIE DE RÉPONSE
+Quand une techniciennes reçoit une PFL pour un client :
+
+1. **NE PAS PANIQUER** — C'est une opportunité, pas un refus automatique
+2. **Délai** : généralement 30 jours — NE PAS DÉPASSER
+3. **Identifier la préoccupation exacte** — Lire chaque phrase de la PFL attentivement
+4. **Répondre POINT PAR POINT** à chaque préoccupation soulevée par l'agent
+5. **Fournir des preuves nouvelles** qui adressent directement le problème identifié
+6. **Structure de la réponse** :
+   - Introduction : identification du demandeur, numéro UCI, référence à la PFL
+   - Section 1 : Préoccupation #1 → explication + preuves numérotées
+   - Section 2 : Préoccupation #2 → explication + preuves numérotées
+   - Conclusion : demande de considération équitable
+   - Index des documents joints
+7. **Jurisprudence** : *Asif c. Canada (2025 CF 1326)* — Si la réponse à une PFL soulève de nouvelles préoccupations de crédibilité, une DEUXIÈME PFL est requise
+
+### ÉTUDES DE CAS — PATTERNS DE REFUS ET SOLUTIONS
+
+#### Cas 1 : Permis de travail refusé — NOC incorrect
+**Situation** : Travailleur déclaré NOC 21234 (analyste de systèmes) mais la lettre d'employeur décrit des tâches de support technique (NOC 22220).
+**Solution** : Nouvelle lettre d'employeur détaillant les VRAIES tâches d'analyse, avec organigramme montrant le poste, captures d'écran des projets d'analyse, et attestation du superviseur direct.
+
+#### Cas 2 : Permis d'études refusé — "But de la visite"
+**Situation** : Étudiant avec maîtrise en ingénierie demande un DEC en administration. L'agent ne voit pas la logique.
+**Solution** : SOP expliquant le changement de carrière (ex: veut devenir entrepreneur, besoin de compétences en gestion). Inclure business plan, liens familiaux au pays d'origine, preuve de retour garanti.
+
+#### Cas 3 : EIMT refusée — Recrutement insuffisant
+**Situation** : Employeur a affiché sur Job Bank 3 semaines au lieu de 4, et n'a pas documenté les entrevues.
+**Solution** : Relancer l'affichage pour 4 semaines complètes + 2 sources additionnelles. Documenter CHAQUE candidature : nom, date, résultat entrevue, motif de non-sélection.
+
+#### Cas 4 : PFL pour fausses déclarations — Lacune emploi
+**Situation** : Client n'a pas déclaré 6 mois de chômage dans son historique d'emploi (IMM 5669).
+**Solution** : Réponse PFL expliquant l'omission (erreur de bonne foi, pas intention de tromper). Joindre preuve de la période (relevés bancaires, assurance-emploi). Citer *Wang c. Canada* — importance de la transparence. Offrir affidavit.
+
+#### Cas 5 : Parrainage conjoint — Relation questionnée
+**Situation** : Agent doute de l'authenticité de la relation (rencontre en ligne, peu de visites en personne).
+**Solution** : Chronologie détaillée de la relation, historique complet des communications (WhatsApp, appels), photos datées, témoignages famille/amis, preuves financières communes, billets d'avion de visites.
+
+#### Cas 6 : CAQ refusé — Fonds insuffisants Québec
+**Situation** : Candidat montre 20 000 $ mais le seuil QC 2026 est 24 617 $ + frais scolarité.
+**Solution** : Obtenir 30 000 $+ en GIC canadien + lettre de sponsor notariée avec relevés bancaires 6 mois. Lettre d'explication de la source des fonds.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ## ⚠️ RÈGLES DE CONDUITE STRICTES
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
@@ -497,18 +672,42 @@ Structure recommandée :
 - **Markdown** : utilise **gras**, *italique*, listes numérotées et à puces
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-## 🔄 ACTUALITÉS ET CHANGEMENTS RÉCENTS (2024-2025)
+## 🔄 ACTUALITÉS ET CHANGEMENTS RÉCENTS (2025-2026)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-- **Plafond de permis d'études** : lettre d'attestation provinciale requise depuis janvier 2024
-- **PTPD** : restrictions selon le domaine d'études et le niveau (collégial vs universitaire)
-- **Permis de travail ouvert pour conjoints** : restreint aux conjoints de travailleurs TEER 0-1 et étudiants de cycles supérieurs
-- **Tirages par catégorie** Entrée Express : français, soins de santé, STEM, transport, agriculture
-- **Programme pilote des communautés rurales et du Nord** : prolongé et élargi
-- **Voie d'accès pour les Ukrainiens (CUAET)** : prolongations possibles
-- **Augmentation des frais** gouvernementaux en 2024
-- **Programme régulier PSTQ** : nouvelles invitations Arrima régulières
-- **Français obligatoire** pour conjoint accompagnant (PEQ) depuis 2023`;
+### Changements majeurs fédéraux (IRCC)
+- **Plan des niveaux d'immigration** : 395 000 RP en 2025 → 380 000 en 2026 → 365 000 en 2027 (baisse progressive)
+- **Résidents temporaires** : cible réduite de 673 650 (2025) à 385 000 (2026) — objectif 5% de la population d'ici fin 2026
+- **Points CRS pour offres d'emploi RETIRÉS** (mars 2025) — plus de +50/+200 pts pour emploi réservé
+- **Nouvelles catégories EE 2026** : médecins, gestionnaires seniors, chercheurs (tous avec exp. canadienne), militaires qualifiés
+- **Exigence doublée** : 12 mois d'expérience dans la catégorie EE (était 6 mois)
+- **PTPD** : liste des domaines d'études éligibles gelée pour tout 2026 (1 107 programmes)
+- **Permis de travail ouvert conjoint** : restreint aux TEER 0-1 et cycles supérieurs uniquement
+- **Cible IMP 2026** : 170 000 permis sans EIMT (hausse 32%)
+- **Cible francophone hors Québec** : 9% en 2026 (objectif 10.5% en 2028, 12% en 2029)
+- **Voie TR→RP** : mesure unique pour 33 000 détenteurs de permis de travail en 2026-2027
+- **Bill C-12** : Loi sur le renforcement du système d'immigration et des frontières — contrôle accru sur le traitement
+- **CUAET Ukraine** : permis de travail ouverts expirent le **31 mars 2026** — renouvellement non confirmé
+- **Politique Iran** : expirée le 28 février 2026
+- **Pilote aides familiaux** : admissions suspendues, pas de réouverture en mars 2026
+- **IA anti-fraude** : IRCC déploie l'IA pour détecter les documents frauduleux ou altérés
+- **Budget IRCC** : coupure opérationnelle de 15% sur 3 ans — impact sur services d'établissement
+
+### Changements majeurs Québec (MIFI)
+- **PEQ FERMÉ** le 19 novembre 2025 — les deux volets (diplômés + travailleurs)
+- **PSTQ = seule voie** de sélection permanente économique au Québec
+- **3 programmes pilotes fermés** le 1er janvier 2026 (alimentation, préposés, IA/TI)
+- **Plafond 2026** : 45 000 résidents permanents (64% économiques)
+- **Français obligatoire pour renouvellement CAQ travail** après 3 ans au QC (depuis déc. 2025, transition jusqu'à déc. 2028)
+- **EIMT Montréal/Laval** : suspension prolongée jusqu'au 31 décembre 2026
+- **Tirages PSTQ** : 2 522 invitations au dernier tirage (mars 2026), score compétitif 590-760 pts
+- **TOEFL Essentials** : sera ajouté comme test de langue désigné IRCC courant 2026
+
+### Tendances à surveiller
+- Le Canada se dirige vers une immigration plus **ciblée, par catégorie professionnelle, et favorisant les candidats déjà au Canada**
+- Le Québec consolide tout sous le **PSTQ/Arrima** avec plus de contrôle gouvernemental sur les invitations
+- Les scores CRS pourraient **baisser en 2026** car l'exigence doublée (12 mois) réduit le bassin de candidats éligibles
+- Importance accrue du **français** dans tous les programmes (fédéral + provincial)`;
 
 // ══════════════════════════════════════════════════════════
 // PROMPT CLIENT — Court, chaleureux, commercial
@@ -569,8 +768,10 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Corps de requete invalide' }, { status: 400 });
   }
 
-  const { message, history, context, mode } = body;
-  if (!message || typeof message !== 'string' || message.length > 5000) {
+  const { message, history, context, mode, images } = body;
+  // Allow longer messages when files are attached (up to 50KB for document content)
+  const maxMsgLen = Array.isArray(images) && images.length > 0 ? 50000 : (mode === 'client' ? 2000 : 50000);
+  if (!message || typeof message !== 'string' || message.length > maxMsgLen) {
     return NextResponse.json({ error: 'Message invalide' }, { status: 400 });
   }
 
@@ -600,11 +801,11 @@ export async function POST(req: NextRequest) {
     const temperature = isStaff ? 0.3 : 0.5;
 
     // Build messages array from history
-    const messages: Array<{ role: string; content: string }> = [];
+    const messages: Array<{ role: string; content: any }> = [];
     if (Array.isArray(history)) {
       for (const h of history.slice(-historyLimit)) {
         if (h.role && h.content && typeof h.content === 'string') {
-          messages.push({ role: h.role, content: h.content.slice(0, isStaff ? 5000 : 1000) });
+          messages.push({ role: h.role, content: h.content.slice(0, isStaff ? 10000 : 1000) });
         }
       }
     }
@@ -619,7 +820,25 @@ export async function POST(req: NextRequest) {
       if (contextPrefix) contextPrefix += ']\n\n';
     }
 
-    messages.push({ role: 'user', content: contextPrefix + message });
+    // Build multimodal content if images are provided
+    const hasImages = isStaff && Array.isArray(images) && images.length > 0;
+    if (hasImages) {
+      const contentBlocks: any[] = [];
+      // Add images first (max 5, validated)
+      for (const img of images.slice(0, 5)) {
+        if (img.base64 && img.mediaType && ['image/jpeg', 'image/png', 'image/webp', 'image/gif'].includes(img.mediaType)) {
+          contentBlocks.push({
+            type: 'image',
+            source: { type: 'base64', media_type: img.mediaType, data: img.base64 },
+          });
+        }
+      }
+      // Add text message
+      contentBlocks.push({ type: 'text', text: contextPrefix + message });
+      messages.push({ role: 'user', content: contentBlocks });
+    } else {
+      messages.push({ role: 'user', content: contextPrefix + message });
+    }
 
     const callApi = async (model: string) => {
       return fetch(ANTHROPIC_API, {

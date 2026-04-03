@@ -23,14 +23,16 @@ export function QuizSection() {
   const [form, setForm] = useState({ name: '', email: '', phone: '', country: '', interest: '' });
   const [sent, setSent] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.name || !form.email || !form.country || !form.interest) return;
     setLoading(true);
+    setError(false);
 
     try {
-      await fetch('https://soshubca.vercel.app/api/crm/leads', {
+      const res = await fetch('https://soshubca.vercel.app/api/crm/leads', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -42,11 +44,12 @@ export function QuizSection() {
           message: `Pays: ${form.country} | Intérêt: ${form.interest}`,
         }),
       });
+      if (!res.ok) throw new Error('API error');
+      setSent(true);
     } catch {
-      // Silent fail — lead still captured
+      setError(true);
     }
 
-    setSent(true);
     setLoading(false);
   };
 
@@ -149,6 +152,12 @@ export function QuizSection() {
                   {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Sparkles className="w-5 h-5" />}
                   {loading ? 'Envoi en cours...' : 'Découvrir mes options gratuitement'}
                 </button>
+
+                {error && (
+                  <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-xl text-sm text-red-700 text-center font-sans">
+                    ⚠️ Une erreur est survenue. <a href="https://wa.me/15145330482" target="_blank" rel="noopener noreferrer" className="font-bold text-green-600 hover:underline">Écrivez-nous sur WhatsApp</a>
+                  </div>
+                )}
 
                 <p className="text-xs text-gray-400 text-center mt-3 font-sans">
                   <Shield className="w-3 h-3 inline mr-1" />

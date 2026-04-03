@@ -28,15 +28,29 @@ export async function signIn(email: string, password: string) {
 
 // Inscription (création de compte)
 export async function signUp(email: string, password: string, name: string, role: CrmUser['role']) {
-  const { data, error } = await supabase.auth.signUp({
-    email,
-    password,
-    options: {
-      data: { name, role },
-    },
-  });
-  if (error) return { user: null, error: error.message };
-  return { user: data.user, error: null };
+  try {
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: { name, role },
+      },
+    });
+    if (error) return { user: null, error: error.message };
+    if (!data.user) return { user: null, error: 'Erreur lors de la création du compte.' };
+
+    // Créer le profil CRM immédiatement après l'inscription auth
+    const profile = await createCrmProfile(data.user.id, email, name, role);
+    if (!profile) {
+      if (isDev) console.error('[AUTH] signUp: auth OK but CRM profile creation failed');
+      // Ne pas bloquer — le profil sera créé au prochain login via /api/crm/me
+    }
+
+    return { user: data.user, error: null };
+  } catch (e: unknown) {
+    const msg = e instanceof Error ? e.message : 'Erreur inconnue';
+    return { user: null, error: msg };
+  }
 }
 
 // Déconnexion
@@ -54,13 +68,14 @@ export async function getSession() {
 
 // Récupérer le profil CRM lié à l'utilisateur Supabase Auth
 export async function fetchCrmProfile(authUserId: string): Promise<CrmUser | null> {
-  // Petit délai pour s'assurer que le token JWT est propagé au client Supabase
-  await new Promise(resolve => setTimeout(resolve, 500));
-
   const db = supabase as any;
 
-  // Essai 1: chercher par auth_id
-  for (let attempt = 0; attempt < 3; attempt++) {
+  // Retry avec backoff exponentiel (100ms, 300ms, 700ms)
+  const delays = [100, 300, 700];
+
+  for (let attempt = 0; attempt < delays.length; attempt++) {
+    if (attempt > 0) await new Promise(r => setTimeout(r, delays[attempt]));
+
     try {
       const { data, error } = await db
         .from('users')
@@ -68,22 +83,15 @@ export async function fetchCrmProfile(authUserId: string): Promise<CrmUser | nul
         .eq('auth_id', authUserId)
         .single();
 
-      if (!error && data) {
-        return mapDbUser(data);
-      }
+      if (!error && data) return mapDbUser(data);
 
-      // Si erreur RLS (pas de rows), essayer par email
-      if (error) {
-        if (isDev) console.warn(`[AUTH] Attempt ${attempt + 1} by auth_id failed:`, error.message);
-      }
-      break; // Ne pas retry si la requête a réussi mais pas de data
+      if (isDev) console.warn(`[AUTH] fetchCrmProfile attempt ${attempt + 1} by auth_id:`, error?.message);
     } catch (e) {
-      if (isDev) console.warn(`[AUTH] Attempt ${attempt + 1} exception:`, e);
-      if (attempt < 2) await new Promise(r => setTimeout(r, 1000));
+      if (isDev) console.warn(`[AUTH] fetchCrmProfile attempt ${attempt + 1} exception:`, e);
     }
   }
 
-  // Essai 2: chercher par email
+  // Fallback: chercher par email
   try {
     const { data: { user: authUser } } = await supabase.auth.getUser();
     if (authUser?.email) {
@@ -93,13 +101,29 @@ export async function fetchCrmProfile(authUserId: string): Promise<CrmUser | nul
         .eq('email', authUser.email)
         .single();
       if (!err2 && byEmail) {
-        // Lier l'auth_id automatiquement (fire-and-forget)
+        // Lier l'auth_id automatiquement
         db.from('users').update({ auth_id: authUserId }).eq('id', byEmail.id).then(() => {});
         return mapDbUser(byEmail);
       }
     }
   } catch (e) {
     if (isDev) console.error('[AUTH] fetchCrmProfile email fallback error:', e);
+  }
+
+  // Dernier recours: auto-créer le profil à partir des métadonnées auth
+  try {
+    const { data: { user: authUser } } = await supabase.auth.getUser();
+    if (authUser?.email && authUser.user_metadata) {
+      const name = authUser.user_metadata.name || authUser.email.split('@')[0];
+      const role = authUser.user_metadata.role || 'agent';
+      const profile = await createCrmProfile(authUserId, authUser.email, name, role);
+      if (profile) {
+        if (isDev) console.log('[AUTH] Auto-created CRM profile for:', authUser.email);
+        return profile;
+      }
+    }
+  } catch (e) {
+    if (isDev) console.error('[AUTH] Auto-create profile failed:', e);
   }
 
   return null;

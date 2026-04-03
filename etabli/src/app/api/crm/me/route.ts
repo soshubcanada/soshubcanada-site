@@ -58,6 +58,24 @@ export async function GET(req: NextRequest) {
       }
     }
 
+    // Auto-créer le profil si l'utilisateur auth existe mais pas de profil CRM
+    if (!profile && user.email) {
+      const name = user.user_metadata?.name || user.email.split('@')[0];
+      const role = user.user_metadata?.role || 'agent';
+
+      const { data: newProfile, error: createErr } = await db.from('users').insert({
+        auth_id: user.id,
+        email: user.email,
+        name,
+        role,
+        active: true,
+      }).select('id, name, email, role, active').single();
+
+      if (!createErr && newProfile) {
+        profile = newProfile;
+      }
+    }
+
     if (!profile) {
       return NextResponse.json({ error: 'Profil CRM introuvable' }, { status: 404 });
     }
