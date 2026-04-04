@@ -1,10 +1,9 @@
 'use client';
 
 import Link from 'next/link';
-import Image from 'next/image';
 import { AnimatedCounter } from '@/components/AnimatedCounter';
 import {
-  ArrowRight, Award, Users, Shield, Globe2, Heart,
+  ArrowRight, Award, Users, Shield, Heart,
   CheckCircle2, MapPin, Target, Lightbulb
 } from 'lucide-react';
 
@@ -16,25 +15,18 @@ const values = [
 ];
 
 const team = [
-  { name: 'Patrick C.', role: 'Directeur général', desc: 'Fondateur de SOS Hub Canada, Patrick dirige les opérations et la stratégie d\'accompagnement des nouveaux arrivants.', image: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=300&h=300&fit=crop&crop=face' },
-  { name: 'Amira K.', role: 'Conseillère en immigration', desc: 'Spécialiste des programmes fédéraux et provinciaux, Amira accompagne les candidats du Maghreb et du Moyen-Orient en arabe et français.', image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=300&h=300&fit=crop&crop=face' },
-  { name: 'Sophie G.', role: 'Technicienne juridique', desc: 'Sophie assure la préparation méticuleuse des dossiers et la conformité documentaire pour chaque demande.', image: 'https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=300&h=300&fit=crop&crop=face' },
-  { name: 'Farid M.', role: 'Conseiller en relocalisation', desc: 'Farid accompagne les familles dans leur installation à Montréal: logement, emploi, inscriptions et intégration.', image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300&h=300&fit=crop&crop=face' },
+  { name: 'Patrick C.', role: 'Fondateur & Directeur', desc: 'Patrick dirige les opérations et la stratégie d\'accompagnement des nouveaux arrivants.', initial: 'P', gradient: 'from-navy to-navy-light', langs: '🇫🇷 🇬🇧 🇸🇦' },
+  { name: 'Amira K.', role: 'Coordinatrice', desc: 'Amira accompagne les candidats du Maghreb et du Moyen-Orient en arabe et français.', initial: 'A', gradient: 'from-gold to-gold-dark', langs: '🇫🇷 🇸🇦 🇬🇧' },
+  { name: 'Sophie G.', role: 'Conseillère principale', desc: 'Sophie assure la préparation méticuleuse des dossiers et la conformité documentaire.', initial: 'S', gradient: 'from-[#2A3D66] to-[#4A5A80]', langs: '🇫🇷 🇬🇧' },
+  { name: 'Farid M.', role: 'Réception & accueil', desc: 'Farid accompagne les familles dans leur installation à Montréal: logement, emploi et intégration.', initial: 'F', gradient: 'from-gold-dark to-navy', langs: '🇫🇷 🇸🇦 🇪🇸' },
 ];
 
 export default function AProposPage() {
   return (
     <div className="min-h-screen bg-cream">
       {/* Hero */}
-      <section className="relative py-24 md:py-32 overflow-hidden">
-        <Image
-          src="https://images.unsplash.com/photo-1504439468489-c8920d796a29?w=1920&h=600&fit=crop"
-          alt="Montréal skyline"
-          fill
-          sizes="100vw"
-          className="object-cover"
-        />
-        <div className="absolute inset-0 hero-overlay" />
+      <section className="relative py-24 md:py-32 overflow-hidden bg-gradient-to-br from-navy-dark via-navy to-navy-light">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_30%_50%,rgba(200,163,95,0.15),transparent_70%)]" />
         <div className="relative max-w-7xl mx-auto px-6">
           <div className="max-w-3xl">
             <span className="text-gold font-semibold text-sm uppercase tracking-[0.2em] font-sans">À propos</span>
@@ -87,15 +79,14 @@ export default function AProposPage() {
           </div>
 
           <div className="scroll-hidden-right">
-            <div className="relative rounded-2xl overflow-hidden shadow-2xl">
-              <Image
-                src="https://images.unsplash.com/photo-1543807535-eceef0bc6599?w=600&h=700&fit=crop"
-                alt="Notre équipe"
-                width={600}
-                height={700}
-                className="object-cover w-full h-[500px]"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-navy/80 to-transparent" />
+            <div className="relative rounded-2xl overflow-hidden shadow-2xl bg-gradient-to-br from-navy via-navy-light to-navy h-[500px]">
+              <div className="absolute inset-0 flex flex-col items-center justify-center">
+                <div className="text-8xl font-bold text-gold font-serif">S</div>
+                <div className="text-white/50 text-sm uppercase tracking-[0.3em] mt-4">Depuis 2019</div>
+                <div className="w-10 h-0.5 bg-gold rounded mt-4 mb-4" />
+                <div className="text-white/40 text-xs">Montréal, QC</div>
+              </div>
+              <div className="absolute inset-0 bg-gradient-to-t from-navy/90 to-transparent" />
               <div className="absolute bottom-0 left-0 right-0 p-8">
                 <Lightbulb className="w-8 h-8 text-gold mb-4" />
                 <h3 className="text-xl font-bold text-white mb-4">Notre vision</h3>
@@ -156,17 +147,12 @@ export default function AProposPage() {
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {team.map((t, i) => (
               <div key={i} className="scroll-hidden text-center card-premium" style={{ transitionDelay: `${i * 100}ms` }}>
-                <div className="relative w-28 h-28 rounded-full mx-auto mb-4 overflow-hidden shadow-xl">
-                  <Image
-                    src={t.image}
-                    alt={t.name}
-                    fill
-                    sizes="112px"
-                    className="object-cover"
-                  />
+                <div className={`w-28 h-28 rounded-full mx-auto mb-4 shadow-xl bg-gradient-to-br ${t.gradient} flex items-center justify-center border-4 border-gold/30`}>
+                  <span className="text-4xl font-bold text-white font-serif">{t.initial}</span>
                 </div>
                 <h3 className="font-bold text-navy text-lg">{t.name}</h3>
-                <p className="text-sm text-gold font-medium mb-2 font-sans">{t.role}</p>
+                <p className="text-sm text-gold font-medium mb-1 font-sans">{t.role}</p>
+                <p className="text-xs text-gray-400 mb-2 font-sans">{t.langs}</p>
                 <p className="text-xs text-gray-400 font-sans">{t.desc}</p>
               </div>
             ))}
@@ -175,15 +161,8 @@ export default function AProposPage() {
       </section>
 
       {/* Location */}
-      <section className="relative py-24 overflow-hidden">
-        <Image
-          src="https://images.unsplash.com/photo-1517935706615-2717063c2225?w=1920&h=600&fit=crop"
-          alt="Montréal"
-          fill
-          sizes="100vw"
-          className="object-cover"
-        />
-        <div className="absolute inset-0 bg-navy/90" />
+      <section className="relative py-24 overflow-hidden bg-gradient-to-br from-navy-dark via-navy to-navy-light">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_70%_50%,rgba(200,163,95,0.1),transparent_60%)]" />
         <div className="relative max-w-4xl mx-auto px-6 text-center">
           <MapPin className="w-12 h-12 text-gold mx-auto mb-4" />
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-4 scroll-hidden">Situé à Montréal</h2>

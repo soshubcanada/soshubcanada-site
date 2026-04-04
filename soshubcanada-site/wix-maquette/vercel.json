@@ -12,7 +12,17 @@
     { "source": "/blog", "destination": "/blog.html" },
     { "source": "/maghreb", "destination": "/maghreb.html" },
     { "source": "/latino", "destination": "/latino.html" },
-    { "source": "/merci", "destination": "/merci.html" }
+    { "source": "/merci", "destination": "/merci.html" },
+    { "source": "/evaluation-gratuite", "destination": "/evaluation-gratuite.html" },
+    { "source": "/guides/peq-aboli-alternatives-2026", "destination": "/guides/peq-aboli-alternatives-2026.html" },
+    { "source": "/guides/cout-immigration-canada", "destination": "/guides/cout-immigration-canada.html" },
+    { "source": "/guides/regroupement-familial-canada-2026", "destination": "/guides/regroupement-familial-canada-2026.html" },
+    { "source": "/services/permis-travail-canada", "destination": "/services/permis-travail-canada.html" },
+    { "source": "/services/residence-permanente-quebec", "destination": "/services/residence-permanente-quebec.html" },
+    { "source": "/services/etudier-au-canada", "destination": "/services/etudier-au-canada.html" },
+    { "source": "/services/regroupement-familial", "destination": "/services/regroupement-familial.html" },
+    { "source": "/services/installation-montreal", "destination": "/services/installation-montreal.html" },
+    { "source": "/services/mobilite-francophone", "destination": "/services/mobilite-francophone.html" }
   ],
   "redirects": [
     {

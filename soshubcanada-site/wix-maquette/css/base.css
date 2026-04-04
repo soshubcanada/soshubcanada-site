@@ -1,0 +1,206 @@
+/* ===== SOS Hub Canada - Base Styles ===== */
+/* Shared styles for service pages and guide pages */
+
+/* ===== CSS Reset & Design Tokens ===== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --gold: #C8A35F;
+  --gold-light: #D4B76A;
+  --gold-dark: #A8873F;
+  --navy: #1B2A4A;
+  --navy-light: #2A3D66;
+  --navy-dark: #0F1A2E;
+  --cream: #FAF8F5;
+  --white: #FFFFFF;
+  --red: #DC2626;
+  --green: #16A34A;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  color: #1a1a1a;
+  background: var(--cream);
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.7;
+}
+
+/* ===== Typography ===== */
+h1, h2, h3, h4 { font-family: 'Playfair Display', Georgia, serif; line-height: 1.2; }
+a { color: var(--gold-dark); text-decoration: underline; }
+a:hover { color: var(--navy); }
+img { max-width: 100%; display: block; }
+
+/* ===== Container ===== */
+.container { max-width: 800px; margin: 0 auto; padding: 0 24px; }
+
+/* ===== Header ===== */
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 90;
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+
+.header .inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 76px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+
+.logo-icon {
+  width: 48px;
+  height: 48px;
+  background: linear-gradient(135deg, var(--gold-light), var(--gold-dark));
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 800;
+  font-size: 24px;
+  font-family: 'Playfair Display', serif;
+}
+
+.logo-text .name { font-weight: 700; font-size: 20px; color: var(--navy); }
+.logo-text .name span { color: var(--gold); }
+
+/* ===== Navigation ===== */
+.nav { display: flex; gap: 4px; }
+.nav a { padding: 8px 16px; font-size: 14px; font-weight: 500; color: #555; border-radius: 8px; text-decoration: none; }
+.nav a:hover { background: rgba(200,163,95,0.1); color: var(--navy); }
+
+/* ===== Breadcrumb ===== */
+.breadcrumb { padding: 16px 0; font-size: 13px; color: #888; }
+.breadcrumb a { color: var(--gold-dark); text-decoration: none; }
+.breadcrumb a:hover { text-decoration: underline; }
+
+/* ===== Article Layout ===== */
+.article-header { padding: 48px 0 32px; }
+.article-header h1 { font-size: clamp(28px, 5vw, 42px); color: var(--navy); margin-bottom: 16px; }
+.article-header .meta { font-size: 14px; color: #888; }
+
+.article-body { padding-bottom: 48px; }
+.article-body h2 { font-size: 26px; color: var(--navy); margin: 48px 0 16px; padding-top: 24px; border-top: 1px solid #e5e5e5; }
+.article-body h3 { font-size: 20px; color: var(--navy-light); margin: 32px 0 12px; font-family: 'Inter', sans-serif; font-weight: 700; }
+.article-body p { margin-bottom: 16px; color: #444; }
+.article-body ul, .article-body ol { margin: 0 0 16px 24px; color: #444; }
+.article-body li { margin-bottom: 8px; }
+
+/* ===== Highlight Box ===== */
+.highlight-box { background: white; border-left: 4px solid var(--gold); padding: 20px 24px; border-radius: 0 12px 12px 0; margin: 24px 0; }
+.highlight-box strong { color: var(--navy); }
+
+/* ===== Alert Box ===== */
+.alert-box { background: #FEF2F2; border-left: 4px solid var(--red); padding: 20px 24px; border-radius: 0 12px 12px 0; margin: 24px 0; }
+
+/* ===== CTA Box ===== */
+.cta-box { background: linear-gradient(135deg, var(--navy), var(--navy-light)); color: white; padding: 40px; border-radius: 16px; text-align: center; margin: 48px 0; }
+.cta-box h3 { color: white; margin-bottom: 12px; font-size: 24px; }
+.cta-box p { color: rgba(255,255,255,0.7); margin-bottom: 24px; }
+
+/* ===== Button ===== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 16px 32px;
+  background: var(--gold);
+  color: white;
+  font-weight: 700;
+  font-size: 16px;
+  border-radius: 12px;
+  text-decoration: none;
+  transition: all 0.3s;
+}
+.btn:hover { background: var(--gold-dark); color: white; transform: translateY(-2px); }
+
+/* ===== Internal Links ===== */
+.internal-links { background: white; border-radius: 16px; padding: 32px; margin: 48px 0; border: 1px solid #eee; }
+.internal-links h3 { font-family: 'Inter', sans-serif; font-size: 16px; font-weight: 700; color: var(--navy); margin-bottom: 16px; }
+.internal-links ul { list-style: none; margin: 0; padding: 0; }
+.internal-links li { margin-bottom: 8px; }
+.internal-links a { font-size: 15px; }
+
+/* ===== FAQ Item ===== */
+.faq-item { background: white; border-radius: 12px; padding: 20px 24px; margin-bottom: 12px; border: 1px solid #eee; }
+.faq-item h4 { font-family: 'Inter', sans-serif; font-weight: 700; color: var(--navy); margin-bottom: 8px; font-size: 16px; }
+.faq-item p { color: #555; margin: 0; font-size: 15px; }
+
+/* ===== Cost/Data Table ===== */
+.cost-table { width: 100%; border-collapse: collapse; margin: 24px 0; background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+.cost-table th { background: var(--navy); color: white; padding: 14px 16px; text-align: left; font-size: 14px; font-weight: 600; }
+.cost-table td { padding: 12px 16px; border-bottom: 1px solid #f0f0f0; font-size: 14px; color: #444; }
+.cost-table tr:last-child td { border-bottom: none; }
+.cost-table .total { font-weight: 700; color: var(--navy); }
+
+/* ===== Cookie Banner ===== */
+#cookie-banner {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--navy-dark);
+  border-top: 1px solid rgba(200,163,95,0.2);
+  padding: 20px 32px;
+  z-index: 9990;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+  transform: translateY(100%);
+  transition: transform 0.4s cubic-bezier(0.16,1,0.3,1);
+}
+#cookie-banner.visible { transform: translateY(0); }
+#cookie-banner.hiding { transform: translateY(100%); }
+#cookie-banner p { color: rgba(255,255,255,0.8); font-size: 14px; margin: 0; flex: 1; }
+#cookie-banner p a { color: var(--gold); }
+
+/* ===== Footer ===== */
+.footer { background: var(--navy); color: rgba(255,255,255,0.6); padding: 48px 0 24px; font-size: 14px; text-align: center; }
+.footer a { color: var(--gold); text-decoration: none; }
+
+/* ===== WhatsApp Fixed Button ===== */
+.whatsapp-fixed {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 60px;
+  height: 60px;
+  background: #25D366;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  text-decoration: none;
+  box-shadow: 0 4px 20px rgba(37,211,102,0.4);
+  z-index: 99;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  .nav { display: none; }
+  .cta-box { padding: 28px 20px; }
+  .cost-table { font-size: 13px; }
+  .cost-table th, .cost-table td { padding: 10px 8px; }
+}
+
+/* ===== Print Stylesheet ===== */
+@media print {
+  .header, .footer, .whatsapp-fixed, #cookie-banner, .nav, .cta-box, .btn { display: none !important; }
+  body { background: white; color: black; font-size: 12pt; }
+  a { color: black; text-decoration: underline; }
+  .container { max-width: 100%; padding: 0; }
+}
