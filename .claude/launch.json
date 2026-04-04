@@ -2,42 +2,10 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "etabli-dev",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "dev", "--prefix", "etabli"],
-      "port": 3000
-    },
-    {
-      "name": "expatria",
-      "runtimeExecutable": "npx",
-      "runtimeArgs": ["serve", "-l", "3001", "."],
-      "port": 3001
-    },
-    {
       "name": "soshub-site",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "dev", "--prefix", "soshubcanada-site"],
-      "port": 3002,
-      "autoPort": true
-    },
-    {
-      "name": "soshub-receptionist",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "dev", "--prefix", "soshub-receptionist"],
-      "port": 3050
-    },
-    {
-      "name": "wix-maquette",
-      "runtimeExecutable": "npx",
-      "runtimeArgs": ["serve", "-l", "3003", "soshubcanada-site/wix-maquette"],
-      "port": 3003
-    },
-    {
-      "name": "aidoqc-dev",
-      "runtimeExecutable": "/usr/local/bin/node",
-      "runtimeArgs": ["/Users/grp255/Downloads/aidoqc-app/node_modules/next/dist/bin/next", "dev", "--port", "3004"],
-      "cwd": "../aidoqc-app",
-      "port": 3004
+      "runtimeArgs": ["run", "dev"],
+      "port": 3000
     }
   ]
 }
