@@ -13,13 +13,13 @@
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <style>
     *{box-sizing:border-box;margin:0;padding:0}
-    html{scroll-behavior:smooth}
-    body{font-family:'Tajawal',sans-serif;background:#F5F3EC;color:#1A1F2E;-webkit-font-smoothing:antialiased;font-size:16px;line-height:1.7}
+    html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+    body{font-family:'Tajawal',sans-serif;background:#F5F3EC;color:#1A1F2E;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-size:16px;line-height:1.7;overflow-x:hidden}
     .gold-rule{background:linear-gradient(90deg,transparent,#B8923B,transparent);height:1px}
     @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
     .fade-up{animation:fadeUp .7s ease forwards}
     .pattern-overlay{background-image:repeating-linear-gradient(45deg,rgba(184,146,59,.03) 0,rgba(184,146,59,.03) 1px,transparent 1px,transparent 18px)}
-    button,a{transition:all .25s cubic-bezier(.4,0,.2,1)}
+    button,a{transition:all .25s cubic-bezier(.4,0,.2,1);-webkit-tap-highlight-color:transparent}
     input:focus{border-color:#006633!important;outline:none;box-shadow:0 0 0 3px rgba(0,102,51,.08)}
     input::placeholder{color:#8B9AAF}
     footer a:hover{opacity:1!important;color:#D4AF6A!important}
@@ -99,7 +99,6 @@
 
     /* HOW IT WORKS connector */
     .step-connector{flex:1;height:2px;background:linear-gradient(90deg,#B8923B,#D4AF6A,#B8923B);align-self:flex-start;margin-top:27px;min-width:16px;opacity:.6}
-    @media(max-width:700px){.step-connector{display:none}.step-row{flex-direction:column!important;gap:28px!important}}
 
     /* NAV LINKS */
     .nav-link{padding:14px 20px;font-size:15px;font-weight:600;color:#4A5568;text-decoration:none;border-bottom:3px solid transparent;margin-bottom:-2px;white-space:nowrap;display:inline-block;transition:color .2s,border-color .2s}
@@ -119,6 +118,123 @@
     /* CORRIDOR CARD */
     .corridor-card{background:rgba(255,255,255,.04);border:1px solid rgba(212,175,106,.2);padding:36px 28px;text-align:center;transition:background .3s,border-color .3s,transform .35s}
     .corridor-card:hover{background:rgba(255,255,255,.08);border-color:rgba(212,175,106,.5);transform:translateY(-5px)}
+
+    /* LANGUAGE SWITCHER */
+    .lang-switcher{display:flex;gap:2px;background:rgba(255,255,255,.1);border-radius:6px;overflow:hidden;flex-shrink:0}
+    .lang-btn{background:transparent;border:none;color:#FAFAF7;padding:6px 14px;cursor:pointer;font-size:13px;font-weight:700;min-width:44px;min-height:36px;display:flex;align-items:center;justify-content:center;transition:background .2s,color .2s}
+    .lang-btn.active{background:#B8923B;color:#003318}
+
+    /* MOBILE NAV SCROLL */
+    .nav-scroll{display:flex;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;-ms-overflow-style:none;scroll-snap-type:x mandatory}
+    .nav-scroll::-webkit-scrollbar{display:none}
+    .nav-scroll .nav-link{scroll-snap-align:start}
+
+    /* ===== MOBILE FIRST RESPONSIVE ===== */
+
+    /* Tablets and below */
+    @media(max-width:768px){
+      .step-connector{display:none}
+      .step-row{flex-direction:column!important;gap:32px!important}
+
+      /* Top bar: stack and center */
+      .topbar-inner{flex-direction:column!important;height:auto!important;padding:8px 0!important;gap:6px!important;text-align:center}
+      .topbar-left{justify-content:center!important}
+      .topbar-right{justify-content:center!important;flex-wrap:wrap!important;gap:10px!important}
+
+      /* Language switcher: bigger targets */
+      .lang-btn{padding:8px 18px!important;font-size:14px!important;min-width:48px!important;min-height:40px!important}
+
+      /* Header: stack */
+      .header-inner{flex-direction:column!important;gap:14px!important;text-align:center}
+      .header-inner>a{width:100%;text-align:center;padding:14px 20px!important}
+      .header-brand{justify-content:center!important}
+
+      /* Nav: better scroll */
+      .nav-link{padding:12px 16px!important;font-size:14px!important}
+
+      /* Hero section */
+      .hero-section{min-height:auto!important;padding:48px 20px!important}
+      .hero-badges{flex-direction:column!important;gap:8px!important;align-items:center!important}
+      .hero-ctas{flex-direction:column!important;gap:12px!important;align-items:stretch!important}
+      .hero-ctas a{text-align:center!important;padding:16px 24px!important;justify-content:center!important;width:100%!important}
+
+      /* Sections: reduce padding */
+      .section-pad{padding:56px 18px!important}
+
+      /* Cards: single column */
+      .card-grid{grid-template-columns:1fr!important;gap:16px!important}
+
+      /* Form: single column */
+      .form-2col{grid-template-columns:1fr!important;gap:12px!important}
+
+      /* Footer: 1 column stacked */
+      .footer-grid{grid-template-columns:1fr!important;gap:28px!important;text-align:center}
+      .footer-grid p{max-width:100%!important}
+      .footer-bottom{flex-direction:column!important;text-align:center!important;gap:8px!important}
+
+      /* Testimonials: single col */
+      .testi-grid{grid-template-columns:1fr!important}
+
+      /* Stats: stack vertically */
+      .stats-grid{grid-template-columns:1fr!important;gap:24px!important}
+      .stats-grid>div{border-right:none!important;border-bottom:1px solid rgba(184,146,59,.2);padding-bottom:24px!important}
+      .stats-grid>div:last-child{border-bottom:none;padding-bottom:0!important}
+
+      /* Cadre ref box */
+      .cadre-ref-box{flex-direction:column!important;text-align:center!important;padding:24px 20px!important;gap:16px!important}
+      .cadre-ref-box>div:last-child{text-align:center!important}
+
+      /* Corridor cards */
+      .corr-grid{grid-template-columns:1fr!important;gap:16px!important}
+
+      /* WhatsApp float: smaller on mobile */
+      .wa-float{width:52px!important;height:52px!important;bottom:20px!important}
+      .scroll-top{bottom:82px!important;right:20px!important;width:40px!important;height:40px!important}
+
+      /* Reduce card glow effect on mobile (perf) */
+      .card-glow::after{display:none}
+    }
+
+    /* Small phones (320-480px) */
+    @media(max-width:480px){
+      .topbar-republic{font-size:11px!important}
+      .topbar-right span{font-size:10px!important}
+
+      .header-logo{width:48px!important;height:48px!important}
+      .header-title{font-size:22px!important}
+
+      .nav-link{padding:10px 14px!important;font-size:13px!important}
+
+      .hero-section{padding:36px 16px!important}
+
+      .section-pad{padding:44px 14px!important}
+
+      .corridor-card{padding:24px 18px!important}
+
+      .marquee-inner div{padding:12px 24px!important;font-size:14px!important}
+    }
+
+    /* Safe area for notched phones */
+    @supports(padding:env(safe-area-inset-bottom)){
+      .wa-float{bottom:calc(20px + env(safe-area-inset-bottom))!important}
+      .scroll-top{bottom:calc(82px + env(safe-area-inset-bottom))!important}
+      footer{padding-bottom:calc(28px + env(safe-area-inset-bottom))!important}
+    }
+
+    /* Reduce motion for accessibility */
+    @media(prefers-reduced-motion:reduce){
+      .reveal,.reveal-left,.reveal-right,.reveal-scale{transition:none!important;opacity:1!important;transform:none!important}
+      .wa-float,.logo-shimmer,.text-glow,.cta-pulse,.marquee-inner{animation:none!important}
+      html{scroll-behavior:auto}
+    }
+
+    /* Touch device optimizations */
+    @media(hover:none){
+      .card-lift:hover{transform:none;box-shadow:none}
+      .card-glow:hover::after{opacity:0}
+      .corridor-card:hover{transform:none}
+      .card-lift:active{transform:scale(.98);box-shadow:0 2px 12px rgba(0,0,0,.08)}
+    }
   </style>
 </head>
 <body>
@@ -409,16 +525,16 @@ function App(){
 
     {/* TOP BAR */}
     <div style={{background:GX,color:CL,fontSize:12,fontWeight:500,borderBottom:`2px solid ${GOLD}`}}>
-      <div style={{...ss,display:"flex",justifyContent:"space-between",alignItems:"center",height:38,flexWrap:"wrap",gap:10}}>
-        <div style={{display:"flex",alignItems:"center",gap:10}}>
+      <div className="topbar-inner" style={{...ss,display:"flex",justifyContent:"space-between",alignItems:"center",height:38,flexWrap:"wrap",gap:10}}>
+        <div className="topbar-left" style={{display:"flex",alignItems:"center",gap:10}}>
           <span style={{fontSize:14}}>🇩🇿</span>
-          <span style={{fontFamily:sf,fontStyle:"italic",fontSize:13}}>{t.top_l}</span>
+          <span className="topbar-republic" style={{fontFamily:sf,fontStyle:"italic",fontSize:13}}>{t.top_l}</span>
         </div>
-        <div style={{display:"flex",alignItems:"center",gap:16}}>
+        <div className="topbar-right" style={{display:"flex",alignItems:"center",gap:16}}>
           <span style={{opacity:.8}}>{t.top_r}</span>
-          <div style={{display:"flex",gap:1,background:"rgba(255,255,255,.1)",borderRadius:4,overflow:"hidden"}}>
+          <div className="lang-switcher">
             {Object.entries(LANG).map(([k,v])=>
-              <button key={k} onClick={()=>setLang(k)} style={{background:lang===k?GOLD:"transparent",border:"none",color:lang===k?GX:CL,padding:"4px 10px",cursor:"pointer",fontSize:11,fontWeight:700}}>{v}</button>
+              <button key={k} onClick={()=>setLang(k)} className={`lang-btn${lang===k?" active":""}`}>{v}</button>
             )}
           </div>
         </div>
@@ -427,13 +543,13 @@ function App(){
 
     {/* HEADER */}
     <header style={{background:CL,borderBottom:`1px solid ${BD}`,padding:"18px 28px"}}>
-      <div style={{...ss,display:"flex",alignItems:"center",justifyContent:"space-between",gap:20,flexWrap:"wrap"}}>
-        <div style={{display:"flex",alignItems:"center",gap:16}}>
-          <div className="logo-shimmer" style={{width:60,height:60,borderRadius:"50%",overflow:"hidden",border:`2.5px solid ${GOLD}`,flexShrink:0}}>
+      <div className="header-inner" style={{...ss,display:"flex",alignItems:"center",justifyContent:"space-between",gap:20,flexWrap:"wrap"}}>
+        <div className="header-brand" style={{display:"flex",alignItems:"center",gap:16}}>
+          <div className="logo-shimmer header-logo" style={{width:60,height:60,borderRadius:"50%",overflow:"hidden",border:`2.5px solid ${GOLD}`,flexShrink:0}}>
             <img src="/dinarzone/logo.png" alt="DinarZone" style={{width:"100%",height:"100%",objectFit:"cover",display:"block"}}/>
           </div>
           <div>
-            <div style={{fontFamily:"'Cormorant Garamond',Georgia,serif",fontSize:28,fontWeight:600,color:G,lineHeight:1,letterSpacing:.5}}>DinarZone</div>
+            <div className="header-title" style={{fontFamily:"'Cormorant Garamond',Georgia,serif",fontSize:28,fontWeight:600,color:G,lineHeight:1,letterSpacing:.5}}>DinarZone</div>
             <div style={{fontSize:13,color:TM,fontWeight:500,marginTop:5}}>{t.h_sub}</div>
             <div style={{fontSize:10,color:GOLD,fontWeight:700,letterSpacing:2.5,textTransform:"uppercase",marginTop:4}}>{t.h_motto}</div>
           </div>
@@ -444,7 +560,7 @@ function App(){
 
     {/* NAV */}
     <nav style={{background:CL,borderBottom:`2px solid ${G}`,position:"sticky",top:0,zIndex:100,boxShadow:"0 2px 14px rgba(0,0,0,.06)"}}>
-      <div style={{...ss,display:"flex",overflowX:"auto"}}>
+      <div className="nav-scroll" style={ss}>
         {t.nav.map((n,i)=>{
           const ids=["s0","s1","how","s2","s3","s4","cta"];
           const id=ids[i]||`s${i}`;
@@ -454,7 +570,7 @@ function App(){
     </nav>
 
     {/* HERO */}
-    <section id="s0" style={{position:"relative",minHeight:640,display:"flex",alignItems:"center",padding:"60px 28px",overflow:"hidden"}}>
+    <section id="s0" className="hero-section" style={{position:"relative",minHeight:640,display:"flex",alignItems:"center",padding:"60px 28px",overflow:"hidden"}}>
       <div className="hero-bg" style={{position:"absolute",inset:"-60px 0 0 0",backgroundImage:'url("/dinarzone/hero2.png")',backgroundSize:"cover",backgroundPosition:"center 25%",transform:`translateY(${heroOffset}px)`}}/>
       <div style={{position:"absolute",inset:0,background:`linear-gradient(135deg,${GX}E8 0%,${GD}D5 40%,${GX}EA 100%)`}}/>
       <div className="pattern-overlay" style={{position:"absolute",inset:0,opacity:.25}}/>
@@ -464,17 +580,17 @@ function App(){
           <span className="live-badge"><span className="tick-dot"/>{t.hero_live}</span>
         </div>
         <div style={{display:"inline-block",fontSize:13,color:GL,fontWeight:700,letterSpacing:2.5,textTransform:"uppercase",marginBottom:24,padding:"9px 24px",border:`1px solid ${GOLD}55`,borderRadius:2,backdropFilter:"blur(8px)",background:"rgba(0,0,0,.18)"}}>{t.hero_over}</div>
-        <h1 className="text-glow" style={{fontFamily:sf,fontSize:"clamp(38px,5.8vw,68px)",fontWeight:600,color:W,margin:"0 0 16px",lineHeight:1.1}}>
+        <h1 className="text-glow" style={{fontFamily:sf,fontSize:"clamp(32px,6.5vw,68px)",fontWeight:600,color:W,margin:"0 0 16px",lineHeight:1.1}}>
           <div>{t.hero_h1a}</div>
           <div style={{color:GL,fontStyle:"italic"}}>{t.hero_h1b}</div>
         </h1>
         <div className="gold-rule" style={{width:120,margin:"24px auto",background:`linear-gradient(90deg,transparent,${GL},transparent)`}}/>
-        <p style={{fontSize:19,color:CL,lineHeight:1.8,maxWidth:720,margin:"0 auto 42px",opacity:.93}}>{t.hero_p}</p>
-        <div style={{display:"flex",gap:16,justifyContent:"center",flexWrap:"wrap",marginBottom:48}}>
+        <p style={{fontSize:"clamp(16px,2.5vw,19px)",color:CL,lineHeight:1.8,maxWidth:720,margin:"0 auto 42px",opacity:.93}}>{t.hero_p}</p>
+        <div className="hero-ctas" style={{display:"flex",gap:16,justifyContent:"center",flexWrap:"wrap",marginBottom:48}}>
           <a href="#cta" className="cta-pulse" style={{background:GOLD,color:GX,padding:"18px 44px",textDecoration:"none",fontSize:16,fontWeight:700,border:`2px solid ${GOLD}`,borderRadius:2,letterSpacing:.3}}>{t.hero_cta1}</a>
           <a href="https://wa.me/14384001234" target="_blank" style={{background:"transparent",color:W,padding:"18px 44px",textDecoration:"none",fontSize:16,fontWeight:700,border:`2px solid rgba(255,255,255,.45)`,borderRadius:2,display:"inline-flex",alignItems:"center",gap:10}}><WA size={20}/>{t.hero_cta2}</a>
         </div>
-        <div style={{display:"flex",gap:12,justifyContent:"center",flexWrap:"wrap"}}>
+        <div className="hero-badges" style={{display:"flex",gap:12,justifyContent:"center",flexWrap:"wrap"}}>
           {[t.hero_b1,t.hero_b2,t.hero_b3].map((b,i)=>
             <div key={i} style={{background:"rgba(255,255,255,.07)",backdropFilter:"blur(10px)",border:`1px solid ${GOLD}38`,padding:"10px 20px",borderRadius:2,fontSize:12,color:CL,fontWeight:600,letterSpacing:.3}}>
               {i===2?"✓ ":""}{b}
@@ -485,11 +601,11 @@ function App(){
     </section>
 
     {/* POURQUOI */}
-    <section id="s1" ref={whyRef} className="section-glow" style={{padding:"88px 28px",background:CR}}>
+    <section id="s1" ref={whyRef} className="section-glow section-pad" style={{padding:"88px 28px",background:CR}}>
       <div style={ss}>
         <div className={`reveal${whyVis?" visible":""}`}><SH label={t.why_label} title={t.why_title} sf={sf}/></div>
         <p className={`reveal${whyVis?" visible":""}`} style={{textAlign:"center",fontSize:18,color:TM,margin:"22px auto 60px",maxWidth:740,lineHeight:1.78,transitionDelay:".1s"}}>{t.why_sub}</p>
-        <div className="stagger" style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(250px,1fr))",gap:22}}>
+        <div className="stagger card-grid" style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(250px,1fr))",gap:22}}>
           {[{t:t.w1_t,d:t.w1_d,i:"✦"},{t:t.w2_t,d:t.w2_d,i:"📍"},{t:t.w3_t,d:t.w3_d,i:"🔐"},{t:t.w4_t,d:t.w4_d,i:"💬"}].map((w,i)=>
             <div key={i} className={`reveal card-lift card-glow${whyVis?" visible":""}`} style={{background:CL,border:`1px solid ${BD}`,padding:"32px 26px",borderTop:`3px solid ${i===3?"#25D366":GOLD}`,cursor:"default",position:"relative",overflow:"hidden"}}>
               <div style={{fontSize:28,marginBottom:14}}>{w.i}</div>
@@ -502,7 +618,7 @@ function App(){
     </section>
 
     {/* COMMENT ÇA FONCTIONNE */}
-    <section id="how" ref={howRef} style={{padding:"88px 28px",background:`linear-gradient(135deg,${GX} 0%,${GD} 100%)`,borderTop:`3px solid ${GOLD}`,borderBottom:`3px solid ${GOLD}`}}>
+    <section id="how" ref={howRef} className="section-pad" style={{padding:"88px 28px",background:`linear-gradient(135deg,${GX} 0%,${GD} 100%)`,borderTop:`3px solid ${GOLD}`,borderBottom:`3px solid ${GOLD}`}}>
       <div style={ss}>
         <div className={`reveal${howVis?" visible":""}`}>
           <div style={{textAlign:"center",marginBottom:56}}>
@@ -527,10 +643,10 @@ function App(){
     </section>
 
     {/* MOMENTS */}
-    <section ref={momRef} style={{padding:"88px 28px",background:CL,borderBottom:`1px solid ${BD}`}}>
+    <section ref={momRef} className="section-pad" style={{padding:"88px 28px",background:CL,borderBottom:`1px solid ${BD}`}}>
       <div style={ss}>
         <div className={`reveal${momVis?" visible":""}`}><SH label={t.moments_label} title={t.moments_title} sf={sf}/></div>
-        <div className="stagger" style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(280px,1fr))",gap:22,marginTop:52}}>
+        <div className="stagger card-grid" style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(280px,1fr))",gap:22,marginTop:52}}>
           {[{i:"🌙",t:t.m1_t,d:t.m1_d},{i:"✦",t:t.m2_t,d:t.m2_d},{i:"📚",t:t.m3_t,d:t.m3_d}].map((m,i)=>
             <div key={i} className={`reveal card-lift card-glow${momVis?" visible":""}`} style={{background:CR,border:`1px solid ${BD}`,padding:"34px 28px",borderTop:`3px solid ${GOLD}`,cursor:"default",position:"relative",overflow:"hidden"}}>
               <div style={{fontSize:30,marginBottom:14,color:GOLD}}>{m.i}</div>
@@ -543,11 +659,11 @@ function App(){
     </section>
 
     {/* SERVICES */}
-    <section id="s2" ref={svcRef} style={{padding:"88px 28px",background:CR}}>
+    <section id="s2" ref={svcRef} className="section-pad" style={{padding:"88px 28px",background:CR}}>
       <div style={ss}>
         <div className={`reveal${svcVis?" visible":""}`}><SH label={t.services_label} title={t.services_title} sf={sf}/></div>
         <p className={`reveal${svcVis?" visible":""}`} style={{textAlign:"center",fontSize:17,color:TM,margin:"16px auto 52px",maxWidth:620,lineHeight:1.7,transitionDelay:".1s"}}>{t.services_sub}</p>
-        <div className="stagger" style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(280px,1fr))",gap:22}}>
+        <div className="stagger card-grid" style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(280px,1fr))",gap:22}}>
           {[{t:t.s1_t,d:t.s1_d,tag:t.s1_tag,n:"I"},{t:t.s2_t,d:t.s2_d,tag:t.s2_tag,n:"II"},{t:t.s3_t,d:t.s3_d,tag:t.s3_tag,n:"III"}].map((s,i)=>
             <div key={i} className={`reveal card-lift card-glow${svcVis?" visible":""}`} style={{background:CL,border:`1px solid ${BD}`,padding:"34px 28px",position:"relative",overflow:"hidden",cursor:"default"}}>
               <div style={{position:"absolute",top:0,right:rtl?"auto":0,left:rtl?0:"auto",background:G,color:CL,fontSize:10,fontWeight:700,padding:"5px 14px",letterSpacing:1.5}}>{s.tag.toUpperCase()}</div>
@@ -561,11 +677,11 @@ function App(){
     </section>
 
     {/* CADRE LÉGAL */}
-    <section id="s3" ref={cadRef} style={{padding:"88px 28px",background:CL,borderTop:`1px solid ${BD}`,borderBottom:`1px solid ${BD}`}}>
+    <section id="s3" ref={cadRef} className="section-pad" style={{padding:"88px 28px",background:CL,borderTop:`1px solid ${BD}`,borderBottom:`1px solid ${BD}`}}>
       <div style={ss}>
         <div className={`reveal${cadVis?" visible":""}`}><SH label={t.cadre_label} title={t.cadre_title} sf={sf}/></div>
         <p className={`reveal${cadVis?" visible":""}`} style={{textAlign:"center",fontSize:17,color:TM,lineHeight:1.75,maxWidth:720,margin:"18px auto 40px",transitionDelay:".1s"}}>{t.cadre_sub}</p>
-        <div className={`reveal${cadVis?" visible":""}`} style={{background:`linear-gradient(135deg,${W},#F9F7F0)`,border:`2px solid ${GOLD}`,padding:"32px 36px",marginBottom:44,display:"flex",alignItems:"center",gap:28,flexWrap:"wrap",justifyContent:"center",boxShadow:`0 4px 28px rgba(184,146,59,.1)`,transitionDelay:".2s"}}>
+        <div className={`reveal cadre-ref-box${cadVis?" visible":""}`} style={{background:`linear-gradient(135deg,${W},#F9F7F0)`,border:`2px solid ${GOLD}`,padding:"32px 36px",marginBottom:44,display:"flex",alignItems:"center",gap:28,flexWrap:"wrap",justifyContent:"center",boxShadow:`0 4px 28px rgba(184,146,59,.1)`,transitionDelay:".2s"}}>
           <div style={{width:88,height:88,borderRadius:"50%",overflow:"hidden",border:`3px solid ${GOLD}`,flexShrink:0,boxShadow:`0 4px 22px rgba(184,146,59,.25)`}}>
             <img src="/dinarzone/logo.png" alt="DinarZone" style={{width:"100%",height:"100%",objectFit:"cover"}}/>
           </div>
@@ -575,7 +691,7 @@ function App(){
             <p style={{fontSize:13,color:TM,margin:0,fontStyle:"italic"}}>{t.cadre_ref_sub}</p>
           </div>
         </div>
-        <div className="stagger" style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(260px,1fr))",gap:20}}>
+        <div className="stagger card-grid" style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(260px,1fr))",gap:20}}>
           {[{n:t.c1_n,t:t.c1_t,d:t.c1_d},{n:t.c2_n,t:t.c2_t,d:t.c2_d},{n:t.c3_n,t:t.c3_t,d:t.c3_d},{n:t.c4_n,t:t.c4_t,d:t.c4_d}].map((a,i)=>
             <div key={i} className={`reveal card-lift${cadVis?" visible":""}`} style={{background:CR,border:`1px solid ${BD}`,padding:"26px 22px",cursor:"default"}}>
               <div style={{display:"inline-block",background:G,color:CL,fontSize:10,fontWeight:700,padding:"4px 12px",letterSpacing:1.5,textTransform:"uppercase",marginBottom:16}}>{a.n}</div>
@@ -588,10 +704,10 @@ function App(){
     </section>
 
     {/* TÉMOIGNAGES */}
-    <section id="s4" ref={tesRef} style={{padding:"88px 28px",background:CR}}>
+    <section id="s4" ref={tesRef} className="section-pad" style={{padding:"88px 28px",background:CR}}>
       <div style={ss}>
         <div className={`reveal${tesVis?" visible":""}`}><SH label={t.testi_label} title={t.testi_title} sf={sf}/></div>
-        <div className="stagger" style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(300px,1fr))",gap:22,marginTop:52}}>
+        <div className="stagger testi-grid" style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(300px,1fr))",gap:22,marginTop:52}}>
           {[{n:t.t1_n,l:t.t1_l,d:t.t1_d},{n:t.t2_n,l:t.t2_l,d:t.t2_d},{n:t.t3_n,l:t.t3_l,d:t.t3_d}].map((tm,i)=>
             <div key={i} className={`reveal card-lift card-glow${tesVis?" visible":""}`} style={{background:CL,border:`1px solid ${BD}`,padding:"30px 26px",position:"relative",cursor:"default",overflow:"hidden"}}>
               <div className={tesVis?"quote-mark":""} style={{position:"absolute",top:-10,left:rtl?"auto":20,right:rtl?20:"auto",fontFamily:sf,fontSize:72,color:GOLD,opacity:0,lineHeight:1,pointerEvents:"none"}}>"</div>
@@ -608,7 +724,7 @@ function App(){
     </section>
 
     {/* CORRIDORS */}
-    <section ref={corRef} style={{padding:"88px 28px",background:`linear-gradient(135deg,${GX} 0%,${GD} 100%)`,borderTop:`3px solid ${GOLD}`,borderBottom:`3px solid ${GOLD}`}}>
+    <section ref={corRef} className="section-pad" style={{padding:"88px 28px",background:`linear-gradient(135deg,${GX} 0%,${GD} 100%)`,borderTop:`3px solid ${GOLD}`,borderBottom:`3px solid ${GOLD}`}}>
       <div style={ss}>
         <div className={`reveal${corVis?" visible":""}`}>
           <div style={{textAlign:"center",marginBottom:52}}>
@@ -617,7 +733,7 @@ function App(){
             <div style={{background:`linear-gradient(90deg,transparent,${GL},transparent)`,height:1,width:80,margin:"20px auto 0"}}/>
           </div>
         </div>
-        <div className="stagger" style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(280px,1fr))",gap:22}}>
+        <div className="stagger corr-grid" style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(280px,1fr))",gap:22}}>
           {[{f:"🇨🇦",t:t.cor_ca,d:t.cor_ca_d},{f:"🇶🇦",t:t.cor_qa,d:t.cor_qa_d},{f:"🇦🇪",t:t.cor_ae,d:t.cor_ae_d}].map((c,i)=>
             <div key={i} className={`reveal corridor-card${corVis?" visible":""}`}>
               <div style={{fontSize:52,marginBottom:16,filter:"drop-shadow(0 4px 12px rgba(0,0,0,.3))"}}>{c.f}</div>
@@ -631,11 +747,11 @@ function App(){
     </section>
 
     {/* PARRAINAGE */}
-    <section ref={parRef} style={{padding:"88px 28px",background:CR}}>
+    <section ref={parRef} className="section-pad" style={{padding:"88px 28px",background:CR}}>
       <div style={ss}>
         <div className={`reveal${parVis?" visible":""}`}><SH label={t.parr_label} title={t.parr_title} sf={sf}/></div>
         <p className={`reveal${parVis?" visible":""}`} style={{textAlign:"center",fontSize:17,color:TM,margin:"16px auto 52px",maxWidth:680,lineHeight:1.75,transitionDelay:".1s"}}>{t.parr_sub}</p>
-        <div className="stagger" style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(240px,1fr))",gap:22}}>
+        <div className="stagger card-grid" style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(240px,1fr))",gap:22}}>
           {[{n:"1",t:t.p1_t,d:t.p1_d},{n:"2",t:t.p2_t,d:t.p2_d},{n:"3",t:t.p3_t,d:t.p3_d}].map((p,i)=>
             <div key={i} className={`reveal card-lift card-glow${parVis?" visible":""}`} style={{background:CL,border:`1px solid ${BG}`,padding:"32px 24px",textAlign:"center",position:"relative",overflow:"hidden",cursor:"default"}}>
               <div style={{width:52,height:52,borderRadius:"50%",background:`linear-gradient(135deg,${G},${GD})`,color:GL,margin:"0 auto 20px",display:"flex",alignItems:"center",justifyContent:"center",fontSize:22,fontWeight:800,fontFamily:sf,border:`2.5px solid ${GOLD}`,boxShadow:`0 0 0 6px ${GOLD}15`}}>{p.n}</div>
@@ -648,10 +764,10 @@ function App(){
     </section>
 
     {/* CHIFFRES */}
-    <section ref={statRef} style={{padding:"72px 28px",background:GX,color:CL,borderTop:`3px solid ${GOLD}`,borderBottom:`3px solid ${GOLD}`}}>
+    <section ref={statRef} className="section-pad" style={{padding:"72px 28px",background:GX,color:CL,borderTop:`3px solid ${GOLD}`,borderBottom:`3px solid ${GOLD}`}}>
       <div style={ss}>
         <h3 className={`reveal${statVis?" visible":""}`} style={{fontFamily:sf,fontSize:"clamp(26px,3.5vw,36px)",fontWeight:600,textAlign:"center",margin:"0 0 52px",color:W}}>{t.stats_title}</h3>
-        <div className="stagger" style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(220px,1fr))",gap:32}}>
+        <div className="stagger stats-grid" style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(220px,1fr))",gap:32}}>
           {[{n:t.st1_n,d:t.st1_d},{n:t.st2_n,d:t.st2_d},{n:t.st3_n,d:t.st3_d}].map((s,i)=>
             <div key={i} className={`reveal${statVis?" visible":""}`} style={{textAlign:"center",padding:"20px 12px",borderRight:i<2?`1px solid ${GOLD}35`:"none"}}>
               <div className={statVis?"counter-animate":""} style={{fontFamily:sf,fontSize:"clamp(38px,4.5vw,54px)",fontWeight:600,color:GL,lineHeight:1,marginBottom:14}}>{s.n}</div>
@@ -663,10 +779,10 @@ function App(){
     </section>
 
     {/* ENGAGEMENTS */}
-    <section ref={engRef} style={{padding:"88px 28px",background:CR}}>
+    <section ref={engRef} className="section-pad" style={{padding:"88px 28px",background:CR}}>
       <div style={ss}>
         <div className={`reveal${engVis?" visible":""}`}><SH label={t.eng_label} title={t.eng_title} sf={sf}/></div>
-        <div className="stagger" style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(240px,1fr))",gap:22,marginTop:52}}>
+        <div className="stagger card-grid" style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(240px,1fr))",gap:22,marginTop:52}}>
           {[{t:t.e1_t,d:t.e1_d},{t:t.e2_t,d:t.e2_d},{t:t.e3_t,d:t.e3_d},{t:t.e4_t,d:t.e4_d}].map((e,i)=>
             <div key={i} className={`reveal card-lift${engVis?" visible":""}`} style={{padding:"26px 22px",background:CL,border:`1px solid ${BD}`,borderTop:`3px solid ${G}`,cursor:"default"}}>
               <div style={{width:36,height:36,borderRadius:"50%",background:`${G}15`,border:`1.5px solid ${G}30`,display:"flex",alignItems:"center",justifyContent:"center",marginBottom:14,fontSize:16}}>✓</div>
@@ -694,33 +810,33 @@ function App(){
     </section>
 
     {/* INSCRIPTION */}
-    <section id="cta" ref={ctaRef} style={{padding:"88px 28px",background:CR}}>
+    <section id="cta" ref={ctaRef} className="section-pad" style={{padding:"88px 28px",background:CR}}>
       <div style={{...ss,maxWidth:660}}>
         <div className={`reveal${ctaVis?" visible":""}`}><SH label={t.cta_label} title={t.cta_title} sf={sf}/></div>
         <p className={`reveal${ctaVis?" visible":""}`} style={{textAlign:"center",fontSize:17,color:TM,margin:"16px auto 40px",transitionDelay:".1s"}}>{t.cta_sub}</p>
         {sub?
-          <div style={{background:CL,border:`2px solid ${G}`,padding:"44px 32px",textAlign:"center"}}>
+          <div style={{background:CL,border:`2px solid ${G}`,padding:"44px 24px",textAlign:"center"}}>
             <div style={{fontSize:38,marginBottom:14}}>🎉</div>
             <div style={{fontFamily:sf,fontSize:26,fontWeight:600,color:G,marginBottom:10}}>{t.cta_ok_t}</div>
             <div style={{fontSize:14,color:TM,lineHeight:1.75}}>{t.cta_ok_d}</div>
           </div>
         :
-          <div className={`reveal${ctaVis?" visible":""}`} style={{background:CL,border:`1px solid ${BD}`,padding:"38px 32px",transitionDelay:".2s"}}>
-            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:14,marginBottom:14}}>
+          <div className={`reveal${ctaVis?" visible":""}`} style={{background:CL,border:`1px solid ${BD}`,padding:"32px 24px",transitionDelay:".2s"}}>
+            <div className="form-2col" style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:14,marginBottom:14}}>
               <FI l={t.cta_name} v={form.n} c={v=>setForm({...form,n:v})} r={rtl}/>
               <FI l={t.cta_country} v={form.c} c={v=>setForm({...form,c:v})} r={rtl}/>
             </div>
             <div style={{marginBottom:14}}><FI l={t.cta_email} v={form.e} c={v=>setForm({...form,e:v})} t="email" r={rtl}/></div>
-            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:14,marginBottom:24}}>
+            <div className="form-2col" style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:14,marginBottom:24}}>
               <FI l={t.cta_phone} v={form.p} c={v=>setForm({...form,p:v})} t="tel" r={rtl}/>
               <FI l={t.cta_origin} v={form.o} c={v=>setForm({...form,o:v})} r={rtl}/>
             </div>
-            <button className="cta-pulse" onClick={()=>form.e&&setSub(true)} style={{width:"100%",background:G,color:CL,padding:"17px",border:`2px solid ${G}`,fontSize:14,fontWeight:700,cursor:"pointer",letterSpacing:.8,textTransform:"uppercase",borderRadius:2,fontFamily:"inherit",transition:"background .2s"}}>{t.cta_btn}</button>
-            <p style={{fontSize:11,color:TS,lineHeight:1.65,marginTop:14,fontStyle:"italic"}}>{t.cta_legal}</p>
+            <button className="cta-pulse" onClick={()=>form.e&&setSub(true)} style={{width:"100%",background:G,color:CL,padding:"17px",border:`2px solid ${G}`,fontSize:16,fontWeight:700,cursor:"pointer",letterSpacing:.8,textTransform:"uppercase",borderRadius:2,fontFamily:"inherit",transition:"background .2s",minHeight:52}}>{t.cta_btn}</button>
+            <p style={{fontSize:12,color:TS,lineHeight:1.65,marginTop:14,fontStyle:"italic"}}>{t.cta_legal}</p>
             <div style={{marginTop:24,paddingTop:24,borderTop:`1px dashed ${BG}`,textAlign:"center"}}>
               <div style={{fontSize:12,color:TS,marginBottom:14,fontStyle:"italic"}}>{t.cta_or}</div>
-              <a href="https://wa.me/14384001234" target="_blank" style={{display:"inline-flex",alignItems:"center",gap:10,background:"#25D366",color:W,padding:"13px 28px",textDecoration:"none",fontSize:13,fontWeight:700,borderRadius:2}}>
-                <WA size={18}/>{t.cta_wa}
+              <a href="https://wa.me/14384001234" target="_blank" style={{display:"inline-flex",alignItems:"center",gap:10,background:"#25D366",color:W,padding:"15px 28px",textDecoration:"none",fontSize:14,fontWeight:700,borderRadius:2,minHeight:48}}>
+                <WA size={20}/>{t.cta_wa}
               </a>
             </div>
           </div>
@@ -731,9 +847,9 @@ function App(){
     {/* FOOTER */}
     <footer style={{background:GX,color:CL,padding:"52px 28px 28px"}}>
       <div style={ss}>
-        <div style={{display:"grid",gridTemplateColumns:"2fr 1fr 1fr 1fr",gap:32,marginBottom:36,flexWrap:"wrap"}}>
+        <div className="footer-grid" style={{display:"grid",gridTemplateColumns:"2fr 1fr 1fr 1fr",gap:32,marginBottom:36}}>
           <div>
-            <div style={{display:"flex",alignItems:"center",gap:14,marginBottom:16}}>
+            <div style={{display:"flex",alignItems:"center",gap:14,marginBottom:16,justifyContent:"inherit"}}>
               <div style={{width:48,height:48,borderRadius:"50%",overflow:"hidden",border:`2px solid ${GOLD}`,flexShrink:0,boxShadow:`0 2px 12px rgba(184,146,59,.3)`}}>
                 <img src="/dinarzone/logo.png" alt="DinarZone" style={{width:"100%",height:"100%",objectFit:"cover",display:"block"}}/>
               </div>
@@ -742,28 +858,28 @@ function App(){
                 <div style={{fontSize:9,color:GL,letterSpacing:1.8,textTransform:"uppercase",marginTop:4}}>{t.h_motto}</div>
               </div>
             </div>
-            <p style={{fontSize:12,color:CL,opacity:.72,lineHeight:1.78,maxWidth:380}}>{t.footer_about}</p>
+            <p style={{fontSize:13,color:CL,opacity:.72,lineHeight:1.78,maxWidth:380}}>{t.footer_about}</p>
           </div>
           <div>
             <h5 style={{fontSize:10,color:GL,fontWeight:700,letterSpacing:1.8,textTransform:"uppercase",marginBottom:16}}>{t.footer_leg}</h5>
-            <div style={{display:"flex",flexDirection:"column",gap:10,fontSize:12}}>
-              {[t.footer_m,t.footer_p,t.footer_t,t.footer_c].map((l,i)=><a key={i} href="#" style={{color:CL,opacity:.7,textDecoration:"none"}}>{l}</a>)}
+            <div style={{display:"flex",flexDirection:"column",gap:12,fontSize:13}}>
+              {[t.footer_m,t.footer_p,t.footer_t,t.footer_c].map((l,i)=><a key={i} href="#" style={{color:CL,opacity:.7,textDecoration:"none",minHeight:32,display:"flex",alignItems:"center"}}>{l}</a>)}
             </div>
           </div>
           <div>
             <h5 style={{fontSize:10,color:GL,fontWeight:700,letterSpacing:1.8,textTransform:"uppercase",marginBottom:16}}>{t.footer_contact}</h5>
-            <div style={{display:"flex",flexDirection:"column",gap:10,fontSize:12,color:CL,opacity:.7}}>
+            <div style={{display:"flex",flexDirection:"column",gap:12,fontSize:13,color:CL,opacity:.7}}>
               <div>contact@dinarzone.com</div><div>Doha, Qatar</div><div>Montréal, Canada</div>
             </div>
           </div>
           <div>
             <h5 style={{fontSize:10,color:GL,fontWeight:700,letterSpacing:1.8,textTransform:"uppercase",marginBottom:16}}>{t.footer_follow}</h5>
-            <div style={{display:"flex",flexDirection:"column",gap:10,fontSize:12}}>
-              {["LinkedIn","Twitter / X","Facebook","Instagram"].map((s,i)=><a key={i} href="#" style={{color:CL,opacity:.7,textDecoration:"none"}}>{s}</a>)}
+            <div style={{display:"flex",flexDirection:"column",gap:12,fontSize:13}}>
+              {["LinkedIn","Twitter / X","Facebook","Instagram"].map((s,i)=><a key={i} href="#" style={{color:CL,opacity:.7,textDecoration:"none",minHeight:32,display:"flex",alignItems:"center"}}>{s}</a>)}
             </div>
           </div>
         </div>
-        <div style={{borderTop:`1px solid ${GOLD}25`,paddingTop:22,display:"flex",justifyContent:"space-between",alignItems:"center",fontSize:11,color:CL,opacity:.55,flexWrap:"wrap",gap:12}}>
+        <div className="footer-bottom" style={{borderTop:`1px solid ${GOLD}25`,paddingTop:22,display:"flex",justifyContent:"space-between",alignItems:"center",fontSize:11,color:CL,opacity:.55,flexWrap:"wrap",gap:12}}>
           <div>© {new Date().getFullYear()} Expatria Group Consultancy. {t.footer_copy}.</div>
           <div style={{fontStyle:"italic",fontFamily:sf}}>{t.top_l}</div>
         </div>
