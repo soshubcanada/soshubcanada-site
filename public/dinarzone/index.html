@@ -8,13 +8,13 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,500;1,600&family=Tajawal:wght@300;400;500;700;800;900&family=Cairo:wght@400;600;700;900&family=Amiri:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
-  <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
-  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <style>
     *{box-sizing:border-box;margin:0;padding:0}
     html{scroll-behavior:smooth}
-    body{font-family:'Tajawal',sans-serif;background:#F5F3EC;color:#1A1F2E;-webkit-font-smoothing:antialiased}
+    body{font-family:'Tajawal',sans-serif;background:#F5F3EC;color:#1A1F2E;-webkit-font-smoothing:antialiased;font-size:16px;line-height:1.7}
     .gold-rule{background:linear-gradient(90deg,transparent,#B8923B,transparent);height:1px}
     @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
     .fade-up{animation:fadeUp .7s ease forwards}
@@ -102,15 +102,15 @@
     @media(max-width:700px){.step-connector{display:none}.step-row{flex-direction:column!important;gap:28px!important}}
 
     /* NAV LINKS */
-    .nav-link{padding:13px 18px;font-size:13px;font-weight:600;color:#4A5568;text-decoration:none;border-bottom:3px solid transparent;margin-bottom:-2px;white-space:nowrap;display:inline-block;transition:color .2s,border-color .2s}
+    .nav-link{padding:14px 20px;font-size:15px;font-weight:600;color:#4A5568;text-decoration:none;border-bottom:3px solid transparent;margin-bottom:-2px;white-space:nowrap;display:inline-block;transition:color .2s,border-color .2s}
     .nav-link:hover{color:#006633!important;border-bottom-color:rgba(184,146,59,.35)!important}
     .nav-link.active{color:#006633!important;border-bottom-color:#B8923B!important}
 
     /* HERO BADGE */
-    .live-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(37,211,102,.1);border:1px solid rgba(37,211,102,.3);color:#a8f0c6;padding:7px 16px;border-radius:100px;font-size:11px;font-weight:700;letter-spacing:.5px;backdrop-filter:blur(6px)}
+    .live-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(37,211,102,.1);border:1px solid rgba(37,211,102,.3);color:#a8f0c6;padding:8px 20px;border-radius:100px;font-size:13px;font-weight:700;letter-spacing:.5px;backdrop-filter:blur(6px)}
 
     /* STARS */
-    .star{color:#D4AF6A;font-size:14px;line-height:1}
+    .star{color:#D4AF6A;font-size:16px;line-height:1}
 
     /* SECTION GLOW TOP */
     .section-glow{position:relative}
@@ -348,8 +348,8 @@ function ChevUp(){return <svg width="20" height="20" viewBox="0 0 24 24" fill="n
 
 function SH({label,title,sf}){return(
   <div style={{textAlign:"center"}}>
-    <div style={{fontSize:11,color:GOLD,fontWeight:700,letterSpacing:2.5,textTransform:"uppercase",marginBottom:14}}>{label}</div>
-    <h2 style={{fontFamily:sf,fontSize:"clamp(28px,3.8vw,42px)",fontWeight:600,color:TX,margin:0,lineHeight:1.2}}>{title}</h2>
+    <div style={{fontSize:13,color:GOLD,fontWeight:700,letterSpacing:3,textTransform:"uppercase",marginBottom:16}}>{label}</div>
+    <h2 style={{fontFamily:sf,fontSize:"clamp(32px,4.5vw,50px)",fontWeight:600,color:TX,margin:0,lineHeight:1.18}}>{title}</h2>
     <div className="gold-rule" style={{width:80,margin:"20px auto 0"}}/>
   </div>
 );}
@@ -357,8 +357,8 @@ function SH({label,title,sf}){return(
 function Stars(){return <div style={{display:"flex",gap:3,marginBottom:14}}>{[1,2,3,4,5].map(i=><span key={i} className="star">★</span>)}</div>;}
 
 function FI({l,v,c,t="text",r}){return(
-  <div><label style={{fontSize:11,color:TM,fontWeight:700,letterSpacing:.5,textTransform:"uppercase",display:"block",marginBottom:6}}>{l}</label>
-  <input type={t} value={v} onChange={e=>c(e.target.value)} style={{width:"100%",background:CR,border:`1px solid ${BD}`,padding:"12px 14px",fontSize:14,color:TX,fontFamily:"inherit",textAlign:r?"right":"left",borderRadius:2}}/></div>
+  <div><label style={{fontSize:12,color:TM,fontWeight:700,letterSpacing:.8,textTransform:"uppercase",display:"block",marginBottom:8}}>{l}</label>
+  <input type={t} value={v} onChange={e=>c(e.target.value)} style={{width:"100%",background:CR,border:`1px solid ${BD}`,padding:"14px 16px",fontSize:16,color:TX,fontFamily:"inherit",textAlign:r?"right":"left",borderRadius:2}}/></div>
 );}
 
 function App(){
@@ -430,15 +430,15 @@ function App(){
       <div style={{...ss,display:"flex",alignItems:"center",justifyContent:"space-between",gap:20,flexWrap:"wrap"}}>
         <div style={{display:"flex",alignItems:"center",gap:16}}>
           <div className="logo-shimmer" style={{width:60,height:60,borderRadius:"50%",overflow:"hidden",border:`2.5px solid ${GOLD}`,flexShrink:0}}>
-            <img src="logo.png" alt="DinarZone" style={{width:"100%",height:"100%",objectFit:"cover",display:"block"}}/>
+            <img src="/dinarzone/logo.png" alt="DinarZone" style={{width:"100%",height:"100%",objectFit:"cover",display:"block"}}/>
           </div>
           <div>
-            <div style={{fontFamily:"'Cormorant Garamond',Georgia,serif",fontSize:25,fontWeight:600,color:G,lineHeight:1,letterSpacing:.5}}>DinarZone</div>
-            <div style={{fontSize:11,color:TM,fontWeight:500,marginTop:5}}>{t.h_sub}</div>
-            <div style={{fontSize:9,color:GOLD,fontWeight:700,letterSpacing:2,textTransform:"uppercase",marginTop:4}}>{t.h_motto}</div>
+            <div style={{fontFamily:"'Cormorant Garamond',Georgia,serif",fontSize:28,fontWeight:600,color:G,lineHeight:1,letterSpacing:.5}}>DinarZone</div>
+            <div style={{fontSize:13,color:TM,fontWeight:500,marginTop:5}}>{t.h_sub}</div>
+            <div style={{fontSize:10,color:GOLD,fontWeight:700,letterSpacing:2.5,textTransform:"uppercase",marginTop:4}}>{t.h_motto}</div>
           </div>
         </div>
-        <a href="#cta" style={{background:G,color:CL,padding:"11px 24px",textDecoration:"none",fontSize:13,fontWeight:700,border:`2px solid ${G}`,borderRadius:2}}>{t.hero_cta1}</a>
+        <a href="#cta" style={{background:G,color:CL,padding:"13px 28px",textDecoration:"none",fontSize:15,fontWeight:700,border:`2px solid ${G}`,borderRadius:2}}>{t.hero_cta1}</a>
       </div>
     </header>
 
@@ -455,7 +455,7 @@ function App(){
 
     {/* HERO */}
     <section id="s0" style={{position:"relative",minHeight:640,display:"flex",alignItems:"center",padding:"60px 28px",overflow:"hidden"}}>
-      <div className="hero-bg" style={{position:"absolute",inset:"-60px 0 0 0",backgroundImage:'url("hero2.png")',backgroundSize:"cover",backgroundPosition:"center 25%",transform:`translateY(${heroOffset}px)`}}/>
+      <div className="hero-bg" style={{position:"absolute",inset:"-60px 0 0 0",backgroundImage:'url("/dinarzone/hero2.png")',backgroundSize:"cover",backgroundPosition:"center 25%",transform:`translateY(${heroOffset}px)`}}/>
       <div style={{position:"absolute",inset:0,background:`linear-gradient(135deg,${GX}E8 0%,${GD}D5 40%,${GX}EA 100%)`}}/>
       <div className="pattern-overlay" style={{position:"absolute",inset:0,opacity:.25}}/>
       <div style={{position:"absolute",bottom:0,left:0,right:0,height:4,background:`linear-gradient(90deg,${GL},${GOLD},${GL})`}}/>
@@ -463,16 +463,16 @@ function App(){
         <div style={{marginBottom:20}}>
           <span className="live-badge"><span className="tick-dot"/>{t.hero_live}</span>
         </div>
-        <div style={{display:"inline-block",fontSize:11,color:GL,fontWeight:700,letterSpacing:2.2,textTransform:"uppercase",marginBottom:22,padding:"7px 20px",border:`1px solid ${GOLD}55`,borderRadius:2,backdropFilter:"blur(8px)",background:"rgba(0,0,0,.18)"}}>{t.hero_over}</div>
-        <h1 className="text-glow" style={{fontFamily:sf,fontSize:"clamp(34px,5.2vw,60px)",fontWeight:600,color:W,margin:"0 0 14px",lineHeight:1.12}}>
+        <div style={{display:"inline-block",fontSize:13,color:GL,fontWeight:700,letterSpacing:2.5,textTransform:"uppercase",marginBottom:24,padding:"9px 24px",border:`1px solid ${GOLD}55`,borderRadius:2,backdropFilter:"blur(8px)",background:"rgba(0,0,0,.18)"}}>{t.hero_over}</div>
+        <h1 className="text-glow" style={{fontFamily:sf,fontSize:"clamp(38px,5.8vw,68px)",fontWeight:600,color:W,margin:"0 0 16px",lineHeight:1.1}}>
           <div>{t.hero_h1a}</div>
           <div style={{color:GL,fontStyle:"italic"}}>{t.hero_h1b}</div>
         </h1>
-        <div className="gold-rule" style={{width:110,margin:"22px auto",background:`linear-gradient(90deg,transparent,${GL},transparent)`}}/>
-        <p style={{fontSize:17,color:CL,lineHeight:1.8,maxWidth:700,margin:"0 auto 38px",opacity:.93}}>{t.hero_p}</p>
-        <div style={{display:"flex",gap:14,justifyContent:"center",flexWrap:"wrap",marginBottom:44}}>
-          <a href="#cta" className="cta-pulse" style={{background:GOLD,color:GX,padding:"16px 40px",textDecoration:"none",fontSize:14,fontWeight:700,border:`2px solid ${GOLD}`,borderRadius:2}}>{t.hero_cta1}</a>
-          <a href="https://wa.me/14384001234" target="_blank" style={{background:"transparent",color:W,padding:"16px 40px",textDecoration:"none",fontSize:14,fontWeight:700,border:`2px solid rgba(255,255,255,.45)`,borderRadius:2,display:"inline-flex",alignItems:"center",gap:10}}><WA size={18}/>{t.hero_cta2}</a>
+        <div className="gold-rule" style={{width:120,margin:"24px auto",background:`linear-gradient(90deg,transparent,${GL},transparent)`}}/>
+        <p style={{fontSize:19,color:CL,lineHeight:1.8,maxWidth:720,margin:"0 auto 42px",opacity:.93}}>{t.hero_p}</p>
+        <div style={{display:"flex",gap:16,justifyContent:"center",flexWrap:"wrap",marginBottom:48}}>
+          <a href="#cta" className="cta-pulse" style={{background:GOLD,color:GX,padding:"18px 44px",textDecoration:"none",fontSize:16,fontWeight:700,border:`2px solid ${GOLD}`,borderRadius:2,letterSpacing:.3}}>{t.hero_cta1}</a>
+          <a href="https://wa.me/14384001234" target="_blank" style={{background:"transparent",color:W,padding:"18px 44px",textDecoration:"none",fontSize:16,fontWeight:700,border:`2px solid rgba(255,255,255,.45)`,borderRadius:2,display:"inline-flex",alignItems:"center",gap:10}}><WA size={20}/>{t.hero_cta2}</a>
         </div>
         <div style={{display:"flex",gap:12,justifyContent:"center",flexWrap:"wrap"}}>
           {[t.hero_b1,t.hero_b2,t.hero_b3].map((b,i)=>
@@ -488,13 +488,13 @@ function App(){
     <section id="s1" ref={whyRef} className="section-glow" style={{padding:"88px 28px",background:CR}}>
       <div style={ss}>
         <div className={`reveal${whyVis?" visible":""}`}><SH label={t.why_label} title={t.why_title} sf={sf}/></div>
-        <p className={`reveal${whyVis?" visible":""}`} style={{textAlign:"center",fontSize:16,color:TM,margin:"20px auto 56px",maxWidth:720,lineHeight:1.75,transitionDelay:".1s"}}>{t.why_sub}</p>
+        <p className={`reveal${whyVis?" visible":""}`} style={{textAlign:"center",fontSize:18,color:TM,margin:"22px auto 60px",maxWidth:740,lineHeight:1.78,transitionDelay:".1s"}}>{t.why_sub}</p>
         <div className="stagger" style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(250px,1fr))",gap:22}}>
           {[{t:t.w1_t,d:t.w1_d,i:"✦"},{t:t.w2_t,d:t.w2_d,i:"📍"},{t:t.w3_t,d:t.w3_d,i:"🔐"},{t:t.w4_t,d:t.w4_d,i:"💬"}].map((w,i)=>
             <div key={i} className={`reveal card-lift card-glow${whyVis?" visible":""}`} style={{background:CL,border:`1px solid ${BD}`,padding:"32px 26px",borderTop:`3px solid ${i===3?"#25D366":GOLD}`,cursor:"default",position:"relative",overflow:"hidden"}}>
               <div style={{fontSize:28,marginBottom:14}}>{w.i}</div>
-              <h3 style={{fontFamily:sf,fontSize:21,fontWeight:600,color:G,margin:"0 0 10px"}}>{w.t}</h3>
-              <p style={{fontSize:14,color:TM,lineHeight:1.72,margin:0}}>{w.d}</p>
+              <h3 style={{fontFamily:sf,fontSize:24,fontWeight:600,color:G,margin:"0 0 10px"}}>{w.t}</h3>
+              <p style={{fontSize:16,color:TM,lineHeight:1.75,margin:0}}>{w.d}</p>
             </div>
           )}
         </div>
@@ -516,8 +516,8 @@ function App(){
             <React.Fragment key={i}>
               <div className={`reveal${howVis?" visible":""}`} style={{flex:"1 1 200px",textAlign:"center",padding:"0 16px",transitionDelay:step.delay}}>
                 <div style={{width:56,height:56,borderRadius:"50%",background:`linear-gradient(135deg,${GOLD},${GL})`,color:GX,margin:"0 auto 20px",display:"flex",alignItems:"center",justifyContent:"center",fontSize:22,fontWeight:800,fontFamily:sf,boxShadow:`0 0 0 8px ${GOLD}20,0 8px 24px rgba(0,0,0,.3)`,position:"relative",zIndex:1}}>{step.n}</div>
-                <h4 style={{fontFamily:sf,fontSize:19,fontWeight:600,color:GL,margin:"0 0 10px"}}>{step.t}</h4>
-                <p style={{fontSize:13,color:CL,opacity:.82,lineHeight:1.65,margin:0}}>{step.d}</p>
+                <h4 style={{fontFamily:sf,fontSize:21,fontWeight:600,color:GL,margin:"0 0 10px"}}>{step.t}</h4>
+                <p style={{fontSize:15,color:CL,opacity:.85,lineHeight:1.7,margin:0}}>{step.d}</p>
               </div>
               {i<arr.length-1&&<div className="step-connector"/>}
             </React.Fragment>
@@ -534,8 +534,8 @@ function App(){
           {[{i:"🌙",t:t.m1_t,d:t.m1_d},{i:"✦",t:t.m2_t,d:t.m2_d},{i:"📚",t:t.m3_t,d:t.m3_d}].map((m,i)=>
             <div key={i} className={`reveal card-lift card-glow${momVis?" visible":""}`} style={{background:CR,border:`1px solid ${BD}`,padding:"34px 28px",borderTop:`3px solid ${GOLD}`,cursor:"default",position:"relative",overflow:"hidden"}}>
               <div style={{fontSize:30,marginBottom:14,color:GOLD}}>{m.i}</div>
-              <h3 style={{fontFamily:sf,fontSize:22,fontWeight:600,color:G,margin:"0 0 12px"}}>{m.t}</h3>
-              <p style={{fontSize:14,color:TM,lineHeight:1.72,margin:0}}>{m.d}</p>
+              <h3 style={{fontFamily:sf,fontSize:24,fontWeight:600,color:G,margin:"0 0 12px"}}>{m.t}</h3>
+              <p style={{fontSize:16,color:TM,lineHeight:1.75,margin:0}}>{m.d}</p>
             </div>
           )}
         </div>
@@ -546,14 +546,14 @@ function App(){
     <section id="s2" ref={svcRef} style={{padding:"88px 28px",background:CR}}>
       <div style={ss}>
         <div className={`reveal${svcVis?" visible":""}`}><SH label={t.services_label} title={t.services_title} sf={sf}/></div>
-        <p className={`reveal${svcVis?" visible":""}`} style={{textAlign:"center",fontSize:15,color:TM,margin:"16px auto 52px",maxWidth:620,lineHeight:1.7,transitionDelay:".1s"}}>{t.services_sub}</p>
+        <p className={`reveal${svcVis?" visible":""}`} style={{textAlign:"center",fontSize:17,color:TM,margin:"16px auto 52px",maxWidth:620,lineHeight:1.7,transitionDelay:".1s"}}>{t.services_sub}</p>
         <div className="stagger" style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(280px,1fr))",gap:22}}>
           {[{t:t.s1_t,d:t.s1_d,tag:t.s1_tag,n:"I"},{t:t.s2_t,d:t.s2_d,tag:t.s2_tag,n:"II"},{t:t.s3_t,d:t.s3_d,tag:t.s3_tag,n:"III"}].map((s,i)=>
             <div key={i} className={`reveal card-lift card-glow${svcVis?" visible":""}`} style={{background:CL,border:`1px solid ${BD}`,padding:"34px 28px",position:"relative",overflow:"hidden",cursor:"default"}}>
               <div style={{position:"absolute",top:0,right:rtl?"auto":0,left:rtl?0:"auto",background:G,color:CL,fontSize:10,fontWeight:700,padding:"5px 14px",letterSpacing:1.5}}>{s.tag.toUpperCase()}</div>
               <div style={{fontFamily:sf,fontSize:44,fontWeight:600,color:GOLD,marginBottom:14,lineHeight:1,marginTop:12}}>{s.n}</div>
-              <h3 style={{fontFamily:sf,fontSize:22,fontWeight:600,color:TX,margin:"0 0 12px"}}>{s.t}</h3>
-              <p style={{fontSize:14,color:TM,lineHeight:1.72,margin:0}}>{s.d}</p>
+              <h3 style={{fontFamily:sf,fontSize:24,fontWeight:600,color:TX,margin:"0 0 12px"}}>{s.t}</h3>
+              <p style={{fontSize:16,color:TM,lineHeight:1.75,margin:0}}>{s.d}</p>
             </div>
           )}
         </div>
@@ -564,10 +564,10 @@ function App(){
     <section id="s3" ref={cadRef} style={{padding:"88px 28px",background:CL,borderTop:`1px solid ${BD}`,borderBottom:`1px solid ${BD}`}}>
       <div style={ss}>
         <div className={`reveal${cadVis?" visible":""}`}><SH label={t.cadre_label} title={t.cadre_title} sf={sf}/></div>
-        <p className={`reveal${cadVis?" visible":""}`} style={{textAlign:"center",fontSize:15,color:TM,lineHeight:1.75,maxWidth:720,margin:"18px auto 40px",transitionDelay:".1s"}}>{t.cadre_sub}</p>
+        <p className={`reveal${cadVis?" visible":""}`} style={{textAlign:"center",fontSize:17,color:TM,lineHeight:1.75,maxWidth:720,margin:"18px auto 40px",transitionDelay:".1s"}}>{t.cadre_sub}</p>
         <div className={`reveal${cadVis?" visible":""}`} style={{background:`linear-gradient(135deg,${W},#F9F7F0)`,border:`2px solid ${GOLD}`,padding:"32px 36px",marginBottom:44,display:"flex",alignItems:"center",gap:28,flexWrap:"wrap",justifyContent:"center",boxShadow:`0 4px 28px rgba(184,146,59,.1)`,transitionDelay:".2s"}}>
           <div style={{width:88,height:88,borderRadius:"50%",overflow:"hidden",border:`3px solid ${GOLD}`,flexShrink:0,boxShadow:`0 4px 22px rgba(184,146,59,.25)`}}>
-            <img src="logo.png" alt="DinarZone" style={{width:"100%",height:"100%",objectFit:"cover"}}/>
+            <img src="/dinarzone/logo.png" alt="DinarZone" style={{width:"100%",height:"100%",objectFit:"cover"}}/>
           </div>
           <div style={{flex:"1 1 360px",textAlign:rtl?"right":"left"}}>
             <div style={{fontSize:11,color:GOLD,fontWeight:700,letterSpacing:2,textTransform:"uppercase",marginBottom:6}}>Référence officielle</div>
@@ -579,8 +579,8 @@ function App(){
           {[{n:t.c1_n,t:t.c1_t,d:t.c1_d},{n:t.c2_n,t:t.c2_t,d:t.c2_d},{n:t.c3_n,t:t.c3_t,d:t.c3_d},{n:t.c4_n,t:t.c4_t,d:t.c4_d}].map((a,i)=>
             <div key={i} className={`reveal card-lift${cadVis?" visible":""}`} style={{background:CR,border:`1px solid ${BD}`,padding:"26px 22px",cursor:"default"}}>
               <div style={{display:"inline-block",background:G,color:CL,fontSize:10,fontWeight:700,padding:"4px 12px",letterSpacing:1.5,textTransform:"uppercase",marginBottom:16}}>{a.n}</div>
-              <h4 style={{fontFamily:sf,fontSize:19,fontWeight:600,color:TX,margin:"0 0 10px"}}>{a.t}</h4>
-              <p style={{fontSize:13,color:TM,lineHeight:1.65,margin:0}}>{a.d}</p>
+              <h4 style={{fontFamily:sf,fontSize:21,fontWeight:600,color:TX,margin:"0 0 10px"}}>{a.t}</h4>
+              <p style={{fontSize:15,color:TM,lineHeight:1.7,margin:0}}>{a.d}</p>
             </div>
           )}
         </div>
@@ -596,7 +596,7 @@ function App(){
             <div key={i} className={`reveal card-lift card-glow${tesVis?" visible":""}`} style={{background:CL,border:`1px solid ${BD}`,padding:"30px 26px",position:"relative",cursor:"default",overflow:"hidden"}}>
               <div className={tesVis?"quote-mark":""} style={{position:"absolute",top:-10,left:rtl?"auto":20,right:rtl?20:"auto",fontFamily:sf,fontSize:72,color:GOLD,opacity:0,lineHeight:1,pointerEvents:"none"}}>"</div>
               <Stars/>
-              <p style={{fontSize:14,color:TX,lineHeight:1.8,margin:"0 0 22px",fontStyle:"italic",fontFamily:sf,fontWeight:500}}>{tm.d}</p>
+              <p style={{fontSize:16,color:TX,lineHeight:1.8,margin:"0 0 24px",fontStyle:"italic",fontFamily:sf,fontWeight:500}}>{tm.d}</p>
               <div style={{display:"flex",alignItems:"center",gap:12,borderTop:`1px solid ${BD}`,paddingTop:16}}>
                 <div style={{width:44,height:44,borderRadius:"50%",background:`linear-gradient(135deg,${G},${GD})`,color:GL,display:"flex",alignItems:"center",justifyContent:"center",fontSize:17,fontWeight:700,fontFamily:sf,border:`2px solid ${GOLD}`,flexShrink:0}}>{tm.n.charAt(0)}</div>
                 <div><div style={{fontSize:14,fontWeight:700,color:TX}}>{tm.n}</div><div style={{fontSize:11,color:TS,marginTop:2}}>{tm.l}</div></div>
@@ -623,7 +623,7 @@ function App(){
               <div style={{fontSize:52,marginBottom:16,filter:"drop-shadow(0 4px 12px rgba(0,0,0,.3))"}}>{c.f}</div>
               <h3 style={{fontFamily:sf,fontSize:26,fontWeight:600,color:GL,margin:"0 0 12px"}}>{c.t}</h3>
               <div style={{background:`linear-gradient(90deg,transparent,${GOLD}60,transparent)`,height:1,width:50,margin:"0 auto 14px"}}/>
-              <p style={{fontSize:13,color:CL,opacity:.82,lineHeight:1.65,margin:0}}>{c.d}</p>
+              <p style={{fontSize:15,color:CL,opacity:.85,lineHeight:1.7,margin:0}}>{c.d}</p>
             </div>
           )}
         </div>
@@ -634,13 +634,13 @@ function App(){
     <section ref={parRef} style={{padding:"88px 28px",background:CR}}>
       <div style={ss}>
         <div className={`reveal${parVis?" visible":""}`}><SH label={t.parr_label} title={t.parr_title} sf={sf}/></div>
-        <p className={`reveal${parVis?" visible":""}`} style={{textAlign:"center",fontSize:15,color:TM,margin:"16px auto 52px",maxWidth:680,lineHeight:1.75,transitionDelay:".1s"}}>{t.parr_sub}</p>
+        <p className={`reveal${parVis?" visible":""}`} style={{textAlign:"center",fontSize:17,color:TM,margin:"16px auto 52px",maxWidth:680,lineHeight:1.75,transitionDelay:".1s"}}>{t.parr_sub}</p>
         <div className="stagger" style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(240px,1fr))",gap:22}}>
           {[{n:"1",t:t.p1_t,d:t.p1_d},{n:"2",t:t.p2_t,d:t.p2_d},{n:"3",t:t.p3_t,d:t.p3_d}].map((p,i)=>
             <div key={i} className={`reveal card-lift card-glow${parVis?" visible":""}`} style={{background:CL,border:`1px solid ${BG}`,padding:"32px 24px",textAlign:"center",position:"relative",overflow:"hidden",cursor:"default"}}>
               <div style={{width:52,height:52,borderRadius:"50%",background:`linear-gradient(135deg,${G},${GD})`,color:GL,margin:"0 auto 20px",display:"flex",alignItems:"center",justifyContent:"center",fontSize:22,fontWeight:800,fontFamily:sf,border:`2.5px solid ${GOLD}`,boxShadow:`0 0 0 6px ${GOLD}15`}}>{p.n}</div>
-              <h4 style={{fontFamily:sf,fontSize:21,fontWeight:600,color:G,margin:"0 0 10px"}}>{p.t}</h4>
-              <p style={{fontSize:13,color:TM,lineHeight:1.72,margin:0}}>{p.d}</p>
+              <h4 style={{fontFamily:sf,fontSize:24,fontWeight:600,color:G,margin:"0 0 10px"}}>{p.t}</h4>
+              <p style={{fontSize:15,color:TM,lineHeight:1.72,margin:0}}>{p.d}</p>
             </div>
           )}
         </div>
@@ -655,7 +655,7 @@ function App(){
           {[{n:t.st1_n,d:t.st1_d},{n:t.st2_n,d:t.st2_d},{n:t.st3_n,d:t.st3_d}].map((s,i)=>
             <div key={i} className={`reveal${statVis?" visible":""}`} style={{textAlign:"center",padding:"20px 12px",borderRight:i<2?`1px solid ${GOLD}35`:"none"}}>
               <div className={statVis?"counter-animate":""} style={{fontFamily:sf,fontSize:"clamp(38px,4.5vw,54px)",fontWeight:600,color:GL,lineHeight:1,marginBottom:14}}>{s.n}</div>
-              <div style={{fontSize:13,color:CL,opacity:.82,lineHeight:1.55,maxWidth:180,margin:"0 auto"}}>{s.d}</div>
+              <div style={{fontSize:15,color:CL,opacity:.85,lineHeight:1.6,maxWidth:180,margin:"0 auto"}}>{s.d}</div>
             </div>
           )}
         </div>
@@ -670,8 +670,8 @@ function App(){
           {[{t:t.e1_t,d:t.e1_d},{t:t.e2_t,d:t.e2_d},{t:t.e3_t,d:t.e3_d},{t:t.e4_t,d:t.e4_d}].map((e,i)=>
             <div key={i} className={`reveal card-lift${engVis?" visible":""}`} style={{padding:"26px 22px",background:CL,border:`1px solid ${BD}`,borderTop:`3px solid ${G}`,cursor:"default"}}>
               <div style={{width:36,height:36,borderRadius:"50%",background:`${G}15`,border:`1.5px solid ${G}30`,display:"flex",alignItems:"center",justifyContent:"center",marginBottom:14,fontSize:16}}>✓</div>
-              <h4 style={{fontFamily:sf,fontSize:18,fontWeight:600,color:TX,margin:"0 0 10px"}}>{e.t}</h4>
-              <p style={{fontSize:13,color:TM,lineHeight:1.65,margin:0}}>{e.d}</p>
+              <h4 style={{fontFamily:sf,fontSize:20,fontWeight:600,color:TX,margin:"0 0 10px"}}>{e.t}</h4>
+              <p style={{fontSize:15,color:TM,lineHeight:1.7,margin:0}}>{e.d}</p>
             </div>
           )}
         </div>
@@ -687,7 +687,7 @@ function App(){
       <div className="marquee-wrap">
         <div className="marquee-inner">
           {[...partners,...partners].map((p,i)=>
-            <div key={i} style={{padding:"16px 40px",borderRight:`1px solid ${BD}`,whiteSpace:"nowrap",fontFamily:sf,fontSize:15,fontWeight:600,color:G,letterSpacing:.3,flexShrink:0}}>{p}</div>
+            <div key={i} style={{padding:"16px 40px",borderRight:`1px solid ${BD}`,whiteSpace:"nowrap",fontFamily:sf,fontSize:17,fontWeight:600,color:G,letterSpacing:.3,flexShrink:0}}>{p}</div>
           )}
         </div>
       </div>
@@ -697,7 +697,7 @@ function App(){
     <section id="cta" ref={ctaRef} style={{padding:"88px 28px",background:CR}}>
       <div style={{...ss,maxWidth:660}}>
         <div className={`reveal${ctaVis?" visible":""}`}><SH label={t.cta_label} title={t.cta_title} sf={sf}/></div>
-        <p className={`reveal${ctaVis?" visible":""}`} style={{textAlign:"center",fontSize:15,color:TM,margin:"16px auto 40px",transitionDelay:".1s"}}>{t.cta_sub}</p>
+        <p className={`reveal${ctaVis?" visible":""}`} style={{textAlign:"center",fontSize:17,color:TM,margin:"16px auto 40px",transitionDelay:".1s"}}>{t.cta_sub}</p>
         {sub?
           <div style={{background:CL,border:`2px solid ${G}`,padding:"44px 32px",textAlign:"center"}}>
             <div style={{fontSize:38,marginBottom:14}}>🎉</div>
@@ -735,7 +735,7 @@ function App(){
           <div>
             <div style={{display:"flex",alignItems:"center",gap:14,marginBottom:16}}>
               <div style={{width:48,height:48,borderRadius:"50%",overflow:"hidden",border:`2px solid ${GOLD}`,flexShrink:0,boxShadow:`0 2px 12px rgba(184,146,59,.3)`}}>
-                <img src="logo.png" alt="DinarZone" style={{width:"100%",height:"100%",objectFit:"cover",display:"block"}}/>
+                <img src="/dinarzone/logo.png" alt="DinarZone" style={{width:"100%",height:"100%",objectFit:"cover",display:"block"}}/>
               </div>
               <div>
                 <div style={{fontFamily:sf,fontSize:22,fontWeight:600,color:CL,lineHeight:1}}>DinarZone</div>
