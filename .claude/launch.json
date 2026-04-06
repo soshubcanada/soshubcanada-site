@@ -2,10 +2,16 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "soshub-site",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "dev"],
+      "name": "aidoqc-site",
+      "runtimeExecutable": "/bin/sh",
+      "runtimeArgs": ["-c", "cd /Users/grp255/Downloads/aidoqc-app && /usr/local/bin/node node_modules/.bin/next dev"],
       "port": 3000
+    },
+    {
+      "name": "dinarzone-preview",
+      "runtimeExecutable": "/bin/sh",
+      "runtimeArgs": ["-c", "cd /tmp/dinarzone-preview && python3 -m http.server 3001"],
+      "port": 3001
     }
   ]
 }

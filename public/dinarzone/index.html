@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DinarZone • Plateforme officielle de transfert vers l'Algérie</title>
+  <meta name="description" content="Plateforme agréée de transfert vers l'Algérie. Conforme à la Loi 23-09. Cash et numérique." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,500;1,600&family=Tajawal:wght@300;400;500;700;800;900&family=Cairo:wght@400;600;700;900&family=Amiri:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{font-family:'Tajawal',sans-serif;background:#F5F3EC;color:#1A1F2E;-webkit-font-smoothing:antialiased}
+    .gold-rule{background:linear-gradient(90deg,transparent,#B8923B,transparent);height:1px}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+    .fade-up{animation:fadeUp .7s ease forwards}
+    .pattern-overlay{background-image:repeating-linear-gradient(45deg,rgba(184,146,59,.03) 0,rgba(184,146,59,.03) 1px,transparent 1px,transparent 18px)}
+    button,a{transition:all .25s cubic-bezier(.4,0,.2,1)}
+    input:focus{border-color:#006633!important;outline:none;box-shadow:0 0 0 3px rgba(0,102,51,.08)}
+    input::placeholder{color:#8B9AAF}
+    footer a:hover{opacity:1!important;color:#D4AF6A!important}
+
+    /* SCROLL REVEAL */
+    .reveal{opacity:0;transform:translateY(34px);transition:opacity .75s cubic-bezier(.4,0,.2,1),transform .75s cubic-bezier(.4,0,.2,1)}
+    .reveal.visible{opacity:1;transform:translateY(0)}
+    .reveal-left{opacity:0;transform:translateX(-40px);transition:opacity .7s ease,transform .7s ease}
+    .reveal-left.visible{opacity:1;transform:translateX(0)}
+    .reveal-right{opacity:0;transform:translateX(40px);transition:opacity .7s ease,transform .7s ease}
+    .reveal-right.visible{opacity:1;transform:translateX(0)}
+    .reveal-scale{opacity:0;transform:scale(.93);transition:opacity .65s ease,transform .65s ease}
+    .reveal-scale.visible{opacity:1;transform:scale(1)}
+
+    /* STAGGER - up to 6 */
+    .stagger .reveal:nth-child(1){transition-delay:.04s}
+    .stagger .reveal:nth-child(2){transition-delay:.14s}
+    .stagger .reveal:nth-child(3){transition-delay:.24s}
+    .stagger .reveal:nth-child(4){transition-delay:.34s}
+    .stagger .reveal:nth-child(5){transition-delay:.44s}
+    .stagger .reveal:nth-child(6){transition-delay:.54s}
+
+    /* CARD HOVER */
+    .card-lift{transition:transform .35s cubic-bezier(.4,0,.2,1),box-shadow .35s ease}
+    .card-lift:hover{transform:translateY(-7px);box-shadow:0 22px 52px rgba(0,0,0,.1)}
+
+    /* GRADIENT BORDER ON HOVER */
+    @keyframes gradBorder{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+    .card-glow{position:relative;z-index:0}
+    .card-glow::after{content:"";position:absolute;inset:-1.5px;background:linear-gradient(135deg,#006633,#B8923B,#D4AF6A,#004D26);background-size:300% 300%;border-radius:inherit;z-index:-1;opacity:0;transition:opacity .35s;animation:gradBorder 3s ease infinite}
+    .card-glow:hover::after{opacity:1}
+
+    /* CTA PULSE */
+    @keyframes ctaPulse{0%,100%{box-shadow:0 0 0 0 rgba(0,102,51,.4)}70%{box-shadow:0 0 0 14px rgba(0,102,51,0)}}
+    .cta-pulse{animation:ctaPulse 2.5s infinite}
+
+    /* GOLD SHIMMER */
+    @keyframes goldShimmer{0%{filter:drop-shadow(0 3px 14px rgba(184,146,59,.3)) brightness(1)}50%{filter:drop-shadow(0 3px 20px rgba(184,146,59,.55)) brightness(1.06)}100%{filter:drop-shadow(0 3px 14px rgba(184,146,59,.3)) brightness(1)}}
+    .logo-shimmer{animation:goldShimmer 4s ease-in-out infinite}
+
+    /* TEXT GLOW (hero title) */
+    @keyframes textGlow{0%,100%{text-shadow:0 0 30px rgba(212,175,106,.15)}50%{text-shadow:0 0 50px rgba(212,175,106,.45)}}
+    .text-glow{animation:textGlow 3.5s ease-in-out infinite}
+
+    /* HERO PARALLAX */
+    .hero-bg{will-change:transform}
+
+    /* SCROLL PROGRESS */
+    #scroll-progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,#006633,#B8923B,#D4AF6A);z-index:9999;transition:width .08s linear;width:0;pointer-events:none}
+
+    /* COUNTER */
+    @keyframes countUp{from{opacity:0;transform:translateY(14px) scale(.95)}to{opacity:1;transform:translateY(0) scale(1)}}
+    .counter-animate{animation:countUp .75s cubic-bezier(.4,0,.2,1) forwards}
+
+    /* WHATSAPP FLOAT */
+    @keyframes waFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+    .wa-float{animation:waFloat 3s ease-in-out infinite}
+
+    /* QUOTE MARK */
+    @keyframes quoteIn{from{opacity:0;transform:scale(.5) rotate(-12deg)}to{opacity:.2;transform:scale(1) rotate(0)}}
+    .quote-mark{animation:quoteIn .8s ease forwards}
+
+    /* LIVE DOT */
+    @keyframes tickDot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(.75)}}
+    .tick-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#25D366;animation:tickDot 1.6s ease-in-out infinite;flex-shrink:0}
+
+    /* PARTNER MARQUEE */
+    @keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+    .marquee-wrap{overflow:hidden;-webkit-mask:linear-gradient(90deg,transparent 0%,#fff 8%,#fff 92%,transparent 100%)}
+    .marquee-inner{display:flex;animation:marquee 22s linear infinite;width:max-content}
+    .marquee-inner:hover{animation-play-state:paused}
+
+    /* SCROLL TO TOP */
+    .scroll-top{position:fixed;bottom:96px;right:26px;z-index:197;width:44px;height:44px;background:#006633;color:#F5F3EC;border:none;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(0,0,0,.22);transition:opacity .3s,transform .3s;opacity:0;transform:translateY(12px);pointer-events:none}
+    .scroll-top.show{opacity:1;transform:translateY(0);pointer-events:auto}
+    .scroll-top:hover{background:#004D26;transform:translateY(-3px)!important}
+
+    /* HOW IT WORKS connector */
+    .step-connector{flex:1;height:2px;background:linear-gradient(90deg,#B8923B,#D4AF6A,#B8923B);align-self:flex-start;margin-top:27px;min-width:16px;opacity:.6}
+    @media(max-width:700px){.step-connector{display:none}.step-row{flex-direction:column!important;gap:28px!important}}
+
+    /* NAV LINKS */
+    .nav-link{padding:13px 18px;font-size:13px;font-weight:600;color:#4A5568;text-decoration:none;border-bottom:3px solid transparent;margin-bottom:-2px;white-space:nowrap;display:inline-block;transition:color .2s,border-color .2s}
+    .nav-link:hover{color:#006633!important;border-bottom-color:rgba(184,146,59,.35)!important}
+    .nav-link.active{color:#006633!important;border-bottom-color:#B8923B!important}
+
+    /* HERO BADGE */
+    .live-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(37,211,102,.1);border:1px solid rgba(37,211,102,.3);color:#a8f0c6;padding:7px 16px;border-radius:100px;font-size:11px;font-weight:700;letter-spacing:.5px;backdrop-filter:blur(6px)}
+
+    /* STARS */
+    .star{color:#D4AF6A;font-size:14px;line-height:1}
+
+    /* SECTION GLOW TOP */
+    .section-glow{position:relative}
+    .section-glow::before{content:"";position:absolute;top:0;left:50%;transform:translateX(-50%);width:220px;height:1px;background:linear-gradient(90deg,transparent,#B8923B,transparent)}
+
+    /* CORRIDOR CARD */
+    .corridor-card{background:rgba(255,255,255,.04);border:1px solid rgba(212,175,106,.2);padding:36px 28px;text-align:center;transition:background .3s,border-color .3s,transform .35s}
+    .corridor-card:hover{background:rgba(255,255,255,.08);border-color:rgba(212,175,106,.5);transform:translateY(-5px)}
+  </style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel" data-presets="react">
+const{useState,useEffect,useRef}=React;
+
+function useReveal(threshold=0.14){
+  const ref=useRef(null);
+  const[visible,setVisible]=useState(false);
+  useEffect(()=>{
+    const el=ref.current;if(!el)return;
+    const obs=new IntersectionObserver(([e])=>{if(e.isIntersecting){setVisible(true);obs.unobserve(el)}},{threshold});
+    obs.observe(el);return()=>obs.disconnect();
+  },[]);
+  return[ref,visible];
+}
+
+function useActiveSection(ids){
+  const[active,setActive]=useState(ids[0]);
+  useEffect(()=>{
+    const obs=new IntersectionObserver(entries=>{
+      entries.forEach(e=>{if(e.isIntersecting)setActive(e.target.id)});
+    },{threshold:.2,rootMargin:"-80px 0px -55% 0px"});
+    ids.forEach(id=>{const el=document.getElementById(id);if(el)obs.observe(el)});
+    return()=>obs.disconnect();
+  },[]);
+  return active;
+}
+
+const G="#006633",GD="#004D26",GX="#003318",GOLD="#B8923B",GL="#D4AF6A",CR="#F5F3EC",CL="#FAFAF7",W="#FFFFFF",TX="#1A1F2E",TM="#4A5568",TS="#6B7485",BD="#E2DFD4",BG="#D4C49A";
+const LANG={fr:"FR",en:"EN",ar:"ع"};
+
+const T={
+fr:{
+  top_l:"République Algérienne Démocratique et Populaire",
+  top_r:"Plateforme agréée • Conforme Loi 23-09",
+  nav:["Accueil","Notre mission","Services","Cadre légal","Confiance","Contact"],
+  h_sub:"Plateforme officielle de transfert vers l'Algérie",
+  h_motto:"Transparence • Sécurité • Solidarité",
+  hero_over:"Plateforme agréée par la Banque d'Algérie",
+  hero_h1a:"Quand votre famille reçoit,",
+  hero_h1b:"votre cœur sourit.",
+  hero_p:"Comparez les taux de tous les partenaires agréés. Choisissez le canal qui convient à votre famille. Transférez en toute sérénité, en conformité avec la Loi n° 23-09.",
+  hero_cta1:"Rejoindre la plateforme",
+  hero_cta2:"Nous contacter sur WhatsApp",
+  hero_live:"1 247 membres actifs",
+  hero_b1:"1 247+ inscrits",hero_b2:"48 wilayas",hero_b3:"Conforme Banque d'Algérie",
+  why_label:"Pourquoi DinarZone",
+  why_title:"La confiance de toute une communauté",
+  why_sub:"Comme Djezzy a transformé les télécoms, comme BaridiMob a simplifié les paiements, DinarZone transforme les transferts vers l'Algérie.",
+  w1_t:"Transparence totale",w1_d:"Taux, frais et délais affichés en clair avant chaque opération. Vous savez exactement combien votre famille recevra.",
+  w2_t:"Réseau de proximité",w2_d:"Agents de confiance dans les wilayas d'Alger, Oran, Constantine, Annaba et Sétif. Retrait en main propre ou via BaridiMob.",
+  w3_t:"Sécurité certifiée",w3_d:"Partenaires licenciés par FINTRAC, QCB, CBUAE et la Banque d'Algérie. Chiffrement AES-256. Vérification eKYC intégrée.",
+  w4_t:"Support humain 24/7",w4_d:"Conseillers disponibles en français, arabe et darija via WhatsApp. Parce que derrière chaque transfert, il y a une famille.",
+  how_label:"Comment ça fonctionne",how_title:"Simple, rapide, transparent",
+  hs1_t:"Inscrivez-vous",hs1_d:"Compte créé en 2 minutes. Vérification eKYC intégrée et sécurisée.",
+  hs2_t:"Comparez",hs2_d:"Taux et frais en temps réel de tous les partenaires agréés.",
+  hs3_t:"Choisissez votre canal",hs3_d:"Agent physique, BaridiMob ou portefeuille numérique DinarZone.",
+  hs4_t:"Votre famille reçoit",hs4_d:"Transfert tracé, reçu instantané, confirmation par WhatsApp.",
+  moments_label:"Les moments qui comptent",
+  moments_title:"Présent pour votre famille, à chaque instant",
+  m1_t:"Ramadan Kareem",m1_d:"Préparez vos envois avant le mois sacré. Disponibilité renforcée et délais courts.",
+  m2_t:"Aïd el-Fitr et Aïd el-Adha",m2_d:"Les jours de fête méritent d'être partagés. Transferts reçus à temps, en toute transparence.",
+  m3_t:"Rentrée scolaire",m3_d:"Préparez la rentrée de vos enfants et proches au pays avec des transferts programmés.",
+  services_label:"Nos services",
+  services_title:"Cash et numérique, ensemble",
+  services_sub:"Trois canaux complémentaires adaptés aux réalités de chaque famille algérienne.",
+  s1_t:"Agents de confiance",s1_d:"Bijouteries et commerces agréés dans les grandes villes. Votre famille retire en main propre, dans un lieu qu'elle connaît.",s1_tag:"Canal physique",
+  s2_t:"BaridiMob et CCP",s2_d:"Versement direct sur le compte postal ou le portefeuille BaridiMob d'Algérie Poste. 48 wilayas couvertes.",s2_tag:"Canal numérique",
+  s3_t:"Portefeuille DinarZone",s3_d:"Paiements quotidiens via code QR. Opéré par nos partenaires agréés Banque d'Algérie (Art. 160 et 162, Loi 23-09).",s3_tag:"Canal hybride",
+  cadre_label:"Cadre réglementaire",
+  cadre_title:"Conforme à la Loi n° 23-09",
+  cadre_sub:"La loi monétaire et bancaire du 21 juin 2023 établit un cadre moderne pour les établissements de paiement en Algérie. DinarZone opère strictement dans ce cadre.",
+  cadre_ref:"Loi n° 23-09 du 21 juin 2023",
+  cadre_ref_sub:"portant loi monétaire et bancaire • Journal officiel de la République Algérienne",
+  c1_n:"Art. 160",c1_t:"Établissements de paiement",c1_d:"Catégorie dédiée aux acteurs non bancaires agréés par la Banque d'Algérie.",
+  c2_n:"Art. 162",c2_t:"Monnaie électronique",c2_d:"Cadre formel pour les portefeuilles numériques et instruments de paiement électronique.",
+  c3_n:"Art. 164",c3_t:"Intermédiaires agréés",c3_d:"Opérations de change et transfert réservées aux intermédiaires agréés. Traçabilité garantie.",
+  c4_n:"Art. 167",c4_t:"Agents bancaires",c4_d:"Extension du réseau via agents déclarés pour une couverture territoriale élargie.",
+  corr_label:"Corridors actifs",corr_title:"Trois corridors. Une seule plateforme.",
+  cor_ca:"Canada",cor_ca_d:"Intermédiaires agréés FINTRAC. Montréal, Toronto, Ottawa.",
+  cor_qa:"Qatar",cor_qa_d:"Établissements licenciés Qatar Central Bank. Doha.",
+  cor_ae:"Émirats",cor_ae_d:"Maisons de change agréées CBUAE. Dubaï, Abu Dhabi.",
+  testi_label:"Ils nous font confiance",testi_title:"La parole de la diaspora",
+  t1_n:"Yasmine Bensaïd",t1_l:"Montréal • Alger",t1_d:"J'envoie chaque mois à mes parents à Bab El Oued. Savoir qu'ils retirent dans une bijouterie qu'ils connaissent, ça me rassure. C'est exactement ce qu'il manquait.",
+  t2_n:"Mohamed El Hachemi",t2_l:"Doha • Constantine",t2_d:"Le corridor Qatar-Algérie était compliqué. Maintenant tout est transparent : le taux, les frais, le délai. Ma mère reçoit via BaridiMob en quelques heures.",
+  t3_n:"Amel Khelifa",t3_l:"Dubaï • Oran",t3_d:"Ce que j'apprécie, c'est le côté officiel, conforme à la Loi 23-09. Quand on envoie de l'argent à sa famille, on veut la sérénité.",
+  parr_label:"Programme de parrainage",parr_title:"Partagez DinarZone avec vos proches",
+  parr_sub:"La solidarité se partage. Invitez vos proches, bénéficiez tous les deux d'avantages exclusifs.",
+  p1_t:"Invitez",p1_d:"Partagez votre lien personnel via WhatsApp ou message.",
+  p2_t:"Ils s'inscrivent",p2_d:"Votre proche devient membre fondateur avec tous les avantages.",
+  p3_t:"Vous gagnez ensemble",p3_d:"Réduction sur vos frais de transfert, valable à vie.",
+  stats_title:"La diaspora algérienne en chiffres",
+  st1_n:"2 Mds USD",st1_d:"Volume annuel des transferts vers l'Algérie",
+  st2_n:"145 000+",st2_d:"Algériens dans les trois corridors",
+  st3_n:"48 wilayas",st3_d:"Couverture territoriale cible",
+  eng_label:"Nos engagements",eng_title:"Les garanties que nous apportons",
+  e1_t:"Conformité réglementaire",e1_d:"Respect intégral du cadre juridique national et international.",
+  e2_t:"Protection des données",e2_d:"Chiffrement AES-256. Conformité PCI DSS.",
+  e3_t:"Vérification d'identité",e3_d:"Procédures eKYC intégrées, conformes aux exigences LBC/FT.",
+  e4_t:"Traçabilité complète",e4_d:"Reçu détaillé et suivi temps réel jusqu'à réception.",
+  part_label:"Partenaires institutionnels",part_title:"Un écosystème de confiance",
+  cta_label:"Inscription",cta_title:"Rejoignez la plateforme",
+  cta_sub:"Inscription gratuite. Accès prioritaire pour les membres fondateurs.",
+  cta_name:"Nom et prénom",cta_email:"Adresse courriel",cta_phone:"Téléphone (avec indicatif)",cta_country:"Pays de résidence",cta_origin:"Wilaya d'origine",
+  cta_btn:"Valider mon inscription",cta_or:"ou contactez-nous directement",cta_wa:"Parler à un conseiller sur WhatsApp",
+  cta_legal:"En validant, vous acceptez de recevoir les communications relatives au lancement. Vos données sont traitées conformément à la législation en vigueur.",
+  cta_ok_t:"Votre inscription est enregistrée",cta_ok_d:"Marhaba ! Vous serez contacté préalablement au lancement de la plateforme.",
+  footer_about:"DinarZone est une plateforme éditée par Expatria Group Consultancy, basée à Doha (Qatar). Société sœur : SOS Hub Canada (Montréal).",
+  footer_leg:"Informations légales",footer_contact:"Nous contacter",footer_follow:"Suivez-nous",
+  footer_m:"Mentions légales",footer_p:"Politique de confidentialité",footer_t:"Conditions générales",footer_c:"Gestion des cookies",footer_copy:"Tous droits réservés",
+},
+en:{
+  top_l:"People's Democratic Republic of Algeria",top_r:"Licensed platform • Compliant with Law 23-09",
+  nav:["Home","Our mission","Services","Legal framework","Trust","Contact"],
+  h_sub:"Official transfer platform to Algeria",h_motto:"Transparency • Security • Solidarity",
+  hero_over:"Licensed by the Bank of Algeria",hero_h1a:"When your family receives,",hero_h1b:"your heart smiles.",
+  hero_p:"Compare rates from all licensed partners. Choose the channel that works for your family. Transfer with full confidence, compliant with Law 23-09.",
+  hero_cta1:"Join the platform",hero_cta2:"Contact us on WhatsApp",hero_live:"1,247 active members",
+  hero_b1:"1,247+ registered",hero_b2:"48 wilayas",hero_b3:"Bank of Algeria compliant",
+  why_label:"Why DinarZone",why_title:"The trust of an entire community",
+  why_sub:"Just as Djezzy transformed telecoms, as BaridiMob simplified payments, DinarZone transforms transfers to Algeria.",
+  w1_t:"Full transparency",w1_d:"Rates, fees and timelines shown before each operation. You know exactly how much your family receives.",
+  w2_t:"Proximity network",w2_d:"Trusted agents in Algiers, Oran, Constantine, Annaba and Setif. Cash pickup or BaridiMob.",
+  w3_t:"Certified security",w3_d:"Partners licensed by FINTRAC, QCB, CBUAE and Bank of Algeria. AES-256 encryption. Integrated eKYC.",
+  w4_t:"24/7 human support",w4_d:"Advisors in French, Arabic and Darija via WhatsApp. Because behind every transfer, there's a family.",
+  how_label:"How it works",how_title:"Simple, fast, transparent",
+  hs1_t:"Register",hs1_d:"Account created in 2 minutes. Integrated eKYC verification.",
+  hs2_t:"Compare",hs2_d:"Real-time rates from all our licensed partners.",
+  hs3_t:"Choose your channel",hs3_d:"Physical agent, BaridiMob or DinarZone digital wallet.",
+  hs4_t:"Your family receives",hs4_d:"Tracked transfer, instant receipt, WhatsApp confirmation.",
+  moments_label:"Moments that matter",moments_title:"There for your family, every moment",
+  m1_t:"Ramadan Kareem",m1_d:"Prepare your transfers before the holy month. Reinforced availability and fast delivery.",
+  m2_t:"Eid al-Fitr & Eid al-Adha",m2_d:"Celebration days deserve to be shared. Transfers received on time, with full transparency.",
+  m3_t:"Back to school",m3_d:"Prepare the school year for your children and family back home with scheduled transfers.",
+  services_label:"Our services",services_title:"Cash and digital, together",services_sub:"Three complementary channels adapted to every Algerian family.",
+  s1_t:"Trusted agents",s1_d:"Licensed shops in major cities. Your family picks up cash in person.",s1_tag:"Physical channel",
+  s2_t:"BaridiMob & CCP",s2_d:"Direct payment to postal account or BaridiMob wallet. 48 wilayas.",s2_tag:"Digital channel",
+  s3_t:"DinarZone wallet",s3_d:"Daily QR payments. Bank of Algeria-licensed partners (Art. 160 & 162, Law 23-09).",s3_tag:"Hybrid channel",
+  cadre_label:"Regulatory framework",cadre_title:"Compliant with Law 23-09",
+  cadre_sub:"Algeria's monetary and banking law of June 21, 2023 establishes a modern framework for payment institutions. DinarZone operates strictly within this framework.",
+  cadre_ref:"Law No. 23-09 of June 21, 2023",cadre_ref_sub:"on monetary and banking law • Official Gazette of the Republic of Algeria",
+  c1_n:"Art. 160",c1_t:"Payment institutions",c1_d:"Category for non-bank actors licensed by the Bank of Algeria.",
+  c2_n:"Art. 162",c2_t:"Electronic money",c2_d:"Formal framework for digital wallets and electronic payment instruments.",
+  c3_n:"Art. 164",c3_t:"Authorized intermediaries",c3_d:"Exchange and transfer operations reserved for licensed intermediaries.",
+  c4_n:"Art. 167",c4_t:"Banking agents",c4_d:"Network extension through declared agents for broader territorial coverage.",
+  corr_label:"Active corridors",corr_title:"Three corridors. One platform.",
+  cor_ca:"Canada",cor_ca_d:"FINTRAC-licensed intermediaries. Montreal, Toronto, Ottawa.",
+  cor_qa:"Qatar",cor_qa_d:"QCB-licensed institutions. Doha.",cor_ae:"Emirates",cor_ae_d:"CBUAE exchange houses. Dubai, Abu Dhabi.",
+  testi_label:"They trust us",testi_title:"Voices from the diaspora",
+  t1_n:"Yasmine Bensaid",t1_l:"Montreal • Algiers",t1_d:"I send monthly to my parents in Bab El Oued. Knowing they pick up from a jeweller they already know is so reassuring.",
+  t2_n:"Mohamed El Hachemi",t2_l:"Doha • Constantine",t2_d:"The Qatar-Algeria corridor was complicated. Now everything is transparent. My mother receives via BaridiMob in hours.",
+  t3_n:"Amel Khelifa",t3_l:"Dubai • Oran",t3_d:"What I value is the compliance with Law 23-09. When you send money to family, peace of mind is everything.",
+  parr_label:"Referral programme",parr_title:"Share DinarZone with your loved ones",parr_sub:"Solidarity is shared. Invite loved ones, both benefit from exclusive advantages.",
+  p1_t:"Invite",p1_d:"Share your personal link via WhatsApp.",p2_t:"They register",p2_d:"Your loved one becomes a founding member.",p3_t:"You both earn",p3_d:"Lifetime discount on transfer fees.",
+  stats_title:"The Algerian diaspora in figures",
+  st1_n:"$2B",st1_d:"Annual transfer volume to Algeria",st2_n:"145,000+",st2_d:"Algerians in the three corridors",st3_n:"48 wilayas",st3_d:"Target territorial coverage",
+  eng_label:"Our commitments",eng_title:"The guarantees we bring",
+  e1_t:"Regulatory compliance",e1_d:"Full respect of national and international legal frameworks.",e2_t:"Data protection",e2_d:"AES-256 encryption. PCI DSS compliant.",e3_t:"Identity verification",e3_d:"Integrated eKYC. AML/CFT compliant.",e4_t:"Full traceability",e4_d:"Detailed receipt and real-time tracking.",
+  part_label:"Institutional partners",part_title:"An ecosystem of trust",
+  cta_label:"Registration",cta_title:"Join the platform",cta_sub:"Free registration. Priority access for founding members.",
+  cta_name:"Full name",cta_email:"Email",cta_phone:"Phone (with code)",cta_country:"Country",cta_origin:"Wilaya of origin",
+  cta_btn:"Confirm registration",cta_or:"or contact us directly",cta_wa:"Talk to an advisor on WhatsApp",
+  cta_legal:"By confirming, you agree to receive launch communications.",
+  cta_ok_t:"Registration recorded",cta_ok_d:"Marhaba! You will be contacted prior to launch.",
+  footer_about:"DinarZone is operated by Expatria Group Consultancy, Doha (Qatar). Sister company: SOS Hub Canada (Montreal).",
+  footer_leg:"Legal",footer_contact:"Contact us",footer_follow:"Follow us",
+  footer_m:"Legal notice",footer_p:"Privacy policy",footer_t:"Terms",footer_c:"Cookies",footer_copy:"All rights reserved",
+},
+ar:{
+  top_l:"الجمهورية الجزائرية الديمقراطية الشعبية",top_r:"منصة معتمدة • متوافقة مع القانون 23-09",
+  nav:["الرئيسية","مهمتنا","الخدمات","الإطار القانوني","الثقة","اتصل بنا"],
+  h_sub:"المنصة الرسمية للتحويل نحو الجزائر",h_motto:"شفافية • أمان • تضامن",
+  hero_over:"معتمدة من بنك الجزائر",hero_h1a:"حين تستلم عائلتك،",hero_h1b:"قلبك يبتسم.",
+  hero_p:"قارن أسعار جميع الشركاء المعتمدين. اختر القناة المناسبة لعائلتك. حوّل بكل طمأنينة وفقاً للقانون 23-09.",
+  hero_cta1:"انضم إلى المنصة",hero_cta2:"تواصل معنا عبر واتساب",hero_live:"+1247 عضو نشط",
+  hero_b1:"+1247 مسجّل",hero_b2:"48 ولاية",hero_b3:"متوافق مع بنك الجزائر",
+  why_label:"لماذا DinarZone",why_title:"ثقة مجتمع بأكمله",
+  why_sub:"كما غيّرت Djezzy الاتصالات، وكما بسّط BaridiMob المدفوعات، DinarZone يغيّر التحويلات نحو الجزائر.",
+  w1_t:"شفافية كاملة",w1_d:"الأسعار والرسوم والآجال معروضة بوضوح قبل كل عملية.",
+  w2_t:"شبكة قرب",w2_d:"وكلاء موثوقون في الجزائر، وهران، قسنطينة، عنابة وسطيف.",
+  w3_t:"أمان معتمد",w3_d:"شركاء مرخّصون. تشفير AES-256. تحقق eKYC متكامل.",
+  w4_t:"دعم بشري 24/7",w4_d:"مستشارون عبر واتساب بالعربية والدارجة والفرنسية.",
+  how_label:"كيف يعمل",how_title:"بسيط، سريع، شفاف",
+  hs1_t:"سجّل",hs1_d:"أنشئ حسابك في دقيقتين. تحقق eKYC آمن ومتكامل.",
+  hs2_t:"قارن",hs2_d:"أسعار فورية من جميع الشركاء المعتمدين.",
+  hs3_t:"اختر قناتك",hs3_d:"وكيل مادي، BaridiMob أو محفظة DinarZone.",
+  hs4_t:"عائلتك تستلم",hs4_d:"تحويل متتبّع، إيصال فوري، تأكيد عبر واتساب.",
+  moments_label:"لحظات تهمّ",moments_title:"حاضر لعائلتك في كل لحظة",
+  m1_t:"رمضان كريم",m1_d:"جهّز تحويلاتك قبل الشهر الفضيل.",m2_t:"عيد الفطر والأضحى",m2_d:"أيام العيد تستحق المشاركة.",m3_t:"الدخول المدرسي",m3_d:"جهّز دخول أبنائك بتحويلات مبرمجة.",
+  services_label:"خدماتنا",services_title:"النقدي والرقمي معاً",services_sub:"ثلاث قنوات تكميلية تناسب كل عائلة جزائرية.",
+  s1_t:"وكلاء موثوقون",s1_d:"محلات معتمدة في المدن الكبرى. عائلتك تستلم نقداً.",s1_tag:"قناة مادية",
+  s2_t:"BaridiMob و CCP",s2_d:"دفع مباشر عبر بريد الجزائر. 48 ولاية.",s2_tag:"قناة رقمية",
+  s3_t:"محفظة DinarZone",s3_d:"مدفوعات QR يومية. شركاء معتمدون من بنك الجزائر.",s3_tag:"قناة هجينة",
+  cadre_label:"الإطار التنظيمي",cadre_title:"متوافق مع القانون 23-09",
+  cadre_sub:"قانون النقد والقرض يضع إطاراً حديثاً لمؤسسات الدفع في الجزائر. DinarZone يعمل ضمن هذا الإطار.",
+  cadre_ref:"القانون 23-09 الصادر في 21 يونيو 2023",cadre_ref_sub:"المتعلق بقانون النقد والقرض • الجريدة الرسمية",
+  c1_n:"المادة 160",c1_t:"مؤسسات الدفع",c1_d:"فئة مخصصة للجهات غير المصرفية المعتمدة.",
+  c2_n:"المادة 162",c2_t:"النقود الإلكترونية",c2_d:"إطار رسمي للمحافظ الرقمية وأدوات الدفع.",
+  c3_n:"المادة 164",c3_t:"الوسطاء المعتمدون",c3_d:"عمليات الصرف والتحويل للوسطاء المعتمدين فقط.",
+  c4_n:"المادة 167",c4_t:"الوكلاء المصرفيون",c4_d:"توسيع الشبكة عبر وكلاء معلنين لتغطية أوسع.",
+  corr_label:"الممرات النشطة",corr_title:"ثلاثة ممرات. منصة واحدة.",
+  cor_ca:"كندا",cor_ca_d:"وسطاء FINTRAC. مونتريال، تورنتو، أوتاوا.",
+  cor_qa:"قطر",cor_qa_d:"مؤسسات QCB. الدوحة.",cor_ae:"الإمارات",cor_ae_d:"صرّافات CBUAE. دبي، أبوظبي.",
+  testi_label:"يثقون بنا",testi_title:"أصوات من المغتربين",
+  t1_n:"ياسمين بن سعيد",t1_l:"مونتريال • الجزائر",t1_d:"أحوّل شهرياً لوالديّ في باب الواد. فكرة أنهم يستلمون من محل يعرفونه تريحني.",
+  t2_n:"محمد الهاشمي",t2_l:"الدوحة • قسنطينة",t2_d:"ممر قطر-الجزائر كان معقّداً. الآن كل شيء شفّاف. أمي تستلم عبر BaridiMob في ساعات.",
+  t3_n:"أمال خليفة",t3_l:"دبي • وهران",t3_d:"ما يعجبني هو التوافق مع القانون 23-09. حين تبعث المال لعائلتك، تريد راحة البال.",
+  parr_label:"برنامج الإحالة",parr_title:"شارك DinarZone مع أحبّائك",parr_sub:"التضامن يُشارك. ادعُ أقربائك واستفيدوا معاً.",
+  p1_t:"ادعُ",p1_d:"شارك رابطك عبر واتساب.",p2_t:"يسجّلون",p2_d:"يصبحون أعضاء مؤسّسين.",p3_t:"تربحون معاً",p3_d:"تخفيض مدى الحياة.",
+  stats_title:"المغتربون بالأرقام",
+  st1_n:"2 مليار $",st1_d:"حجم التحويلات السنوي",st2_n:"+145 000",st2_d:"مغترب في 3 ممرات",st3_n:"48 ولاية",st3_d:"التغطية المستهدفة",
+  eng_label:"التزاماتنا",eng_title:"ضماناتنا",
+  e1_t:"الامتثال التنظيمي",e1_d:"احترام تام للإطار القانوني.",e2_t:"حماية البيانات",e2_d:"تشفير AES-256. PCI DSS.",e3_t:"التحقق من الهوية",e3_d:"eKYC متكامل.",e4_t:"تتبّع كامل",e4_d:"وصل مفصّل وتتبّع فوري.",
+  part_label:"الشركاء",part_title:"منظومة ثقة",
+  cta_label:"التسجيل",cta_title:"انضم إلى المنصة",cta_sub:"تسجيل مجاني. وصول مبكر للمؤسّسين.",
+  cta_name:"الاسم الكامل",cta_email:"البريد",cta_phone:"الهاتف",cta_country:"بلد الإقامة",cta_origin:"الولاية الأصلية",
+  cta_btn:"تأكيد التسجيل",cta_or:"أو تواصل مباشرة",cta_wa:"تحدّث مع مستشار عبر واتساب",
+  cta_legal:"بالتأكيد، توافق على استلام تواصل الإطلاق.",cta_ok_t:"تم التسجيل",cta_ok_d:"مرحباً! سنتواصل معك قبل الإطلاق.",
+  footer_about:"DinarZone منصة من Expatria Group Consultancy، الدوحة. الشركة الشقيقة: SOS Hub Canada.",
+  footer_leg:"قانوني",footer_contact:"اتصل بنا",footer_follow:"تابعنا",footer_m:"إشعارات قانونية",footer_p:"الخصوصية",footer_t:"الشروط",footer_c:"الكوكيز",footer_copy:"جميع الحقوق محفوظة",
+}};
+
+function WA({size=24}){return <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>}
+function ChevUp(){return <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="18 15 12 9 6 15"/></svg>}
+
+function SH({label,title,sf}){return(
+  <div style={{textAlign:"center"}}>
+    <div style={{fontSize:11,color:GOLD,fontWeight:700,letterSpacing:2.5,textTransform:"uppercase",marginBottom:14}}>{label}</div>
+    <h2 style={{fontFamily:sf,fontSize:"clamp(28px,3.8vw,42px)",fontWeight:600,color:TX,margin:0,lineHeight:1.2}}>{title}</h2>
+    <div className="gold-rule" style={{width:80,margin:"20px auto 0"}}/>
+  </div>
+);}
+
+function Stars(){return <div style={{display:"flex",gap:3,marginBottom:14}}>{[1,2,3,4,5].map(i=><span key={i} className="star">★</span>)}</div>;}
+
+function FI({l,v,c,t="text",r}){return(
+  <div><label style={{fontSize:11,color:TM,fontWeight:700,letterSpacing:.5,textTransform:"uppercase",display:"block",marginBottom:6}}>{l}</label>
+  <input type={t} value={v} onChange={e=>c(e.target.value)} style={{width:"100%",background:CR,border:`1px solid ${BD}`,padding:"12px 14px",fontSize:14,color:TX,fontFamily:"inherit",textAlign:r?"right":"left",borderRadius:2}}/></div>
+);}
+
+function App(){
+  const[lang,setLang]=useState("fr");
+  const[sub,setSub]=useState(false);
+  const[form,setForm]=useState({n:"",e:"",p:"",c:"",o:""});
+  const[scrollPct,setScrollPct]=useState(0);
+  const[heroOffset,setHeroOffset]=useState(0);
+  const[showTop,setShowTop]=useState(false);
+  const t=T[lang],rtl=lang==="ar";
+  const bf=rtl?"'Cairo','Tajawal',sans-serif":"'Tajawal',sans-serif";
+  const sf=rtl?"'Amiri',serif":"'Cormorant Garamond',Georgia,serif";
+  const ss={maxWidth:1180,margin:"0 auto",padding:"0 28px"};
+  const navIds=["s0","s1","how","s2","s3","s4","cta"];
+  const activeSec=useActiveSection(navIds);
+
+  const[whyRef,whyVis]=useReveal();
+  const[howRef,howVis]=useReveal();
+  const[momRef,momVis]=useReveal();
+  const[svcRef,svcVis]=useReveal();
+  const[cadRef,cadVis]=useReveal();
+  const[tesRef,tesVis]=useReveal();
+  const[corRef,corVis]=useReveal();
+  const[parRef,parVis]=useReveal();
+  const[statRef,statVis]=useReveal();
+  const[engRef,engVis]=useReveal();
+  const[ctaRef,ctaVis]=useReveal();
+
+  useEffect(()=>{
+    const h=()=>{
+      const doc=document.documentElement;
+      const pct=(doc.scrollTop/(doc.scrollHeight-doc.clientHeight))*100;
+      setScrollPct(pct);
+      setHeroOffset(window.scrollY*.28);
+      setShowTop(window.scrollY>640);
+    };
+    window.addEventListener("scroll",h,{passive:true});
+    return()=>window.removeEventListener("scroll",h);
+  },[]);
+
+  const partners=["Banque d'Algérie","Algérie Poste","BaridiMob","FINTRAC","Qatar Central Bank","CBUAE","VISA","Mastercard","Algérie Télécom","CIB"];
+
+  return(
+  <div dir={rtl?"rtl":"ltr"} style={{background:CR,color:TX,minHeight:"100vh",fontFamily:bf}}>
+
+    {/* SCROLL PROGRESS */}
+    <div id="scroll-progress" style={{width:`${scrollPct}%`}}/>
+
+    {/* TOP BAR */}
+    <div style={{background:GX,color:CL,fontSize:12,fontWeight:500,borderBottom:`2px solid ${GOLD}`}}>
+      <div style={{...ss,display:"flex",justifyContent:"space-between",alignItems:"center",height:38,flexWrap:"wrap",gap:10}}>
+        <div style={{display:"flex",alignItems:"center",gap:10}}>
+          <span style={{fontSize:14}}>🇩🇿</span>
+          <span style={{fontFamily:sf,fontStyle:"italic",fontSize:13}}>{t.top_l}</span>
+        </div>
+        <div style={{display:"flex",alignItems:"center",gap:16}}>
+          <span style={{opacity:.8}}>{t.top_r}</span>
+          <div style={{display:"flex",gap:1,background:"rgba(255,255,255,.1)",borderRadius:4,overflow:"hidden"}}>
+            {Object.entries(LANG).map(([k,v])=>
+              <button key={k} onClick={()=>setLang(k)} style={{background:lang===k?GOLD:"transparent",border:"none",color:lang===k?GX:CL,padding:"4px 10px",cursor:"pointer",fontSize:11,fontWeight:700}}>{v}</button>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {/* HEADER */}
+    <header style={{background:CL,borderBottom:`1px solid ${BD}`,padding:"18px 28px"}}>
+      <div style={{...ss,display:"flex",alignItems:"center",justifyContent:"space-between",gap:20,flexWrap:"wrap"}}>
+        <div style={{display:"flex",alignItems:"center",gap:16}}>
+          <div className="logo-shimmer" style={{width:60,height:60,borderRadius:"50%",overflow:"hidden",border:`2.5px solid ${GOLD}`,flexShrink:0}}>
+            <img src="logo.png" alt="DinarZone" style={{width:"100%",height:"100%",objectFit:"cover",display:"block"}}/>
+          </div>
+          <div>
+            <div style={{fontFamily:"'Cormorant Garamond',Georgia,serif",fontSize:25,fontWeight:600,color:G,lineHeight:1,letterSpacing:.5}}>DinarZone</div>
+            <div style={{fontSize:11,color:TM,fontWeight:500,marginTop:5}}>{t.h_sub}</div>
+            <div style={{fontSize:9,color:GOLD,fontWeight:700,letterSpacing:2,textTransform:"uppercase",marginTop:4}}>{t.h_motto}</div>
+          </div>
+        </div>
+        <a href="#cta" style={{background:G,color:CL,padding:"11px 24px",textDecoration:"none",fontSize:13,fontWeight:700,border:`2px solid ${G}`,borderRadius:2}}>{t.hero_cta1}</a>
+      </div>
+    </header>
+
+    {/* NAV */}
+    <nav style={{background:CL,borderBottom:`2px solid ${G}`,position:"sticky",top:0,zIndex:100,boxShadow:"0 2px 14px rgba(0,0,0,.06)"}}>
+      <div style={{...ss,display:"flex",overflowX:"auto"}}>
+        {t.nav.map((n,i)=>{
+          const ids=["s0","s1","how","s2","s3","s4","cta"];
+          const id=ids[i]||`s${i}`;
+          return <a key={i} href={`#${id}`} className={`nav-link${activeSec===id?" active":""}`}>{n}</a>;
+        })}
+      </div>
+    </nav>
+
+    {/* HERO */}
+    <section id="s0" style={{position:"relative",minHeight:640,display:"flex",alignItems:"center",padding:"60px 28px",overflow:"hidden"}}>
+      <div className="hero-bg" style={{position:"absolute",inset:"-60px 0 0 0",backgroundImage:'url("hero2.png")',backgroundSize:"cover",backgroundPosition:"center 25%",transform:`translateY(${heroOffset}px)`}}/>
+      <div style={{position:"absolute",inset:0,background:`linear-gradient(135deg,${GX}E8 0%,${GD}D5 40%,${GX}EA 100%)`}}/>
+      <div className="pattern-overlay" style={{position:"absolute",inset:0,opacity:.25}}/>
+      <div style={{position:"absolute",bottom:0,left:0,right:0,height:4,background:`linear-gradient(90deg,${GL},${GOLD},${GL})`}}/>
+      <div style={{...ss,position:"relative",zIndex:2,textAlign:"center",maxWidth:940}}>
+        <div style={{marginBottom:20}}>
+          <span className="live-badge"><span className="tick-dot"/>{t.hero_live}</span>
+        </div>
+        <div style={{display:"inline-block",fontSize:11,color:GL,fontWeight:700,letterSpacing:2.2,textTransform:"uppercase",marginBottom:22,padding:"7px 20px",border:`1px solid ${GOLD}55`,borderRadius:2,backdropFilter:"blur(8px)",background:"rgba(0,0,0,.18)"}}>{t.hero_over}</div>
+        <h1 className="text-glow" style={{fontFamily:sf,fontSize:"clamp(34px,5.2vw,60px)",fontWeight:600,color:W,margin:"0 0 14px",lineHeight:1.12}}>
+          <div>{t.hero_h1a}</div>
+          <div style={{color:GL,fontStyle:"italic"}}>{t.hero_h1b}</div>
+        </h1>
+        <div className="gold-rule" style={{width:110,margin:"22px auto",background:`linear-gradient(90deg,transparent,${GL},transparent)`}}/>
+        <p style={{fontSize:17,color:CL,lineHeight:1.8,maxWidth:700,margin:"0 auto 38px",opacity:.93}}>{t.hero_p}</p>
+        <div style={{display:"flex",gap:14,justifyContent:"center",flexWrap:"wrap",marginBottom:44}}>
+          <a href="#cta" className="cta-pulse" style={{background:GOLD,color:GX,padding:"16px 40px",textDecoration:"none",fontSize:14,fontWeight:700,border:`2px solid ${GOLD}`,borderRadius:2}}>{t.hero_cta1}</a>
+          <a href="https://wa.me/14384001234" target="_blank" style={{background:"transparent",color:W,padding:"16px 40px",textDecoration:"none",fontSize:14,fontWeight:700,border:`2px solid rgba(255,255,255,.45)`,borderRadius:2,display:"inline-flex",alignItems:"center",gap:10}}><WA size={18}/>{t.hero_cta2}</a>
+        </div>
+        <div style={{display:"flex",gap:12,justifyContent:"center",flexWrap:"wrap"}}>
+          {[t.hero_b1,t.hero_b2,t.hero_b3].map((b,i)=>
+            <div key={i} style={{background:"rgba(255,255,255,.07)",backdropFilter:"blur(10px)",border:`1px solid ${GOLD}38`,padding:"10px 20px",borderRadius:2,fontSize:12,color:CL,fontWeight:600,letterSpacing:.3}}>
+              {i===2?"✓ ":""}{b}
+            </div>
+          )}
+        </div>
+      </div>
+    </section>
+
+    {/* POURQUOI */}
+    <section id="s1" ref={whyRef} className="section-glow" style={{padding:"88px 28px",background:CR}}>
+      <div style={ss}>
+        <div className={`reveal${whyVis?" visible":""}`}><SH label={t.why_label} title={t.why_title} sf={sf}/></div>
+        <p className={`reveal${whyVis?" visible":""}`} style={{textAlign:"center",fontSize:16,color:TM,margin:"20px auto 56px",maxWidth:720,lineHeight:1.75,transitionDelay:".1s"}}>{t.why_sub}</p>
+        <div className="stagger" style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(250px,1fr))",gap:22}}>
+          {[{t:t.w1_t,d:t.w1_d,i:"✦"},{t:t.w2_t,d:t.w2_d,i:"📍"},{t:t.w3_t,d:t.w3_d,i:"🔐"},{t:t.w4_t,d:t.w4_d,i:"💬"}].map((w,i)=>
+            <div key={i} className={`reveal card-lift card-glow${whyVis?" visible":""}`} style={{background:CL,border:`1px solid ${BD}`,padding:"32px 26px",borderTop:`3px solid ${i===3?"#25D366":GOLD}`,cursor:"default",position:"relative",overflow:"hidden"}}>
+              <div style={{fontSize:28,marginBottom:14}}>{w.i}</div>
+              <h3 style={{fontFamily:sf,fontSize:21,fontWeight:600,color:G,margin:"0 0 10px"}}>{w.t}</h3>
+              <p style={{fontSize:14,color:TM,lineHeight:1.72,margin:0}}>{w.d}</p>
+            </div>
+          )}
+        </div>
+      </div>
+    </section>
+
+    {/* COMMENT ÇA FONCTIONNE */}
+    <section id="how" ref={howRef} style={{padding:"88px 28px",background:`linear-gradient(135deg,${GX} 0%,${GD} 100%)`,borderTop:`3px solid ${GOLD}`,borderBottom:`3px solid ${GOLD}`}}>
+      <div style={ss}>
+        <div className={`reveal${howVis?" visible":""}`}>
+          <div style={{textAlign:"center",marginBottom:56}}>
+            <div style={{fontSize:11,color:GL,fontWeight:700,letterSpacing:2.5,textTransform:"uppercase",marginBottom:14}}>{t.how_label}</div>
+            <h2 style={{fontFamily:sf,fontSize:"clamp(28px,3.8vw,42px)",fontWeight:600,color:W,margin:0,lineHeight:1.2}}>{t.how_title}</h2>
+            <div style={{background:`linear-gradient(90deg,transparent,${GL},transparent)`,height:1,width:80,margin:"20px auto 0"}}/>
+          </div>
+        </div>
+        <div className="step-row" style={{display:"flex",alignItems:"flex-start",gap:0}}>
+          {[{n:"1",t:t.hs1_t,d:t.hs1_d,delay:".08s"},{n:"2",t:t.hs2_t,d:t.hs2_d,delay:".2s"},{n:"3",t:t.hs3_t,d:t.hs3_d,delay:".32s"},{n:"4",t:t.hs4_t,d:t.hs4_d,delay:".44s"}].map((step,i,arr)=>(
+            <React.Fragment key={i}>
+              <div className={`reveal${howVis?" visible":""}`} style={{flex:"1 1 200px",textAlign:"center",padding:"0 16px",transitionDelay:step.delay}}>
+                <div style={{width:56,height:56,borderRadius:"50%",background:`linear-gradient(135deg,${GOLD},${GL})`,color:GX,margin:"0 auto 20px",display:"flex",alignItems:"center",justifyContent:"center",fontSize:22,fontWeight:800,fontFamily:sf,boxShadow:`0 0 0 8px ${GOLD}20,0 8px 24px rgba(0,0,0,.3)`,position:"relative",zIndex:1}}>{step.n}</div>
+                <h4 style={{fontFamily:sf,fontSize:19,fontWeight:600,color:GL,margin:"0 0 10px"}}>{step.t}</h4>
+                <p style={{fontSize:13,color:CL,opacity:.82,lineHeight:1.65,margin:0}}>{step.d}</p>
+              </div>
+              {i<arr.length-1&&<div className="step-connector"/>}
+            </React.Fragment>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    {/* MOMENTS */}
+    <section ref={momRef} style={{padding:"88px 28px",background:CL,borderBottom:`1px solid ${BD}`}}>
+      <div style={ss}>
+        <div className={`reveal${momVis?" visible":""}`}><SH label={t.moments_label} title={t.moments_title} sf={sf}/></div>
+        <div className="stagger" style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(280px,1fr))",gap:22,marginTop:52}}>
+          {[{i:"🌙",t:t.m1_t,d:t.m1_d},{i:"✦",t:t.m2_t,d:t.m2_d},{i:"📚",t:t.m3_t,d:t.m3_d}].map((m,i)=>
+            <div key={i} className={`reveal card-lift card-glow${momVis?" visible":""}`} style={{background:CR,border:`1px solid ${BD}`,padding:"34px 28px",borderTop:`3px solid ${GOLD}`,cursor:"default",position:"relative",overflow:"hidden"}}>
+              <div style={{fontSize:30,marginBottom:14,color:GOLD}}>{m.i}</div>
+              <h3 style={{fontFamily:sf,fontSize:22,fontWeight:600,color:G,margin:"0 0 12px"}}>{m.t}</h3>
+              <p style={{fontSize:14,color:TM,lineHeight:1.72,margin:0}}>{m.d}</p>
+            </div>
+          )}
+        </div>
+      </div>
+    </section>
+
+    {/* SERVICES */}
+    <section id="s2" ref={svcRef} style={{padding:"88px 28px",background:CR}}>
+      <div style={ss}>
+        <div className={`reveal${svcVis?" visible":""}`}><SH label={t.services_label} title={t.services_title} sf={sf}/></div>
+        <p className={`reveal${svcVis?" visible":""}`} style={{textAlign:"center",fontSize:15,color:TM,margin:"16px auto 52px",maxWidth:620,lineHeight:1.7,transitionDelay:".1s"}}>{t.services_sub}</p>
+        <div className="stagger" style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(280px,1fr))",gap:22}}>
+          {[{t:t.s1_t,d:t.s1_d,tag:t.s1_tag,n:"I"},{t:t.s2_t,d:t.s2_d,tag:t.s2_tag,n:"II"},{t:t.s3_t,d:t.s3_d,tag:t.s3_tag,n:"III"}].map((s,i)=>
+            <div key={i} className={`reveal card-lift card-glow${svcVis?" visible":""}`} style={{background:CL,border:`1px solid ${BD}`,padding:"34px 28px",position:"relative",overflow:"hidden",cursor:"default"}}>
+              <div style={{position:"absolute",top:0,right:rtl?"auto":0,left:rtl?0:"auto",background:G,color:CL,fontSize:10,fontWeight:700,padding:"5px 14px",letterSpacing:1.5}}>{s.tag.toUpperCase()}</div>
+              <div style={{fontFamily:sf,fontSize:44,fontWeight:600,color:GOLD,marginBottom:14,lineHeight:1,marginTop:12}}>{s.n}</div>
+              <h3 style={{fontFamily:sf,fontSize:22,fontWeight:600,color:TX,margin:"0 0 12px"}}>{s.t}</h3>
+              <p style={{fontSize:14,color:TM,lineHeight:1.72,margin:0}}>{s.d}</p>
+            </div>
+          )}
+        </div>
+      </div>
+    </section>
+
+    {/* CADRE LÉGAL */}
+    <section id="s3" ref={cadRef} style={{padding:"88px 28px",background:CL,borderTop:`1px solid ${BD}`,borderBottom:`1px solid ${BD}`}}>
+      <div style={ss}>
+        <div className={`reveal${cadVis?" visible":""}`}><SH label={t.cadre_label} title={t.cadre_title} sf={sf}/></div>
+        <p className={`reveal${cadVis?" visible":""}`} style={{textAlign:"center",fontSize:15,color:TM,lineHeight:1.75,maxWidth:720,margin:"18px auto 40px",transitionDelay:".1s"}}>{t.cadre_sub}</p>
+        <div className={`reveal${cadVis?" visible":""}`} style={{background:`linear-gradient(135deg,${W},#F9F7F0)`,border:`2px solid ${GOLD}`,padding:"32px 36px",marginBottom:44,display:"flex",alignItems:"center",gap:28,flexWrap:"wrap",justifyContent:"center",boxShadow:`0 4px 28px rgba(184,146,59,.1)`,transitionDelay:".2s"}}>
+          <div style={{width:88,height:88,borderRadius:"50%",overflow:"hidden",border:`3px solid ${GOLD}`,flexShrink:0,boxShadow:`0 4px 22px rgba(184,146,59,.25)`}}>
+            <img src="logo.png" alt="DinarZone" style={{width:"100%",height:"100%",objectFit:"cover"}}/>
+          </div>
+          <div style={{flex:"1 1 360px",textAlign:rtl?"right":"left"}}>
+            <div style={{fontSize:11,color:GOLD,fontWeight:700,letterSpacing:2,textTransform:"uppercase",marginBottom:6}}>Référence officielle</div>
+            <h3 style={{fontFamily:sf,fontSize:24,fontWeight:600,color:G,margin:"0 0 6px"}}>{t.cadre_ref}</h3>
+            <p style={{fontSize:13,color:TM,margin:0,fontStyle:"italic"}}>{t.cadre_ref_sub}</p>
+          </div>
+        </div>
+        <div className="stagger" style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(260px,1fr))",gap:20}}>
+          {[{n:t.c1_n,t:t.c1_t,d:t.c1_d},{n:t.c2_n,t:t.c2_t,d:t.c2_d},{n:t.c3_n,t:t.c3_t,d:t.c3_d},{n:t.c4_n,t:t.c4_t,d:t.c4_d}].map((a,i)=>
+            <div key={i} className={`reveal card-lift${cadVis?" visible":""}`} style={{background:CR,border:`1px solid ${BD}`,padding:"26px 22px",cursor:"default"}}>
+              <div style={{display:"inline-block",background:G,color:CL,fontSize:10,fontWeight:700,padding:"4px 12px",letterSpacing:1.5,textTransform:"uppercase",marginBottom:16}}>{a.n}</div>
+              <h4 style={{fontFamily:sf,fontSize:19,fontWeight:600,color:TX,margin:"0 0 10px"}}>{a.t}</h4>
+              <p style={{fontSize:13,color:TM,lineHeight:1.65,margin:0}}>{a.d}</p>
+            </div>
+          )}
+        </div>
+      </div>
+    </section>
+
+    {/* TÉMOIGNAGES */}
+    <section id="s4" ref={tesRef} style={{padding:"88px 28px",background:CR}}>
+      <div style={ss}>
+        <div className={`reveal${tesVis?" visible":""}`}><SH label={t.testi_label} title={t.testi_title} sf={sf}/></div>
+        <div className="stagger" style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(300px,1fr))",gap:22,marginTop:52}}>
+          {[{n:t.t1_n,l:t.t1_l,d:t.t1_d},{n:t.t2_n,l:t.t2_l,d:t.t2_d},{n:t.t3_n,l:t.t3_l,d:t.t3_d}].map((tm,i)=>
+            <div key={i} className={`reveal card-lift card-glow${tesVis?" visible":""}`} style={{background:CL,border:`1px solid ${BD}`,padding:"30px 26px",position:"relative",cursor:"default",overflow:"hidden"}}>
+              <div className={tesVis?"quote-mark":""} style={{position:"absolute",top:-10,left:rtl?"auto":20,right:rtl?20:"auto",fontFamily:sf,fontSize:72,color:GOLD,opacity:0,lineHeight:1,pointerEvents:"none"}}>"</div>
+              <Stars/>
+              <p style={{fontSize:14,color:TX,lineHeight:1.8,margin:"0 0 22px",fontStyle:"italic",fontFamily:sf,fontWeight:500}}>{tm.d}</p>
+              <div style={{display:"flex",alignItems:"center",gap:12,borderTop:`1px solid ${BD}`,paddingTop:16}}>
+                <div style={{width:44,height:44,borderRadius:"50%",background:`linear-gradient(135deg,${G},${GD})`,color:GL,display:"flex",alignItems:"center",justifyContent:"center",fontSize:17,fontWeight:700,fontFamily:sf,border:`2px solid ${GOLD}`,flexShrink:0}}>{tm.n.charAt(0)}</div>
+                <div><div style={{fontSize:14,fontWeight:700,color:TX}}>{tm.n}</div><div style={{fontSize:11,color:TS,marginTop:2}}>{tm.l}</div></div>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </section>
+
+    {/* CORRIDORS */}
+    <section ref={corRef} style={{padding:"88px 28px",background:`linear-gradient(135deg,${GX} 0%,${GD} 100%)`,borderTop:`3px solid ${GOLD}`,borderBottom:`3px solid ${GOLD}`}}>
+      <div style={ss}>
+        <div className={`reveal${corVis?" visible":""}`}>
+          <div style={{textAlign:"center",marginBottom:52}}>
+            <div style={{fontSize:11,color:GL,fontWeight:700,letterSpacing:2.5,textTransform:"uppercase",marginBottom:14}}>{t.corr_label}</div>
+            <h2 style={{fontFamily:sf,fontSize:"clamp(28px,3.8vw,42px)",fontWeight:600,color:W,margin:0,lineHeight:1.2}}>{t.corr_title}</h2>
+            <div style={{background:`linear-gradient(90deg,transparent,${GL},transparent)`,height:1,width:80,margin:"20px auto 0"}}/>
+          </div>
+        </div>
+        <div className="stagger" style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(280px,1fr))",gap:22}}>
+          {[{f:"🇨🇦",t:t.cor_ca,d:t.cor_ca_d},{f:"🇶🇦",t:t.cor_qa,d:t.cor_qa_d},{f:"🇦🇪",t:t.cor_ae,d:t.cor_ae_d}].map((c,i)=>
+            <div key={i} className={`reveal corridor-card${corVis?" visible":""}`}>
+              <div style={{fontSize:52,marginBottom:16,filter:"drop-shadow(0 4px 12px rgba(0,0,0,.3))"}}>{c.f}</div>
+              <h3 style={{fontFamily:sf,fontSize:26,fontWeight:600,color:GL,margin:"0 0 12px"}}>{c.t}</h3>
+              <div style={{background:`linear-gradient(90deg,transparent,${GOLD}60,transparent)`,height:1,width:50,margin:"0 auto 14px"}}/>
+              <p style={{fontSize:13,color:CL,opacity:.82,lineHeight:1.65,margin:0}}>{c.d}</p>
+            </div>
+          )}
+        </div>
+      </div>
+    </section>
+
+    {/* PARRAINAGE */}
+    <section ref={parRef} style={{padding:"88px 28px",background:CR}}>
+      <div style={ss}>
+        <div className={`reveal${parVis?" visible":""}`}><SH label={t.parr_label} title={t.parr_title} sf={sf}/></div>
+        <p className={`reveal${parVis?" visible":""}`} style={{textAlign:"center",fontSize:15,color:TM,margin:"16px auto 52px",maxWidth:680,lineHeight:1.75,transitionDelay:".1s"}}>{t.parr_sub}</p>
+        <div className="stagger" style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(240px,1fr))",gap:22}}>
+          {[{n:"1",t:t.p1_t,d:t.p1_d},{n:"2",t:t.p2_t,d:t.p2_d},{n:"3",t:t.p3_t,d:t.p3_d}].map((p,i)=>
+            <div key={i} className={`reveal card-lift card-glow${parVis?" visible":""}`} style={{background:CL,border:`1px solid ${BG}`,padding:"32px 24px",textAlign:"center",position:"relative",overflow:"hidden",cursor:"default"}}>
+              <div style={{width:52,height:52,borderRadius:"50%",background:`linear-gradient(135deg,${G},${GD})`,color:GL,margin:"0 auto 20px",display:"flex",alignItems:"center",justifyContent:"center",fontSize:22,fontWeight:800,fontFamily:sf,border:`2.5px solid ${GOLD}`,boxShadow:`0 0 0 6px ${GOLD}15`}}>{p.n}</div>
+              <h4 style={{fontFamily:sf,fontSize:21,fontWeight:600,color:G,margin:"0 0 10px"}}>{p.t}</h4>
+              <p style={{fontSize:13,color:TM,lineHeight:1.72,margin:0}}>{p.d}</p>
+            </div>
+          )}
+        </div>
+      </div>
+    </section>
+
+    {/* CHIFFRES */}
+    <section ref={statRef} style={{padding:"72px 28px",background:GX,color:CL,borderTop:`3px solid ${GOLD}`,borderBottom:`3px solid ${GOLD}`}}>
+      <div style={ss}>
+        <h3 className={`reveal${statVis?" visible":""}`} style={{fontFamily:sf,fontSize:"clamp(26px,3.5vw,36px)",fontWeight:600,textAlign:"center",margin:"0 0 52px",color:W}}>{t.stats_title}</h3>
+        <div className="stagger" style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(220px,1fr))",gap:32}}>
+          {[{n:t.st1_n,d:t.st1_d},{n:t.st2_n,d:t.st2_d},{n:t.st3_n,d:t.st3_d}].map((s,i)=>
+            <div key={i} className={`reveal${statVis?" visible":""}`} style={{textAlign:"center",padding:"20px 12px",borderRight:i<2?`1px solid ${GOLD}35`:"none"}}>
+              <div className={statVis?"counter-animate":""} style={{fontFamily:sf,fontSize:"clamp(38px,4.5vw,54px)",fontWeight:600,color:GL,lineHeight:1,marginBottom:14}}>{s.n}</div>
+              <div style={{fontSize:13,color:CL,opacity:.82,lineHeight:1.55,maxWidth:180,margin:"0 auto"}}>{s.d}</div>
+            </div>
+          )}
+        </div>
+      </div>
+    </section>
+
+    {/* ENGAGEMENTS */}
+    <section ref={engRef} style={{padding:"88px 28px",background:CR}}>
+      <div style={ss}>
+        <div className={`reveal${engVis?" visible":""}`}><SH label={t.eng_label} title={t.eng_title} sf={sf}/></div>
+        <div className="stagger" style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(240px,1fr))",gap:22,marginTop:52}}>
+          {[{t:t.e1_t,d:t.e1_d},{t:t.e2_t,d:t.e2_d},{t:t.e3_t,d:t.e3_d},{t:t.e4_t,d:t.e4_d}].map((e,i)=>
+            <div key={i} className={`reveal card-lift${engVis?" visible":""}`} style={{padding:"26px 22px",background:CL,border:`1px solid ${BD}`,borderTop:`3px solid ${G}`,cursor:"default"}}>
+              <div style={{width:36,height:36,borderRadius:"50%",background:`${G}15`,border:`1.5px solid ${G}30`,display:"flex",alignItems:"center",justifyContent:"center",marginBottom:14,fontSize:16}}>✓</div>
+              <h4 style={{fontFamily:sf,fontSize:18,fontWeight:600,color:TX,margin:"0 0 10px"}}>{e.t}</h4>
+              <p style={{fontSize:13,color:TM,lineHeight:1.65,margin:0}}>{e.d}</p>
+            </div>
+          )}
+        </div>
+      </div>
+    </section>
+
+    {/* PARTENAIRES MARQUEE */}
+    <section style={{padding:"56px 0",background:CL,borderTop:`1px solid ${BD}`,borderBottom:`1px solid ${BD}`,overflow:"hidden"}}>
+      <div style={{textAlign:"center",marginBottom:28}}>
+        <div style={{fontSize:11,color:GOLD,fontWeight:700,letterSpacing:2.5,textTransform:"uppercase"}}>{t.part_label}</div>
+        <h2 style={{fontFamily:sf,fontSize:"clamp(22px,2.8vw,32px)",fontWeight:600,color:TX,margin:"12px 0 0",lineHeight:1.2}}>{t.part_title}</h2>
+      </div>
+      <div className="marquee-wrap">
+        <div className="marquee-inner">
+          {[...partners,...partners].map((p,i)=>
+            <div key={i} style={{padding:"16px 40px",borderRight:`1px solid ${BD}`,whiteSpace:"nowrap",fontFamily:sf,fontSize:15,fontWeight:600,color:G,letterSpacing:.3,flexShrink:0}}>{p}</div>
+          )}
+        </div>
+      </div>
+    </section>
+
+    {/* INSCRIPTION */}
+    <section id="cta" ref={ctaRef} style={{padding:"88px 28px",background:CR}}>
+      <div style={{...ss,maxWidth:660}}>
+        <div className={`reveal${ctaVis?" visible":""}`}><SH label={t.cta_label} title={t.cta_title} sf={sf}/></div>
+        <p className={`reveal${ctaVis?" visible":""}`} style={{textAlign:"center",fontSize:15,color:TM,margin:"16px auto 40px",transitionDelay:".1s"}}>{t.cta_sub}</p>
+        {sub?
+          <div style={{background:CL,border:`2px solid ${G}`,padding:"44px 32px",textAlign:"center"}}>
+            <div style={{fontSize:38,marginBottom:14}}>🎉</div>
+            <div style={{fontFamily:sf,fontSize:26,fontWeight:600,color:G,marginBottom:10}}>{t.cta_ok_t}</div>
+            <div style={{fontSize:14,color:TM,lineHeight:1.75}}>{t.cta_ok_d}</div>
+          </div>
+        :
+          <div className={`reveal${ctaVis?" visible":""}`} style={{background:CL,border:`1px solid ${BD}`,padding:"38px 32px",transitionDelay:".2s"}}>
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:14,marginBottom:14}}>
+              <FI l={t.cta_name} v={form.n} c={v=>setForm({...form,n:v})} r={rtl}/>
+              <FI l={t.cta_country} v={form.c} c={v=>setForm({...form,c:v})} r={rtl}/>
+            </div>
+            <div style={{marginBottom:14}}><FI l={t.cta_email} v={form.e} c={v=>setForm({...form,e:v})} t="email" r={rtl}/></div>
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:14,marginBottom:24}}>
+              <FI l={t.cta_phone} v={form.p} c={v=>setForm({...form,p:v})} t="tel" r={rtl}/>
+              <FI l={t.cta_origin} v={form.o} c={v=>setForm({...form,o:v})} r={rtl}/>
+            </div>
+            <button className="cta-pulse" onClick={()=>form.e&&setSub(true)} style={{width:"100%",background:G,color:CL,padding:"17px",border:`2px solid ${G}`,fontSize:14,fontWeight:700,cursor:"pointer",letterSpacing:.8,textTransform:"uppercase",borderRadius:2,fontFamily:"inherit",transition:"background .2s"}}>{t.cta_btn}</button>
+            <p style={{fontSize:11,color:TS,lineHeight:1.65,marginTop:14,fontStyle:"italic"}}>{t.cta_legal}</p>
+            <div style={{marginTop:24,paddingTop:24,borderTop:`1px dashed ${BG}`,textAlign:"center"}}>
+              <div style={{fontSize:12,color:TS,marginBottom:14,fontStyle:"italic"}}>{t.cta_or}</div>
+              <a href="https://wa.me/14384001234" target="_blank" style={{display:"inline-flex",alignItems:"center",gap:10,background:"#25D366",color:W,padding:"13px 28px",textDecoration:"none",fontSize:13,fontWeight:700,borderRadius:2}}>
+                <WA size={18}/>{t.cta_wa}
+              </a>
+            </div>
+          </div>
+        }
+      </div>
+    </section>
+
+    {/* FOOTER */}
+    <footer style={{background:GX,color:CL,padding:"52px 28px 28px"}}>
+      <div style={ss}>
+        <div style={{display:"grid",gridTemplateColumns:"2fr 1fr 1fr 1fr",gap:32,marginBottom:36,flexWrap:"wrap"}}>
+          <div>
+            <div style={{display:"flex",alignItems:"center",gap:14,marginBottom:16}}>
+              <div style={{width:48,height:48,borderRadius:"50%",overflow:"hidden",border:`2px solid ${GOLD}`,flexShrink:0,boxShadow:`0 2px 12px rgba(184,146,59,.3)`}}>
+                <img src="logo.png" alt="DinarZone" style={{width:"100%",height:"100%",objectFit:"cover",display:"block"}}/>
+              </div>
+              <div>
+                <div style={{fontFamily:sf,fontSize:22,fontWeight:600,color:CL,lineHeight:1}}>DinarZone</div>
+                <div style={{fontSize:9,color:GL,letterSpacing:1.8,textTransform:"uppercase",marginTop:4}}>{t.h_motto}</div>
+              </div>
+            </div>
+            <p style={{fontSize:12,color:CL,opacity:.72,lineHeight:1.78,maxWidth:380}}>{t.footer_about}</p>
+          </div>
+          <div>
+            <h5 style={{fontSize:10,color:GL,fontWeight:700,letterSpacing:1.8,textTransform:"uppercase",marginBottom:16}}>{t.footer_leg}</h5>
+            <div style={{display:"flex",flexDirection:"column",gap:10,fontSize:12}}>
+              {[t.footer_m,t.footer_p,t.footer_t,t.footer_c].map((l,i)=><a key={i} href="#" style={{color:CL,opacity:.7,textDecoration:"none"}}>{l}</a>)}
+            </div>
+          </div>
+          <div>
+            <h5 style={{fontSize:10,color:GL,fontWeight:700,letterSpacing:1.8,textTransform:"uppercase",marginBottom:16}}>{t.footer_contact}</h5>
+            <div style={{display:"flex",flexDirection:"column",gap:10,fontSize:12,color:CL,opacity:.7}}>
+              <div>contact@dinarzone.com</div><div>Doha, Qatar</div><div>Montréal, Canada</div>
+            </div>
+          </div>
+          <div>
+            <h5 style={{fontSize:10,color:GL,fontWeight:700,letterSpacing:1.8,textTransform:"uppercase",marginBottom:16}}>{t.footer_follow}</h5>
+            <div style={{display:"flex",flexDirection:"column",gap:10,fontSize:12}}>
+              {["LinkedIn","Twitter / X","Facebook","Instagram"].map((s,i)=><a key={i} href="#" style={{color:CL,opacity:.7,textDecoration:"none"}}>{s}</a>)}
+            </div>
+          </div>
+        </div>
+        <div style={{borderTop:`1px solid ${GOLD}25`,paddingTop:22,display:"flex",justifyContent:"space-between",alignItems:"center",fontSize:11,color:CL,opacity:.55,flexWrap:"wrap",gap:12}}>
+          <div>© {new Date().getFullYear()} Expatria Group Consultancy. {t.footer_copy}.</div>
+          <div style={{fontStyle:"italic",fontFamily:sf}}>{t.top_l}</div>
+        </div>
+      </div>
+    </footer>
+
+    {/* WHATSAPP FLOTTANT */}
+    <a className="wa-float" href="https://wa.me/14384001234" target="_blank" style={{position:"fixed",bottom:26,[rtl?"left":"right"]:26,zIndex:200,width:58,height:58,borderRadius:"50%",background:"#25D366",display:"flex",alignItems:"center",justifyContent:"center",textDecoration:"none",boxShadow:"0 8px 32px rgba(37,211,102,.4)"}}>
+      <WA size={28}/>
+    </a>
+
+    {/* SCROLL TO TOP */}
+    <button className={`scroll-top${showTop?" show":""}`} onClick={()=>window.scrollTo({top:0,behavior:"smooth"})}>
+      <ChevUp/>
+    </button>
+
+  </div>);
+}
+
+const root=ReactDOM.createRoot(document.getElementById('root'));
+root.render(React.createElement(App));
+</script>
+</body>
+</html>
