@@ -3,8 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DinarZone • Plateforme officielle de transfert vers l'Algérie</title>
-  <meta name="description" content="Plateforme agréée de transfert vers l'Algérie. Conforme à la Loi 23-09. Cash et numérique." />
+  <title>DinarZone • Plateforme de transfert vers le Maghreb | Algérie & Tunisie</title>
+  <meta name="description" content="Comparez les taux, transférez vers l'Algérie et la Tunisie. 6 corridors, partenaires agréés, DZD et TND. Conforme Banque d'Algérie & BCT." />
+  <meta name="theme-color" content="#003318" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,500;1,600&family=Tajawal:wght@300;400;500;700;800;900&family=Cairo:wght@400;600;700;900&family=Amiri:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
@@ -221,6 +222,60 @@
       footer{padding-bottom:calc(28px + env(safe-area-inset-bottom))!important}
     }
 
+    /* STICKY MOBILE CTA */
+    .sticky-cta{position:fixed;bottom:0;left:0;right:0;z-index:198;background:linear-gradient(180deg,transparent,#003318 20%);padding:16px 20px 20px;transform:translateY(100%);transition:transform .35s cubic-bezier(.4,0,.2,1);pointer-events:none}
+    .sticky-cta.show{transform:translateY(0);pointer-events:auto}
+    .sticky-cta a{display:flex;align-items:center;justify-content:center;gap:10px;background:linear-gradient(135deg,#B8923B,#D4AF6A);color:#003318;padding:16px 28px;text-decoration:none;font-size:16px;font-weight:800;border-radius:8px;box-shadow:0 8px 32px rgba(184,146,59,.4);letter-spacing:.3px}
+    @media(min-width:769px){.sticky-cta{display:none}}
+    @supports(padding:env(safe-area-inset-bottom)){.sticky-cta{padding-bottom:calc(20px + env(safe-area-inset-bottom))!important}}
+
+    /* SOCIAL PROOF TOAST */
+    @keyframes toastIn{from{opacity:0;transform:translateX(-100%)}to{opacity:1;transform:translateX(0)}}
+    @keyframes toastOut{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(-100%)}}
+    .proof-toast{position:fixed;bottom:90px;left:16px;z-index:195;background:rgba(255,255,255,.97);border:1px solid #E2DFD4;border-left:4px solid #006633;border-radius:10px;padding:14px 18px;box-shadow:0 12px 40px rgba(0,0,0,.15);max-width:320px;backdrop-filter:blur(12px);animation:toastIn .5s ease forwards}
+    .proof-toast.hiding{animation:toastOut .4s ease forwards}
+    @media(max-width:768px){.proof-toast{bottom:100px;left:12px;right:12px;max-width:none}}
+
+    /* FAQ ACCORDION */
+    .faq-item{border:1px solid #E2DFD4;background:#FAFAF7;margin-bottom:8px;overflow:hidden;transition:border-color .3s}
+    .faq-item:hover{border-color:#B8923B}
+    .faq-q{display:flex;justify-content:space-between;align-items:center;padding:20px 24px;cursor:pointer;font-weight:600;font-size:16px;color:#1A1F2E;gap:16px;-webkit-tap-highlight-color:transparent;min-height:56px}
+    .faq-a{padding:0 24px;max-height:0;overflow:hidden;transition:max-height .35s ease,padding .35s ease;color:#4A5568;font-size:15px;line-height:1.75}
+    .faq-a.open{max-height:300px;padding:0 24px 20px}
+    .faq-chevron{transition:transform .3s;flex-shrink:0;font-size:14px;color:#B8923B}
+    .faq-chevron.open{transform:rotate(180deg)}
+
+    /* RATE SIMULATOR */
+    .sim-card{background:linear-gradient(135deg,#FAFAF7,#F5F3EC);border:2px solid #B8923B;border-radius:12px;padding:32px;box-shadow:0 16px 48px rgba(184,146,59,.12)}
+    .sim-input{width:100%;padding:16px 18px 16px 44px;font-size:22px;font-weight:700;border:2px solid #E2DFD4;border-radius:8px;background:#fff;color:#1A1F2E;font-family:inherit;transition:border-color .2s}
+    .sim-input:focus{border-color:#006633;outline:none;box-shadow:0 0 0 4px rgba(0,102,51,.1)}
+    .sim-result{background:linear-gradient(135deg,#003318,#004D26);border-radius:8px;padding:24px;text-align:center;margin-top:16px}
+    .sim-amount{font-size:clamp(32px,5vw,44px);font-weight:700;color:#D4AF6A;line-height:1.1}
+    .sim-rate{font-size:13px;color:rgba(245,243,236,.7);margin-top:8px}
+
+    /* COMPARISON TABLE */
+    .compare-table{width:100%;border-collapse:collapse;font-size:14px;table-layout:fixed}
+    .compare-table th{background:#003318;color:#D4AF6A;padding:14px 16px;text-align:left;font-weight:700;font-size:12px;letter-spacing:1px;text-transform:uppercase}
+    .compare-table td{padding:14px 16px;border-bottom:1px solid #E2DFD4;color:#1A1F2E}
+    .compare-table tr:nth-child(even) td{background:rgba(184,146,59,.04)}
+    .compare-table .highlight-col{background:rgba(0,102,51,.06)!important;font-weight:600;color:#006633}
+    .compare-table .check{color:#006633;font-weight:700}.compare-table .cross{color:#D21034;font-weight:700}
+    @media(max-width:768px){.compare-table{font-size:11px;table-layout:auto}.compare-table th,.compare-table td{padding:10px 6px;word-break:break-word}.compare-table th{font-size:9px;letter-spacing:.3px;padding:10px 5px}}
+
+    /* GLASSMORPHISM */
+    .glass{background:rgba(255,255,255,.08);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.12);border-radius:12px}
+
+    /* ANIMATED COUNTER */
+    .count-up{font-variant-numeric:tabular-nums}
+
+    /* URGENCY BAR */
+    @keyframes urgencyPulse{0%,100%{opacity:1}50%{opacity:.7}}
+    .urgency-dot{width:8px;height:8px;border-radius:50%;background:#D21034;animation:urgencyPulse 1.5s ease-in-out infinite;flex-shrink:0}
+
+    /* TRUST STRIP */
+    .trust-strip{display:flex;align-items:center;justify-content:center;gap:24px;flex-wrap:wrap;padding:14px 20px;font-size:12px;font-weight:600;color:#4A5568;letter-spacing:.3px}
+    .trust-strip span{display:flex;align-items:center;gap:6px;white-space:nowrap}
+
     /* Reduce motion for accessibility */
     @media(prefers-reduced-motion:reduce){
       .reveal,.reveal-left,.reveal-right,.reveal-scale{transition:none!important;opacity:1!important;transform:none!important}
@@ -349,6 +404,17 @@ fr:{
   cta_btn:"Valider mon inscription",cta_or:"ou contactez-nous directement",cta_wa:"Parler à un conseiller sur WhatsApp",
   cta_legal:"En validant, vous acceptez de recevoir les communications relatives au lancement. Vos données sont traitées conformément à la législation en vigueur.",
   cta_ok_t:"Votre inscription est enregistrée",cta_ok_d:"Marhaba ! Vous serez contacté préalablement au lancement de la plateforme.",
+  sim_label:"Simulez votre transfert",sim_title:"Combien recevra votre famille ?",sim_send:"Vous envoyez",sim_receive:"Votre famille reçoit",sim_rate:"Taux indicatif",sim_dest:"Destination",sim_cta:"Voir les meilleurs taux",
+  faq_label:"Questions fréquentes",faq_title:"Tout ce que vous devez savoir",
+  fq1_q:"DinarZone est-il un transmetteur de fonds ?",fq1_a:"Non. DinarZone est une marketplace qui agrège les partenaires licenciés. Nous ne touchons jamais aux fonds. Chaque transfert est effectué par un intermédiaire agréé.",
+  fq2_q:"Quels sont les frais ?",fq2_a:"Les frais varient selon le partenaire et le corridor. DinarZone affiche tous les frais en amont avant chaque opération. Aucun frais caché.",
+  fq3_q:"Combien de temps prend un transfert ?",fq3_a:"Selon le canal : cash pickup en 2-4h, BaridiMob/D17 en quelques heures, virement postal sous 24-48h.",
+  fq4_q:"Comment DinarZone est-il régulé ?",fq4_a:"Nos partenaires sont licenciés par la Banque d'Algérie, la BCT, FINTRAC, QCB et CBUAE. DinarZone opère comme plateforme technologique conforme.",
+  fq5_q:"La Tunisie est-elle couverte ?",fq5_a:"Oui. DinarZone couvre 6 corridors vers l'Algérie et la Tunisie depuis le Canada, le Qatar et les Émirats.",
+  comp_label:"Pourquoi DinarZone",comp_title:"Comparez par vous-même",comp_h1:"Critère",comp_h2:"Informel",comp_h3:"Banque",comp_h4:"DinarZone",
+  cp1:"Transparence des taux",cp2:"Traçabilité",cp3:"Délai",cp4:"Frais",cp5:"Conformité légale",cp6:"Support WhatsApp",
+  urgency_text:"Places fondateurs limitées",urgency_count:"127 places restantes",
+  proof_joined:"vient de s'inscrire",
   footer_about:"DinarZone est une plateforme éditée par Expatria Group Consultancy, basée à Doha (Qatar). Société sœur : SOS Hub Canada (Montréal).",
   footer_leg:"Informations légales",footer_contact:"Nous contacter",footer_follow:"Suivez-nous",
   footer_m:"Mentions légales",footer_p:"Politique de confidentialité",footer_t:"Conditions générales",footer_c:"Gestion des cookies",footer_copy:"Tous droits réservés",
@@ -412,6 +478,17 @@ en:{
   cta_btn:"Confirm registration",cta_or:"or contact us directly",cta_wa:"Talk to an advisor on WhatsApp",
   cta_legal:"By confirming, you agree to receive launch communications.",
   cta_ok_t:"Registration recorded",cta_ok_d:"Marhaba! You will be contacted prior to launch.",
+  sim_label:"Simulate your transfer",sim_title:"How much will your family receive?",sim_send:"You send",sim_receive:"Your family receives",sim_rate:"Indicative rate",sim_dest:"Destination",sim_cta:"See best rates",
+  faq_label:"FAQ",faq_title:"Everything you need to know",
+  fq1_q:"Is DinarZone a money transmitter?",fq1_a:"No. DinarZone is a marketplace aggregating licensed partners. We never handle funds. Every transfer is done by a licensed intermediary.",
+  fq2_q:"What are the fees?",fq2_a:"Fees vary by partner and corridor. DinarZone shows all fees upfront before each operation. No hidden charges.",
+  fq3_q:"How long does a transfer take?",fq3_a:"Depends on channel: cash pickup in 2-4h, BaridiMob/D17 in a few hours, postal transfer 24-48h.",
+  fq4_q:"How is DinarZone regulated?",fq4_a:"Our partners are licensed by Bank of Algeria, BCT, FINTRAC, QCB and CBUAE. DinarZone operates as a compliant technology platform.",
+  fq5_q:"Is Tunisia covered?",fq5_a:"Yes. DinarZone covers 6 corridors to Algeria and Tunisia from Canada, Qatar and the Emirates.",
+  comp_label:"Why DinarZone",comp_title:"Compare for yourself",comp_h1:"Criteria",comp_h2:"Informal",comp_h3:"Bank",comp_h4:"DinarZone",
+  cp1:"Rate transparency",cp2:"Traceability",cp3:"Speed",cp4:"Fees",cp5:"Legal compliance",cp6:"WhatsApp support",
+  urgency_text:"Limited founding member spots",urgency_count:"127 spots remaining",
+  proof_joined:"just registered",
   footer_about:"DinarZone is operated by Expatria Group Consultancy, Doha (Qatar). Sister company: SOS Hub Canada (Montreal).",
   footer_leg:"Legal",footer_contact:"Contact us",footer_follow:"Follow us",
   footer_m:"Legal notice",footer_p:"Privacy policy",footer_t:"Terms",footer_c:"Cookies",footer_copy:"All rights reserved",
@@ -472,6 +549,17 @@ ar:{
   cta_name:"الاسم الكامل",cta_email:"البريد",cta_phone:"الهاتف",cta_country:"بلد الإقامة",cta_origin:"المدينة / المنطقة الأصلية",
   cta_btn:"تأكيد التسجيل",cta_or:"أو تواصل مباشرة",cta_wa:"تحدّث مع مستشار عبر واتساب",
   cta_legal:"بالتأكيد، توافق على استلام تواصل الإطلاق.",cta_ok_t:"تم التسجيل",cta_ok_d:"مرحباً! سنتواصل معك قبل الإطلاق.",
+  sim_label:"محاكاة التحويل",sim_title:"كم ستستلم عائلتك؟",sim_send:"ترسل",sim_receive:"عائلتك تستلم",sim_rate:"سعر إرشادي",sim_dest:"الوجهة",sim_cta:"عرض أفضل الأسعار",
+  faq_label:"الأسئلة الشائعة",faq_title:"كل ما تحتاج معرفته",
+  fq1_q:"هل DinarZone ناقل أموال؟",fq1_a:"لا. DinarZone منصة تجمع الشركاء المرخّصين. لا نتعامل مع الأموال مباشرة. كل تحويل يتم عبر وسيط معتمد.",
+  fq2_q:"ما هي الرسوم؟",fq2_a:"تختلف حسب الشريك والممر. DinarZone يعرض جميع الرسوم مسبقاً. لا رسوم خفية.",
+  fq3_q:"كم يستغرق التحويل؟",fq3_a:"حسب القناة: سحب نقدي في 2-4 ساعات، BaridiMob/D17 في ساعات، تحويل بريدي 24-48 ساعة.",
+  fq4_q:"كيف يتم تنظيم DinarZone؟",fq4_a:"شركاؤنا مرخّصون من بنك الجزائر والبنك المركزي التونسي و FINTRAC و QCB و CBUAE.",
+  fq5_q:"هل تونس مغطّاة؟",fq5_a:"نعم. DinarZone يغطي 6 ممرات نحو الجزائر وتونس من كندا وقطر والإمارات.",
+  comp_label:"لماذا DinarZone",comp_title:"قارن بنفسك",comp_h1:"المعيار",comp_h2:"غير رسمي",comp_h3:"بنك",comp_h4:"DinarZone",
+  cp1:"شفافية الأسعار",cp2:"التتبّع",cp3:"السرعة",cp4:"الرسوم",cp5:"الامتثال القانوني",cp6:"دعم واتساب",
+  urgency_text:"أماكن المؤسّسين محدودة",urgency_count:"127 مكان متبقي",
+  proof_joined:"سجّل للتو",
   footer_about:"DinarZone منصة من Expatria Group Consultancy، الدوحة. الشركة الشقيقة: SOS Hub Canada.",
   footer_leg:"قانوني",footer_contact:"اتصل بنا",footer_follow:"تابعنا",footer_m:"إشعارات قانونية",footer_p:"الخصوصية",footer_t:"الشروط",footer_c:"الكوكيز",footer_copy:"جميع الحقوق محفوظة",
 }};
@@ -501,6 +589,12 @@ function App(){
   const[scrollPct,setScrollPct]=useState(0);
   const[heroOffset,setHeroOffset]=useState(0);
   const[showTop,setShowTop]=useState(false);
+  const[simAmt,setSimAmt]=useState(500);
+  const[simDest,setSimDest]=useState("dz");
+  const[openFaq,setOpenFaq]=useState(null);
+  const[toast,setToast]=useState(null);
+  const[toastHide,setToastHide]=useState(false);
+  const[stickyShow,setStickyShow]=useState(false);
   const t=T[lang],rtl=lang==="ar";
   const bf=rtl?"'Cairo','Tajawal',sans-serif":"'Tajawal',sans-serif";
   const sf=rtl?"'Amiri',serif":"'Cormorant Garamond',Georgia,serif";
@@ -519,6 +613,9 @@ function App(){
   const[statRef,statVis]=useReveal();
   const[engRef,engVis]=useReveal();
   const[ctaRef,ctaVis]=useReveal();
+  const[simRef,simVis]=useReveal();
+  const[faqRef,faqVis]=useReveal();
+  const[compRef,compVis]=useReveal();
 
   useEffect(()=>{
     const h=()=>{
@@ -527,12 +624,43 @@ function App(){
       setScrollPct(pct);
       setHeroOffset(window.scrollY*.28);
       setShowTop(window.scrollY>640);
+      setStickyShow(window.scrollY>800);
     };
     window.addEventListener("scroll",h,{passive:true});
     return()=>window.removeEventListener("scroll",h);
   },[]);
 
+  // Social proof toasts
+  const proofNames=[
+    {n:"Karim M.",c:"Montréal"},{n:"Fatima Z.",c:"Doha"},{n:"Youssef B.",c:"Dubai"},
+    {n:"Nadia L.",c:"Toronto"},{n:"Samir K.",c:"Doha"},{n:"Leila A.",c:"Montréal"},
+    {n:"Amina T.",c:"Ottawa"},{n:"Riad H.",c:"Abu Dhabi"},{n:"Salma B.",c:"Toronto"}
+  ];
+  useEffect(()=>{
+    let idx=0;
+    const iv=setInterval(()=>{
+      setToastHide(false);
+      setToast(proofNames[idx%proofNames.length]);
+      idx++;
+      setTimeout(()=>setToastHide(true),3500);
+      setTimeout(()=>setToast(null),4000);
+    },8000);
+    // Show first toast after 5s
+    const first=setTimeout(()=>{
+      setToastHide(false);
+      setToast(proofNames[0]);idx=1;
+      setTimeout(()=>setToastHide(true),3500);
+      setTimeout(()=>setToast(null),4000);
+    },5000);
+    return()=>{clearInterval(iv);clearTimeout(first)};
+  },[]);
+
   const partners=["Banque d'Algérie","Banque Centrale de Tunisie","Algérie Poste","La Poste Tunisienne","BaridiMob","D17","FINTRAC","Qatar Central Bank","CBUAE","VISA","Mastercard","CIB"];
+
+  const RATES={dz:{cad:236.5,qar:36.8,aed:36.6},tn:{cad:2.18,qar:0.83,aed:0.82}};
+  const simRate=RATES[simDest]?.cad||236.5;
+  const simResult=Math.round(simAmt*simRate).toLocaleString();
+  const simCurrency=simDest==="dz"?"DZD":"TND";
 
   return(
   <div dir={rtl?"rtl":"ltr"} style={{background:CR,color:TX,minHeight:"100vh",fontFamily:bf}}>
@@ -613,6 +741,49 @@ function App(){
               {i===2?"✓ ":""}{b}
             </div>
           )}
+        </div>
+      </div>
+    </section>
+
+    {/* TRUST STRIP */}
+    <div className="trust-strip" style={{background:CL,borderBottom:`1px solid ${BD}`}}>
+      {["🔒 AES-256","🏛 FINTRAC","🏛 QCB","🏛 CBUAE","🏛 Banque d'Algérie","🏛 BCT"].map((b,i)=><span key={i}>{b}</span>)}
+    </div>
+
+    {/* URGENCY BAR */}
+    <div style={{background:`linear-gradient(90deg,${GX},${GD})`,padding:"12px 20px",display:"flex",alignItems:"center",justifyContent:"center",gap:10,flexWrap:"wrap"}}>
+      <span className="urgency-dot"/>
+      <span style={{color:GL,fontSize:13,fontWeight:700}}>{t.urgency_text}</span>
+      <span style={{color:W,fontSize:13,fontWeight:600}}>{t.urgency_count}</span>
+    </div>
+
+    {/* RATE SIMULATOR */}
+    <section ref={simRef} className="section-pad" style={{padding:"72px 28px",background:CR}}>
+      <div style={{...ss,maxWidth:580}}>
+        <div className={`reveal${simVis?" visible":""}`}>
+          <div style={{textAlign:"center",marginBottom:32}}>
+            <div style={{fontSize:13,color:GOLD,fontWeight:700,letterSpacing:3,textTransform:"uppercase",marginBottom:16}}>{t.sim_label}</div>
+            <h2 style={{fontFamily:sf,fontSize:"clamp(28px,4vw,42px)",fontWeight:600,color:TX,margin:0,lineHeight:1.18}}>{t.sim_title}</h2>
+          </div>
+        </div>
+        <div className={`reveal sim-card${simVis?" visible":""}`} style={{transitionDelay:".15s"}}>
+          <label style={{fontSize:12,color:TM,fontWeight:700,letterSpacing:.8,textTransform:"uppercase",display:"block",marginBottom:8}}>{t.sim_send} (CAD)</label>
+          <div style={{position:"relative",marginBottom:16}}>
+            <span style={{position:"absolute",left:16,top:"50%",transform:"translateY(-50%)",fontSize:20,fontWeight:700,color:GOLD}}>$</span>
+            <input className="sim-input" type="number" value={simAmt} onChange={e=>setSimAmt(Math.max(0,Number(e.target.value)))} style={{textAlign:rtl?"right":"left"}}/>
+          </div>
+          <label style={{fontSize:12,color:TM,fontWeight:700,letterSpacing:.8,textTransform:"uppercase",display:"block",marginBottom:8}}>{t.sim_dest}</label>
+          <div style={{display:"flex",gap:8,marginBottom:4}}>
+            {[{k:"dz",f:"🇩🇿",l:"Algérie"},{k:"tn",f:"🇹🇳",l:"Tunisie"}].map(d=>
+              <button key={d.k} onClick={()=>setSimDest(d.k)} style={{flex:1,padding:"14px 16px",border:`2px solid ${simDest===d.k?GOLD:BD}`,background:simDest===d.k?"rgba(184,146,59,.08)":"transparent",borderRadius:8,cursor:"pointer",fontSize:15,fontWeight:700,color:simDest===d.k?G:TM,display:"flex",alignItems:"center",justifyContent:"center",gap:8,fontFamily:"inherit",transition:"all .2s"}}>{d.f} {d.l}</button>
+            )}
+          </div>
+          <div className="sim-result">
+            <div style={{fontSize:12,color:"rgba(245,243,236,.6)",fontWeight:600,textTransform:"uppercase",letterSpacing:1,marginBottom:8}}>{t.sim_receive}</div>
+            <div className="sim-amount count-up">{simResult} {simCurrency}</div>
+            <div className="sim-rate">{t.sim_rate}: 1 CAD = {simRate} {simCurrency}</div>
+          </div>
+          <a href="#cta" style={{display:"block",textAlign:"center",marginTop:20,background:G,color:CL,padding:"16px 28px",textDecoration:"none",fontSize:16,fontWeight:700,borderRadius:8,letterSpacing:.3}}>{t.sim_cta}</a>
         </div>
       </div>
     </section>
@@ -811,6 +982,48 @@ function App(){
       </div>
     </section>
 
+    {/* COMPARISON TABLE */}
+    <section ref={compRef} className="section-pad" style={{padding:"72px 16px",background:CR,borderTop:`1px solid ${BD}`}}>
+      <div style={{...ss,padding:"0 12px"}}>
+        <div className={`reveal${compVis?" visible":""}`}><SH label={t.comp_label} title={t.comp_title} sf={sf}/></div>
+        <div className={`reveal${compVis?" visible":""}`} style={{overflowX:"auto",marginTop:44,transitionDelay:".15s",margin:"44px -12px 0"}}>
+          <table className="compare-table">
+            <thead><tr><th>{t.comp_h1}</th><th>{t.comp_h2}</th><th>{t.comp_h3}</th><th style={{background:G}}>{t.comp_h4}</th></tr></thead>
+            <tbody>
+              {[
+                {c:t.cp1,v1:<span className="cross">✗</span>,v2:"~",v3:<span className="check">✓</span>},
+                {c:t.cp2,v1:<span className="cross">✗</span>,v2:<span className="check">✓</span>,v3:<span className="check">✓</span>},
+                {c:t.cp3,v1:"24-72h",v2:"3-7j",v3:<b>2-4h</b>},
+                {c:t.cp4,v1:"3-8%",v2:"5-15%",v3:<b>1-2%</b>},
+                {c:t.cp5,v1:<span className="cross">✗</span>,v2:<span className="check">✓</span>,v3:<span className="check">✓</span>},
+                {c:t.cp6,v1:<span className="cross">✗</span>,v2:<span className="cross">✗</span>,v3:<span className="check">✓ 24/7</span>}
+              ].map((r,i)=>
+                <tr key={i}><td>{r.c}</td><td>{r.v1}</td><td>{r.v2}</td><td className="highlight-col">{r.v3}</td></tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    {/* FAQ */}
+    <section ref={faqRef} className="section-pad" style={{padding:"72px 28px",background:CL,borderTop:`1px solid ${BD}`}}>
+      <div style={{...ss,maxWidth:780}}>
+        <div className={`reveal${faqVis?" visible":""}`}><SH label={t.faq_label} title={t.faq_title} sf={sf}/></div>
+        <div className={`reveal${faqVis?" visible":""}`} style={{marginTop:44,transitionDelay:".1s"}}>
+          {[{q:t.fq1_q,a:t.fq1_a},{q:t.fq2_q,a:t.fq2_a},{q:t.fq3_q,a:t.fq3_a},{q:t.fq4_q,a:t.fq4_a},{q:t.fq5_q,a:t.fq5_a}].map((f,i)=>
+            <div key={i} className="faq-item">
+              <div className="faq-q" onClick={()=>setOpenFaq(openFaq===i?null:i)}>
+                <span>{f.q}</span>
+                <span className={`faq-chevron${openFaq===i?" open":""}`}>▼</span>
+              </div>
+              <div className={`faq-a${openFaq===i?" open":""}`}>{f.a}</div>
+            </div>
+          )}
+        </div>
+      </div>
+    </section>
+
     {/* PARTENAIRES MARQUEE */}
     <section style={{padding:"56px 0",background:CL,borderTop:`1px solid ${BD}`,borderBottom:`1px solid ${BD}`,overflow:"hidden"}}>
       <div style={{textAlign:"center",marginBottom:28}}>
@@ -912,6 +1125,24 @@ function App(){
     <button className={`scroll-top${showTop?" show":""}`} onClick={()=>window.scrollTo({top:0,behavior:"smooth"})}>
       <ChevUp/>
     </button>
+
+    {/* SOCIAL PROOF TOAST */}
+    {toast && (
+      <div className={`proof-toast${toastHide?" hiding":""}`}>
+        <div style={{display:"flex",alignItems:"center",gap:12}}>
+          <div style={{width:36,height:36,borderRadius:"50%",background:`linear-gradient(135deg,${G},${GD})`,color:GL,display:"flex",alignItems:"center",justifyContent:"center",fontSize:14,fontWeight:700,fontFamily:sf,border:`2px solid ${GOLD}`,flexShrink:0}}>{toast.n.charAt(0)}</div>
+          <div>
+            <div style={{fontSize:14,fontWeight:700,color:TX}}>{toast.n}</div>
+            <div style={{fontSize:12,color:TS}}>{toast.c} {t.proof_joined}</div>
+          </div>
+        </div>
+      </div>
+    )}
+
+    {/* STICKY MOBILE CTA */}
+    <div className={`sticky-cta${stickyShow?" show":""}`}>
+      <a href="#cta">{t.hero_cta1}</a>
+    </div>
 
   </div>);
 }
