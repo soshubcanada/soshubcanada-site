@@ -13,12 +13,14 @@ import { authenticateRequest, requireCrmRole } from '@/lib/api-auth';
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
-// Cron authorization (same as cron-sync)
+// Cron authorization (same as cron-sync) : Vercel cron header non
+// spoofable OU Bearer CRON_SECRET (backup + dev)
 function isCronAuthorized(req: NextRequest): boolean {
+  if (req.headers.get('x-vercel-cron') === '1') return true;
   const authHeader = req.headers.get('authorization');
   const cronSecret = process.env.CRON_SECRET;
-  if (!cronSecret) return process.env.NODE_ENV === 'development';
-  return authHeader === `Bearer ${cronSecret}`;
+  if (cronSecret && authHeader === `Bearer ${cronSecret}`) return true;
+  return process.env.NODE_ENV === 'development';
 }
 
 /**

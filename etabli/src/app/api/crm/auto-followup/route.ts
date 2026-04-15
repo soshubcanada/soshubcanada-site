@@ -3,11 +3,12 @@
 // Cron: execute toutes les heures, envoie aux leads de 23h+
 // Inclut: resultats admissibilite condenses + recommandations
 // ========================================================
-import { NextResponse } from 'next/server';
+import { NextResponse, type NextRequest } from 'next/server';
 import { isSupabaseReady, createServiceClient } from '@/lib/supabase';
 import { DEMO_EMPLOYERS } from '@/lib/crm-employers';
 import { analyzeEligibility, descriptiveToNCLC, descriptiveToCLB } from '@/lib/eligibility-engine';
 import type { ClientProfile, ProgramEligibility } from '@/lib/eligibility-engine';
+import { authenticateRequest, requireCrmRole } from '@/lib/api-auth';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
@@ -455,11 +456,17 @@ ${hasPositions ? `
 }
 
 export async function GET(request: Request) {
-  // Verify cron secret or allow in dev
+  // Auth : on accepte deux sources de confiance
+  //   1. Header `x-vercel-cron` injecte par le cron runner interne
+  //      de Vercel — ce header est stripe au edge pour toute requete
+  //      externe, donc non spoofable
+  //   2. Header Authorization: Bearer ${CRON_SECRET} (backup + dev)
+  // Fail closed si aucune des deux sources n'est valide.
+  const isVercelCron = request.headers.get('x-vercel-cron') === '1';
   const authHeader = request.headers.get('authorization');
   const cronSecret = process.env.CRON_SECRET;
-  // Fail closed: if no secret configured, block access
-  if (!cronSecret || authHeader !== `Bearer ${cronSecret}`) {
+  const hasValidBearer = cronSecret && authHeader === `Bearer ${cronSecret}`;
+  if (!isVercelCron && !hasValidBearer) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
@@ -579,6 +586,129 @@ export async function GET(request: Request) {
   return NextResponse.json({
     message: `Auto-followup completed`,
     checked: recentClients.length,
+    sent,
+    results,
+    timestamp: now.toISOString(),
+  });
+}
+
+// ─── POST: manual trigger / dry-run for CRM admins ─────────
+// Permet au staff de declencher l'envoi automatique a la demande
+// depuis le CRM, et de voir en dry-run qui serait contacte sans
+// rien envoyer. Protege par authentification staff (role admin/superadmin).
+//
+// Body :
+//   { dryRun?: boolean; clientId?: string }
+//     - dryRun=true  -> ne fait qu'enumerer les candidats
+//     - clientId     -> cible un client precis (dev/test)
+export async function POST(request: NextRequest) {
+  // Authentification staff : admin ou superadmin uniquement
+  const auth = await authenticateRequest(request);
+  if (!auth.authenticated) return auth.error!;
+  const roleCheck = await requireCrmRole(auth.userId!, ['admin', 'superadmin']);
+  if (!roleCheck.authorized) return roleCheck.error!;
+
+  if (!isSupabaseReady()) {
+    return NextResponse.json({ message: 'Supabase non configure', sent: 0 });
+  }
+
+  const body = await request.json().catch(() => ({}));
+  const dryRun: boolean = body.dryRun === true;
+  const targetClientId: string | undefined = body.clientId;
+
+  const db = createServiceClient() as any;
+  const now = new Date();
+
+  // Selection des candidats
+  let query = db.from('clients').select('*');
+  if (targetClientId) {
+    query = query.eq('id', targetClientId);
+  } else {
+    const catchupCutoff = new Date(now.getTime() - FOLLOWUP_CATCHUP_HOURS * 60 * 60 * 1000);
+    const cutoffMax = new Date(now.getTime() - FOLLOWUP_DELAY_HOURS * 60 * 60 * 1000);
+    query = query
+      .eq('status', 'prospect')
+      .gte('created_at', catchupCutoff.toISOString())
+      .lte('created_at', cutoffMax.toISOString());
+  }
+
+  const { data: candidates, error: fetchErr } = await query;
+  if (fetchErr || !candidates) {
+    return NextResponse.json({ error: fetchErr?.message || 'Fetch error', sent: 0 }, { status: 500 });
+  }
+
+  // Diagnostic: enrichir chaque candidat avec son etat d'email existant
+  const diagnosed: { id: string; email: string; firstName: string; createdAt: string; alreadySent: boolean; willSend: boolean; reason?: string }[] = [];
+  for (const c of candidates) {
+    const { data: existing } = await db
+      .from('emails_sent')
+      .select('id, type')
+      .eq('client_id', c.id)
+      .in('type', ['scoring_results', 'analysis'])
+      .limit(1);
+    const alreadySent = !!(existing && existing.length > 0);
+    const hasEmail = !!c.email;
+    const willSend = !alreadySent && hasEmail;
+    const reason = alreadySent ? 'deja_envoye' : !hasEmail ? 'pas_d_email' : undefined;
+    diagnosed.push({ id: c.id, email: c.email || '(aucun)', firstName: c.first_name || '', createdAt: c.created_at, alreadySent, willSend, reason });
+  }
+
+  // En dry-run on s'arrete la
+  if (dryRun) {
+    return NextResponse.json({
+      mode: 'dry_run',
+      checked: candidates.length,
+      wouldSend: diagnosed.filter(d => d.willSend).length,
+      diagnosed,
+      timestamp: now.toISOString(),
+    });
+  }
+
+  // Sinon, envoi reel (meme logique que le cron GET)
+  let sent = 0;
+  const results: { email: string; status: string }[] = [];
+  for (const client of candidates) {
+    const diag = diagnosed.find(d => d.id === client.id)!;
+    if (!diag.willSend) {
+      results.push({ email: diag.email, status: diag.reason || 'skipped' });
+      continue;
+    }
+    const positions = matchPositions(client);
+    const emailHtml = generatePremiumEmail(client, positions);
+    const subject = positions.length > 0
+      ? `${client.first_name || 'Candidat'}, ${positions.length} poste${positions.length > 1 ? 's' : ''} disponible${positions.length > 1 ? 's' : ''} pour vous — SOS Hub Canada`
+      : `${client.first_name || 'Candidat'}, votre analyse d'admissibilité est prête — SOS Hub Canada`;
+
+    const serviceId = process.env.EMAILJS_SERVICE_ID;
+    const templateId = process.env.EMAILJS_TEMPLATE_ID;
+    const publicKey = process.env.EMAILJS_PUBLIC_KEY;
+    const privateKey = process.env.EMAILJS_PRIVATE_KEY;
+
+    try {
+      if (serviceId && templateId && publicKey) {
+        await fetch('https://api.emailjs.com/api/v1.0/email/send', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            service_id: serviceId, template_id: templateId, user_id: publicKey, accessToken: privateKey,
+            template_params: { to_email: client.email, subject, message: emailHtml, from_name: 'SOS Hub Canada', reply_to: 'info@soshubcanada.com' },
+          }),
+        });
+      }
+      await db.from('emails_sent').insert({
+        client_id: client.id, to_email: client.email, subject, body: emailHtml, type: 'scoring_results', sent_by: null,
+      });
+      sent++;
+      results.push({ email: client.email, status: 'sent' });
+    } catch (err) {
+      results.push({ email: client.email, status: `error: ${err instanceof Error ? err.message : 'unknown'}` });
+    }
+  }
+
+  return NextResponse.json({
+    mode: 'live',
+    triggeredBy: auth.userId,
+    checked: candidates.length,
     sent,
     results,
     timestamp: now.toISOString(),

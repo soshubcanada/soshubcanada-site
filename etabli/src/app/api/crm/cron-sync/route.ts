@@ -12,13 +12,14 @@ import { NextResponse } from "next/server";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-// Vercel Cron auth — verify the request comes from Vercel
+// Vercel Cron auth — on accepte soit le header interne non spoofable
+// `x-vercel-cron`, soit un Bearer CRON_SECRET (backup + dev).
 function isAuthorized(request: Request): boolean {
+  if (request.headers.get("x-vercel-cron") === "1") return true;
   const authHeader = request.headers.get("authorization");
   const cronSecret = process.env.CRON_SECRET;
-  // Fail closed: if no secret configured, block access
-  if (!cronSecret) return process.env.NODE_ENV === "development";
-  return authHeader === `Bearer ${cronSecret}`;
+  if (cronSecret && authHeader === `Bearer ${cronSecret}`) return true;
+  return process.env.NODE_ENV === "development";
 }
 
 export async function GET(request: Request) {

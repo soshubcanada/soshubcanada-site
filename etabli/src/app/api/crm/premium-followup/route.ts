@@ -294,10 +294,12 @@ ${positions.length > 0 ? `
 
 // ─── API HANDLER ──────────────────────────────────────────
 export async function GET(request: Request) {
+  // Auth : Vercel cron header OU Bearer CRON_SECRET (voir auto-followup)
+  const isVercelCron = request.headers.get('x-vercel-cron') === '1';
   const authHeader = request.headers.get('authorization');
   const cronSecret = process.env.CRON_SECRET;
-  // Fail closed: if no secret configured, block access
-  if (!cronSecret || authHeader !== `Bearer ${cronSecret}`) {
+  const hasValidBearer = cronSecret && authHeader === `Bearer ${cronSecret}`;
+  if (!isVercelCron && !hasValidBearer) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 

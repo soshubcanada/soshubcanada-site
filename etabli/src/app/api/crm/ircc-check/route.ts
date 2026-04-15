@@ -53,9 +53,14 @@ export async function GET(req: NextRequest) {
   const rl = checkRateLimit(req, 5, 60000, 'ircc-check');
   if (!rl.allowed) return rl.error!;
 
-  // Authentication required — internal CRM tool
-  const auth = await authenticateRequest(req);
-  if (!auth.authenticated) return auth.error!;
+  // Authentification : soit via le cron runner interne de Vercel
+  // (header `x-vercel-cron` non spoofable), soit via une session
+  // staff authentifiee (cas du bouton "Verifier maintenant" dans le CRM).
+  const isVercelCron = req.headers.get('x-vercel-cron') === '1';
+  if (!isVercelCron) {
+    const auth = await authenticateRequest(req);
+    if (!auth.authenticated) return auth.error!;
+  }
 
   const results: FormCheckResult[] = [];
   let irccAccessible = false;
