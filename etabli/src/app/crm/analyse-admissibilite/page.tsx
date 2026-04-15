@@ -1073,7 +1073,7 @@ function AdmissibiliteTab() {
           subject: `Votre analyse d'admissibilit\u00e9 \u2014 SOS Hub Canada`,
           emailBody: htmlBody,
           type: 'analysis',
-          sentBy: currentUser?.id || 'system',
+          sentBy: currentUser?.id || null,
           from_name: 'SOS Hub Canada',
           reply_to: 'info@soshubcanada.com',
         }),

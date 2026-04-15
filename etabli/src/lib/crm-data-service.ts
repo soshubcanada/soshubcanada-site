@@ -535,16 +535,25 @@ export async function insertScoringResult(result: {
 // ============================================================
 // EMAILS
 // ============================================================
+// emails_sent.sent_by est une FK vers users(id) — doit etre un UUID
+// valide ou NULL. Les envois automatises (cron, public booking, etc.)
+// n'ont pas d'utilisateur staff associe, donc on passe NULL.
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
 export async function insertEmailRecord(email: {
   clientId: string;
   caseId?: string;
   toEmail: string;
   subject: string;
   body: string;
-  type: 'scoring_results' | 'contract' | 'appointment' | 'general' | 'analysis';
-  sentBy: string;
+  type: 'scoring_results' | 'contract' | 'appointment' | 'general' | 'analysis' | 'premium_report';
+  sentBy: string | null;
 }): Promise<boolean> {
   if (!isSupabaseConfigured()) return false;
+
+  // Coerce sent_by en NULL si ce n'est pas un UUID valide
+  // (evite un echec FK silencieux sur les inserts systeme)
+  const sentBy = email.sentBy && UUID_RE.test(email.sentBy) ? email.sentBy : null;
 
   const { error } = await db.from('emails_sent').insert({
     client_id: email.clientId,
@@ -553,7 +562,7 @@ export async function insertEmailRecord(email: {
     subject: email.subject,
     body: email.body,
     type: email.type,
-    sent_by: email.sentBy,
+    sent_by: sentBy,
   });
 
   if (error) { console.error('insertEmailRecord error:', error); return false; }

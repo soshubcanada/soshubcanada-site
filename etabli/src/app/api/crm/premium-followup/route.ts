@@ -356,7 +356,7 @@ export async function GET(request: Request) {
           }),
         });
         await db.from('emails_sent').insert({
-          client_id: client.id, to_email: client.email, subject, body: emailHtml, type: 'premium_report', sent_by: 'system_auto',
+          client_id: client.id, to_email: client.email, subject, body: emailHtml, type: 'premium_report', sent_by: null, // envoi automatique par le cron (pas d'utilisateur staff)
         });
         sent++;
         results.push({ email: client.email, status: 'sent' });
@@ -365,7 +365,7 @@ export async function GET(request: Request) {
       }
     } else {
       await db.from('emails_sent').insert({
-        client_id: client.id, to_email: client.email, subject, body: emailHtml, type: 'premium_report', sent_by: 'system_auto',
+        client_id: client.id, to_email: client.email, subject, body: emailHtml, type: 'premium_report', sent_by: null, // envoi automatique par le cron (pas d'utilisateur staff)
       });
       sent++;
       results.push({ email: client.email, status: 'simulated' });

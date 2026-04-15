@@ -336,7 +336,7 @@ export async function POST(request: NextRequest) {
           subject: `Confirmation RDV - ${formatDateFr(date)}`,
           body: `RDV ${type} le ${date} a ${time} avec ${channel.name}`,
           type: "appointment",
-          sent_by: "system",
+          sent_by: null, // booking public (pas d'utilisateur staff)
         });
       }
     }

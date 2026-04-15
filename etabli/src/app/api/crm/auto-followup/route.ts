@@ -11,7 +11,13 @@ import type { ClientProfile, ProgramEligibility } from '@/lib/eligibility-engine
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
+// On envoie a J+1 apres creation du lead (23h = "un peu moins de 24h"
+// pour que le cron qui tourne a `0 * * * *` ne rate pas la fenetre).
+// On garde aussi une borne de rattrapage a J+3 : si un tick du cron
+// a ete manque (erreur Vercel, deploiement, etc.), les leads non encore
+// contactes sont rattrapes automatiquement.
 const FOLLOWUP_DELAY_HOURS = 23;
+const FOLLOWUP_CATCHUP_HOURS = 72;
 
 // ─── Build ClientProfile from DB client record ────────────
 function buildProfileFromClient(client: any): ClientProfile {
@@ -463,15 +469,17 @@ export async function GET(request: Request) {
 
   const db = createServiceClient() as any;
   const now = new Date();
-  const cutoffMin = new Date(now.getTime() - (FOLLOWUP_DELAY_HOURS + 1) * 60 * 60 * 1000);
+  // Fenetre [J+3 ; J+1] avec rattrapage automatique des ticks rates.
+  const catchupCutoff = new Date(now.getTime() - FOLLOWUP_CATCHUP_HOURS * 60 * 60 * 1000);
   const cutoffMax = new Date(now.getTime() - FOLLOWUP_DELAY_HOURS * 60 * 60 * 1000);
 
-  // Find clients created 23-24h ago that haven't received a followup email
+  // Find clients created in the window [J-3, J-1] still in prospect stage
+  // and not yet emailed. On prend large pour rattraper les ticks rates.
   const { data: recentClients, error: fetchErr } = await db
     .from('clients')
     .select('*')
     .eq('status', 'prospect')
-    .gte('created_at', cutoffMin.toISOString())
+    .gte('created_at', catchupCutoff.toISOString())
     .lte('created_at', cutoffMax.toISOString());
 
   if (fetchErr || !recentClients) {
@@ -482,12 +490,14 @@ export async function GET(request: Request) {
   const results: { email: string; status: string }[] = [];
 
   for (const client of recentClients) {
-    // Check if we already sent a followup to this client
+    // Dedupe : on ne renvoie pas si le staff a deja envoye manuellement
+    // une analyse (type='analysis') OU si le cron est deja passe
+    // (type='scoring_results')
     const { data: existingEmails } = await db
       .from('emails_sent')
-      .select('id')
+      .select('id, type')
       .eq('client_id', client.id)
-      .eq('type', 'scoring_results')
+      .in('type', ['scoring_results', 'analysis'])
       .limit(1);
 
     if (existingEmails && existingEmails.length > 0) {
@@ -542,7 +552,7 @@ export async function GET(request: Request) {
           subject,
           body: emailHtml,
           type: 'scoring_results',
-          sent_by: 'system_auto',
+          sent_by: null, // envoi automatique par le cron (pas d'utilisateur staff)
         });
 
         sent++;
@@ -559,7 +569,7 @@ export async function GET(request: Request) {
         subject,
         body: emailHtml,
         type: 'scoring_results',
-        sent_by: 'system_auto',
+        sent_by: null, // envoi automatique par le cron (pas d'utilisateur staff)
       });
       sent++;
       results.push({ email: client.email, status: 'simulated' });

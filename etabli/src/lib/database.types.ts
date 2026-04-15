@@ -198,7 +198,7 @@ export interface Database {
           to_email: string;
           subject: string;
           body: string;
-          type: 'scoring_results' | 'contract' | 'appointment' | 'general';
+          type: 'scoring_results' | 'contract' | 'appointment' | 'general' | 'analysis' | 'premium_report';
           sent_by: string;
           sent_at: string;
         };
