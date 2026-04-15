@@ -304,6 +304,13 @@ export default function ContratsPage() {
                       if (!client) return;
                       const signUrl = `${window.location.origin}/signer/${contract.id}`;
                       try {
+                        // 1. Persister le statut 'envoye' côté serveur (requis pour que la page de signature accepte)
+                        await crmFetch('/api/crm/contracts', {
+                          method: 'PUT',
+                          headers: { 'Content-Type': 'application/json' },
+                          body: JSON.stringify({ contractId: contract.id, status: 'envoye' }),
+                        });
+                        // 2. Envoyer le courriel au client avec le lien unique de signature
                         await crmFetch('/api/crm/send-email', {
                           method: 'POST',
                           headers: { 'Content-Type': 'application/json' },
@@ -311,7 +318,7 @@ export default function ContratsPage() {
                             clientId: contract.clientId,
                             toEmail: client.email,
                             subject: `Contrat de service à signer — SOS Hub Canada`,
-                            emailBody: `Bonjour ${client.firstName},\n\nVotre contrat de service est prêt pour signature.\n\nCliquez ici pour signer : ${signUrl}\n\nCordialement,\nSOS Hub Canada Inc.`,
+                            emailBody: `Bonjour ${client.firstName},\n\nVotre contrat de service est prêt pour signature électronique.\n\nCliquez sur le lien sécurisé ci-dessous pour réviser et signer votre contrat :\n${signUrl}\n\nFrais d'ouverture de dossier : 250 $ CAD (non remboursable, payable à la signature).\n\nSi vous avez des questions, contactez-nous :\nTél. : 514-533-0482\nWhatsApp : 438-630-2869\nCourriel : info@soshubcanada.com\n\nCordialement,\nSOS Hub Canada Inc.`,
                             type: 'contract',
                             sentBy: currentUser.id,
                           }),
@@ -319,7 +326,7 @@ export default function ContratsPage() {
                         const updated = { ...contract, status: 'envoye' as const };
                         setContracts(contracts.map(c => c.id === updated.id ? updated : c));
                         setSelectedContract(updated);
-                        setNotification({ type: 'success', message: 'Contrat envoyé au client par courriel !' });
+                        setNotification({ type: 'success', message: `Contrat envoyé à ${client.email} ! Le client peut maintenant le signer en ligne.` });
                       } catch {
                         setNotification({ type: 'error', message: 'Erreur lors de l\'envoi du contrat par courriel. Vérifiez la connexion et réessayez.' });
                       }

@@ -699,6 +699,7 @@ export interface ServiceContract {
   signedAt?: string;
   signedByClient?: string;
   signatureIP?: string;
+  signatureData?: string; // PNG base64 dataURL de la signature manuscrite (canvas)
   createdAt: string;
   createdBy: string;
   notes: string;

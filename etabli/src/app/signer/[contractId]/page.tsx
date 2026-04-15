@@ -61,7 +61,7 @@ function buildContractDisplayHTML(data: ContractData): string {
       ${SOS_LOGO_SVG.replace(/width="48" height="48"/, 'width="44" height="44"')}
       <div>
         <div style="font-size:16pt;font-weight:700;color:#1B2559;">SOS Hub Canada Inc.</div>
-        <div style="font-size:8pt;color:#555;">1275, av. des Canadiens-de-Montr\u00e9al, Montr\u00e9al (QC) H3B 2S2<br>514-XXX-XXXX | info@soshub.ca</div>
+        <div style="font-size:8pt;color:#555;">3737, boul. Cr\u00e9mazie Est, bureau 402, Montr\u00e9al (Qu\u00e9bec) H1Z 2K4<br>T\u00e9l. : 514-533-0482 &middot; WhatsApp : 438-630-2869 &middot; info@soshubcanada.com</div>
       </div>
     </div>
     <div style="text-align:right;">
@@ -565,8 +565,8 @@ export default function SignerContractPage({ params }: { params: Promise<{ contr
 
         {/* Footer */}
         <div style={{ textAlign: 'center', marginTop: 32, color: '#aaa', fontSize: '0.75rem' }}>
-          <p>SOS Hub Canada Inc. &mdash; 1275, av. des Canadiens-de-Montr&eacute;al, Montr&eacute;al (QC) H3B 2S2</p>
-          <p>info@soshub.ca | 514-XXX-XXXX</p>
+          <p>SOS Hub Canada Inc. &middot; 3737, boul. Cr&eacute;mazie Est, bureau 402, Montr&eacute;al (Qu&eacute;bec) H1Z 2K4</p>
+          <p>T&eacute;l. : 514-533-0482 &middot; WhatsApp : 438-630-2869 &middot; info@soshubcanada.com</p>
         </div>
       </div>
 

@@ -29,16 +29,25 @@ export async function GET(req: NextRequest) {
     if (!demo) {
       return NextResponse.json({ error: 'Contrat introuvable' }, { status: 404 });
     }
-    // Return only safe fields - no passport, address, phone, email
+    // Le contrat est un document legal entre les parties signataires : le client
+    // accede a sa propre donnee via un lien unique (contractId sert de token).
     return NextResponse.json({
       contract: {
         ...demo,
         contractNumber: `CS-2026-${contractId.replace(/\D/g, '').slice(0, 4).padStart(4, '0')}`,
         programId: demo.pricingTierId?.replace('price-', '') || 'ee-fsw',
+        programName: 'Programme de services professionnels',
       },
       client: {
         firstName: demo.signedByClient?.split(' ')[0] || 'Jean',
         lastName: demo.signedByClient?.split(' ').slice(1).join(' ') || 'Dupont',
+        address: '123, rue Exemple',
+        city: 'Montr\u00e9al',
+        province: 'Qu\u00e9bec',
+        postalCode: 'H3B 2S2',
+        phone: '514-000-0000',
+        email: 'client@exemple.com',
+        passportNumber: 'XXXXXXXXX',
       },
     });
   }
@@ -57,10 +66,10 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ error: 'Contrat introuvable' }, { status: 404 });
     }
 
-    // Fetch only safe client fields - no passport, address, phone, email
+    // Fetch client fields needed to display the contract to its own signing party
     const { data: client } = await db
       .from('clients')
-      .select('first_name, last_name')
+      .select('first_name, last_name, address, city, province, postal_code, phone, email, passport_number')
       .eq('id', contract.client_id)
       .single();
 
@@ -77,8 +86,15 @@ export async function GET(req: NextRequest) {
         signedAt: contract.signed_at,
       },
       client: client ? {
-        firstName: client.first_name,
-        lastName: client.last_name,
+        firstName: client.first_name || '',
+        lastName: client.last_name || '',
+        address: client.address || '',
+        city: client.city || '',
+        province: client.province || '',
+        postalCode: client.postal_code || '',
+        phone: client.phone || '',
+        email: client.email || '',
+        passportNumber: client.passport_number || '',
       } : null,
     });
   } catch (err: any) {
