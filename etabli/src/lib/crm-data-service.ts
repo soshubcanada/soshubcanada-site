@@ -541,7 +541,7 @@ export async function insertEmailRecord(email: {
   toEmail: string;
   subject: string;
   body: string;
-  type: 'scoring_results' | 'contract' | 'appointment' | 'general';
+  type: 'scoring_results' | 'contract' | 'appointment' | 'general' | 'analysis';
   sentBy: string;
 }): Promise<boolean> {
   if (!isSupabaseConfigured()) return false;

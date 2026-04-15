@@ -817,7 +817,7 @@ function LeadsTab({ onCountUpdate }: { onCountUpdate: (n: number) => void }) {
 // ─── ADMISSIBILITE TAB ──────────────────────────────────
 
 function AdmissibiliteTab() {
-  const { clients } = useCrm();
+  const { clients, currentUser } = useCrm();
   const [mode, setMode] = useState<"client" | "new">("new");
   const [selectedClientId, setSelectedClientId] = useState("");
   const [profile, setProfile] = useState<ClientProfile>(getDefaultClientProfile());
@@ -825,6 +825,15 @@ function AdmissibiliteTab() {
   const [analysis, setAnalysis] = useState<EligibilityAnalysis | null>(null);
   const [showResults, setShowResults] = useState(false);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [notification, setNotification] = useState<{ type: 'success' | 'error' | 'info'; message: string } | null>(null);
+  const [isSending, setIsSending] = useState(false);
+
+  // Auto-dismiss notifications after 5s
+  useEffect(() => {
+    if (!notification) return;
+    const t = setTimeout(() => setNotification(null), 5000);
+    return () => clearTimeout(t);
+  }, [notification]);
 
   const activeClients = clients.filter((c) => c.status !== "archive");
 
@@ -938,6 +947,171 @@ function AdmissibiliteTab() {
       setIsAnalyzing(false);
     }, 800);
   }
+
+  // ─── Send analysis by email — best practice ────────────────
+  // Pre-fills client email, builds rich HTML body with CRS/MIFI scores,
+  // links to CRM via clientId, persists notification state, handles errors
+  const sendAnalysisByEmail = useCallback(async (
+    analysisData: EligibilityAnalysis,
+    opts: { crsTotal?: number; mifiTotal?: number; fswTotal?: number } = {}
+  ) => {
+    if (isSending) return;
+    const selectedClient = selectedClientId ? clients.find(c => c.id === selectedClientId) : null;
+    const defaultEmail = selectedClient?.email || '';
+
+    const toEmail = window.prompt(
+      selectedClient
+        ? `Confirmer le courriel pour ${selectedClient.firstName} ${selectedClient.lastName} :`
+        : 'Courriel du client :',
+      defaultEmail,
+    );
+    if (!toEmail || !toEmail.trim()) return;
+    const emailTrim = toEmail.trim();
+
+    // Simple client-side email validation to fail fast
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailTrim)) {
+      setNotification({ type: 'error', message: 'Adresse courriel invalide.' });
+      return;
+    }
+
+    setIsSending(true);
+    try {
+      const eligible = analysisData.programs.filter(p => p.eligibility === 'eligible' || p.eligibility === 'likely_eligible');
+      const possibly = analysisData.programs.filter(p => p.eligibility === 'possibly_eligible');
+      const dateStr = new Date(analysisData.analysisDate).toLocaleDateString('fr-CA', { year: 'numeric', month: 'long', day: 'numeric' });
+      const firstName = analysisData.clientName.split(' ')[0] || 'cher client';
+
+      // Rich HTML email body — branded, scannable, mobile-friendly
+      const programCards = eligible.slice(0, 5).map(p => `
+        <tr><td style="padding:12px 16px;background:#f8f9fc;border-left:4px solid #D4A03C;border-radius:6px;">
+          <div style="font-weight:700;color:#1B2559;font-size:15px;">${p.programNameFr}</div>
+          <div style="color:#6b7280;font-size:13px;margin-top:4px;">Score : ${p.score}/100 &middot; D\u00e9lai : ${p.estimatedProcessingTime}</div>
+          ${p.keyStrengths && p.keyStrengths.length ? `<div style="color:#16a34a;font-size:12px;margin-top:6px;"><strong>Points forts :</strong> ${p.keyStrengths.slice(0, 2).join(' &middot; ')}</div>` : ''}
+        </td></tr>
+        <tr><td style="height:8px;"></td></tr>
+      `).join('');
+
+      const scoresBlock = (opts.crsTotal || opts.mifiTotal || opts.fswTotal) ? `
+        <table width="100%" cellpadding="0" cellspacing="0" style="margin:16px 0;">
+          <tr>
+            ${opts.crsTotal ? `<td align="center" style="background:#1B2559;color:#fff;padding:12px;border-radius:8px;"><div style="font-size:11px;letter-spacing:1px;opacity:.8;">SCORE CRS</div><div style="font-size:22px;font-weight:800;">${opts.crsTotal}<span style="font-size:12px;opacity:.7;"> / 1200</span></div></td>` : ''}
+            ${opts.crsTotal && opts.mifiTotal ? '<td width="8"></td>' : ''}
+            ${opts.mifiTotal ? `<td align="center" style="background:#D4A03C;color:#fff;padding:12px;border-radius:8px;"><div style="font-size:11px;letter-spacing:1px;opacity:.9;">SCORE MIFI (QC)</div><div style="font-size:22px;font-weight:800;">${opts.mifiTotal}</div></td>` : ''}
+          </tr>
+        </table>
+      ` : '';
+
+      const htmlBody = `<!DOCTYPE html>
+<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"></head>
+<body style="margin:0;padding:0;background:#f4f5f7;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;color:#1a1a1a;">
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#f4f5f7;padding:24px 12px;">
+  <tr><td align="center">
+    <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.06);">
+      <!-- Header -->
+      <tr><td style="background:#1B2559;padding:24px 28px;">
+        <div style="font-size:20px;font-weight:800;color:#fff;">SOS <span style="color:#D4A03C;">HUB</span> CANADA</div>
+        <div style="color:#D4A03C;font-size:10px;font-weight:700;letter-spacing:2px;margin-top:4px;">RELOCALISATION &amp; SERVICES PROFESSIONNELS</div>
+      </td></tr>
+      <!-- Body -->
+      <tr><td style="padding:28px;">
+        <h1 style="font-size:20px;color:#1B2559;margin:0 0 8px;">Votre analyse d'admissibilit\u00e9</h1>
+        <p style="color:#6b7280;font-size:13px;margin:0 0 20px;">R\u00e9alis\u00e9e le ${dateStr}</p>
+        <p style="font-size:15px;line-height:1.6;margin:0 0 16px;">Bonjour <strong>${firstName}</strong>,</p>
+        <p style="font-size:15px;line-height:1.6;margin:0 0 16px;">Merci de votre confiance. Suite \u00e0 l'analyse compl\u00e8te de votre profil, voici nos conclusions :</p>
+        <div style="background:#f0f4ff;border-left:4px solid #1B2559;padding:14px 18px;border-radius:0 8px 8px 0;margin:20px 0;">
+          <div style="font-size:11px;color:#1B2559;font-weight:700;letter-spacing:1px;margin-bottom:6px;">R\u00c9SUM\u00c9</div>
+          <div style="font-size:14px;line-height:1.6;color:#333;">${analysisData.overallSummary || 'Analyse compl\u00e9t\u00e9e.'}</div>
+        </div>
+        ${scoresBlock}
+        ${eligible.length > 0 ? `
+          <h2 style="font-size:16px;color:#1B2559;margin:24px 0 12px;">\u2605 Programmes recommand\u00e9s (${eligible.length})</h2>
+          <table width="100%" cellpadding="0" cellspacing="0">${programCards}</table>
+        ` : `
+          <div style="background:#fef3c7;border:1px solid #fde68a;border-radius:8px;padding:14px 18px;margin:20px 0;">
+            <div style="font-weight:700;color:#92400e;font-size:14px;">Aucun programme imm\u00e9diatement accessible</div>
+            <div style="color:#78350f;font-size:13px;margin-top:6px;">Ne vous d\u00e9couragez pas : avec un plan d'am\u00e9lioration cibl\u00e9, vous pourrez devenir admissible. Contactez-nous pour en parler.</div>
+          </div>
+        `}
+        ${possibly.length > 0 ? `<p style="font-size:13px;color:#6b7280;margin:12px 0;"><em>${possibly.length} autre(s) programme(s) sont \u00e9galement possibles avec quelques ajustements.</em></p>` : ''}
+        <div style="background:#fffbf0;border:1px solid #D4A03C;border-radius:8px;padding:16px 20px;margin:24px 0;">
+          <div style="font-size:11px;color:#D4A03C;font-weight:700;letter-spacing:1px;margin-bottom:6px;">RECOMMANDATION PRINCIPALE</div>
+          <div style="font-size:14px;line-height:1.6;color:#333;">${analysisData.topRecommendation || 'Nous vous contacterons sous peu pour d\u00e9finir la meilleure strat\u00e9gie.'}</div>
+        </div>
+        <!-- CTA -->
+        <table width="100%" cellpadding="0" cellspacing="0" style="margin:28px 0 12px;">
+          <tr><td align="center">
+            <a href="https://wa.me/14386302869?text=${encodeURIComponent('Bonjour, j\'ai re\u00e7u mon analyse d\'admissibilit\u00e9 et je souhaite discuter de la suite.')}" style="display:inline-block;background:#25D366;color:#fff;text-decoration:none;padding:14px 32px;border-radius:8px;font-weight:700;font-size:15px;">Discuter sur WhatsApp</a>
+          </td></tr>
+        </table>
+        <p style="text-align:center;font-size:12px;color:#9ca3af;margin:8px 0 0;">R\u00e9ponse moyenne : moins de 2 heures</p>
+      </td></tr>
+      <!-- Footer -->
+      <tr><td style="background:#f8f9fc;padding:20px 28px;border-top:1px solid #e5e7eb;">
+        <div style="font-size:12px;color:#6b7280;line-height:1.6;">
+          <strong style="color:#1B2559;">SOS Hub Canada Inc.</strong><br>
+          3737, boul. Cr\u00e9mazie Est, bureau 402, Montr\u00e9al (Qu\u00e9bec) H1Z 2K4<br>
+          T\u00e9l. : <a href="tel:+15145330482" style="color:#1B2559;text-decoration:none;">514-533-0482</a> &middot;
+          WhatsApp : <a href="https://wa.me/14386302869" style="color:#1B2559;text-decoration:none;">438-630-2869</a><br>
+          Courriel : <a href="mailto:info@soshubcanada.com" style="color:#1B2559;text-decoration:none;">info@soshubcanada.com</a>
+        </div>
+        <div style="font-size:10px;color:#9ca3af;margin-top:12px;padding-top:12px;border-top:1px solid #e5e7eb;">
+          Ce rapport est fourni \u00e0 titre indicatif et ne constitue pas un avis juridique.
+          Les d\u00e9cisions finales rel\u00e8vent des autorit\u00e9s gouvernementales comp\u00e9tentes.
+        </div>
+      </td></tr>
+    </table>
+  </td></tr>
+</table>
+</body></html>`;
+
+      const res = await crmFetch('/api/crm/send-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          clientId: selectedClient?.id || null,
+          toEmail: emailTrim,
+          subject: `Votre analyse d'admissibilit\u00e9 \u2014 SOS Hub Canada`,
+          emailBody: htmlBody,
+          type: 'analysis',
+          sentBy: currentUser?.id || 'system',
+          from_name: 'SOS Hub Canada',
+          reply_to: 'info@soshubcanada.com',
+        }),
+      });
+
+      if (!res.ok) {
+        const errData = await res.json().catch(() => ({ error: 'Erreur inconnue' }));
+        throw new Error(errData.error || `HTTP ${res.status}`);
+      }
+
+      // Tag client with a follow-up note on success
+      if (selectedClient?.email) {
+        try {
+          await crmFetch('/api/crm/sync-client', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              email: selectedClient.email,
+              firstName: selectedClient.firstName,
+              lastName: selectedClient.lastName,
+              source: 'analyse_admissibilite',
+              notes: `\n\u2500\u2500\u2500 Analyse envoy\u00e9e le ${dateStr} \u2500\u2500\u2500\nR\u00e9cipiendaire : ${emailTrim}\nProgrammes admissibles : ${eligible.map(p => p.programNameFr).join(', ') || 'Aucun'}\nSuivi requis : oui`,
+            }),
+          });
+        } catch { /* best effort only */ }
+      }
+
+      setNotification({
+        type: 'success',
+        message: `Analyse envoy\u00e9e \u00e0 ${emailTrim}${selectedClient ? ' et not\u00e9e au dossier client' : ''}.`,
+      });
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : 'Erreur inconnue';
+      setNotification({ type: 'error', message: `\u00c9chec de l'envoi : ${msg}` });
+    } finally {
+      setIsSending(false);
+    }
+  }, [isSending, selectedClientId, clients, currentUser]);
 
   // CRS / FSW computed
   const crsResult = useMemo(() => calculateCRSScore(profile), [profile]);
@@ -1285,32 +1459,26 @@ function AdmissibiliteTab() {
             <Save size={16} /> Sauvegarder l&apos;analyse
           </button>
           <button
-            onClick={async () => {
-              if (!analysis) return;
-              const email = prompt('Courriel du client :');
-              if (!email) return;
-              try {
-                const eligible = analysis.programs.filter(p => p.eligibility === 'eligible' || p.eligibility === 'likely_eligible');
-                const body = `Bonjour ${analysis.clientName},\n\nSuite à notre analyse de votre profil d'immigration, voici un résumé :\n\n${analysis.overallSummary}\n\nProgrammes admissibles : ${eligible.map(p => p.programNameFr).join(', ') || 'Aucun pour le moment'}\n\n${analysis.topRecommendation}\n\nCordialement,\nSOS Hub Canada`;
-                const res = await crmFetch('/api/crm/send-email', {
-                  method: 'POST',
-                  headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({
-                    toEmail: email,
-                    subject: `Votre analyse d'admissibilité - SOS Hub Canada`,
-                    emailBody: body,
-                    type: 'general',
-                    sentBy: 'system',
-                  }),
-                });
-                if (res.ok) alert('Analyse envoyée par courriel !');
-                else alert('Erreur lors de l\'envoi.');
-              } catch { alert('Erreur lors de l\'envoi.'); }
-            }}
-            className="flex items-center gap-2 px-4 py-2.5 bg-white border border-gray-200 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-50 transition-colors">
-            <Send size={16} /> Envoyer au client
+            onClick={() => analysis && sendAnalysisByEmail(analysis)}
+            disabled={isSending || !analysis}
+            className="flex items-center gap-2 px-4 py-2.5 bg-white border border-gray-200 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+            <Send size={16} /> {isSending ? 'Envoi en cours...' : 'Envoyer au client'}
           </button>
         </div>
+        {/* In-page notification (replaces alert()) */}
+        {notification && (
+          <div className={`mt-4 flex items-start justify-between gap-3 p-4 rounded-xl border ${
+            notification.type === 'error' ? 'bg-red-50 border-red-200 text-red-700' :
+            notification.type === 'success' ? 'bg-green-50 border-green-200 text-green-700' :
+            'bg-blue-50 border-blue-200 text-blue-700'
+          }`}>
+            <div className="flex items-center gap-2 text-sm">
+              {notification.type === 'error' ? <XCircle size={16} /> : notification.type === 'success' ? <CheckCircle2 size={16} /> : <Info size={16} />}
+              <span>{notification.message}</span>
+            </div>
+            <button onClick={() => setNotification(null)} className="text-sm font-medium hover:underline shrink-0">Fermer</button>
+          </div>
+        )}
       </div>
     );
   }
@@ -1410,27 +1578,11 @@ function AdmissibiliteTab() {
             w.document.close();
             setTimeout(() => w.print(), 500);
           }}
-          onSendEmail={async () => {
-            const email = prompt('Courriel du client :');
-            if (!email) return;
-            try {
-              const eligible = analysis.programs.filter(p => p.eligibility === 'eligible' || p.eligibility === 'likely_eligible');
-              const body = `Bonjour ${analysis.clientName},\n\nSuite à notre analyse de votre profil, voici un résumé :\n\n${analysis.overallSummary}\n\nProgrammes admissibles : ${eligible.map(p => p.programNameFr).join(', ') || 'Aucun pour le moment'}\n\n${analysis.topRecommendation}\n\nCordialement,\nSOS Hub Canada\n+1 (438) 630-2869 | info@soshubcanada.com`;
-              const res = await crmFetch('/api/crm/send-email', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                  toEmail: email,
-                  subject: `Votre analyse d'admissibilité — SOS Hub Canada`,
-                  emailBody: body,
-                  type: 'general',
-                  sentBy: 'system',
-                }),
-              });
-              if (res.ok) alert('Analyse envoyée par courriel !');
-              else alert("Erreur lors de l'envoi.");
-            } catch { alert("Erreur lors de l'envoi."); }
-          }}
+          onSendEmail={() => analysis && sendAnalysisByEmail(analysis, {
+            crsTotal: crsBreakdown?.total,
+            mifiTotal: mifiBreakdown?.total,
+            fswTotal: fswResult?.total,
+          })}
         />
       </div>
     );
