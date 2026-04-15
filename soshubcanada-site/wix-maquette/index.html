@@ -31,7 +31,7 @@
   <link rel="apple-touch-icon" href="/assets/icon-192.svg">
   <link rel="manifest" href="/manifest.json">
   <!-- Schema.org LocalBusiness -->
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"LocalBusiness","name":"SOS Hub Canada","url":"https://soshubcanada.com","logo":"https://soshubcanada.com/favicon.svg","description":"Accompagnement personnalisé pour vivre, travailler et s'établir au Canada.","address":{"@type":"PostalAddress","streetAddress":"3737 Crémazie Est #402","addressLocality":"Montréal","addressRegion":"QC","postalCode":"H1Z 2K4","addressCountry":"CA"},"geo":{"@type":"GeoCoordinates","latitude":45.5563,"longitude":-73.5959},"telephone":"+1-514-533-0482","email":"info@soshubcanada.com","priceRange":"$$","openingHoursSpecification":[{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday"],"opens":"09:00","closes":"18:00"}],"sameAs":["https://wa.me/15145330482"],"aggregateRating":{"@type":"AggregateRating","ratingValue":"4.9","reviewCount":"127","bestRating":"5"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"LocalBusiness","name":"SOS Hub Canada","url":"https://soshubcanada.com","logo":"https://soshubcanada.com/favicon.svg","description":"Accompagnement personnalisé pour vivre, travailler et s'établir au Canada.","address":{"@type":"PostalAddress","streetAddress":"3737 Crémazie Est #402","addressLocality":"Montréal","addressRegion":"QC","postalCode":"H1Z 2K4","addressCountry":"CA"},"geo":{"@type":"GeoCoordinates","latitude":45.5563,"longitude":-73.5959},"telephone":"+1-514-533-0482","email":"info@soshubcanada.com","priceRange":"$$","openingHoursSpecification":[{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday"],"opens":"09:00","closes":"18:00"}],"sameAs":["https://wa.me/14386302869"],"aggregateRating":{"@type":"AggregateRating","ratingValue":"4.9","reviewCount":"127","bestRating":"5"}}</script>
   <!-- Schema.org WebSite (for Google Sitelinks Search) -->
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"SOS Hub Canada","url":"https://soshubcanada.com","potentialAction":{"@type":"SearchAction","target":"https://soshubcanada.com/?q={search_term_string}","query-input":"required name=search_term_string"}}</script>
   <!-- Schema.org Organization -->
@@ -252,6 +252,94 @@
     }
     .lang-option:hover { background: #f7f7f7; }
     .lang-option[aria-selected="true"] { background: rgba(200,163,95,0.09); color: var(--gold); font-weight: 600; }
+
+    /* ── LANGUAGE CONTACT MODAL ── */
+    .lang-modal {
+      position: fixed; inset: 0; z-index: 10000;
+      display: none; align-items: center; justify-content: center;
+      padding: 20px;
+    }
+    .lang-modal.open { display: flex; animation: langModalFade 0.25s ease-out; }
+    @keyframes langModalFade { from { opacity: 0; } to { opacity: 1; } }
+    .lang-modal-backdrop {
+      position: absolute; inset: 0;
+      background: rgba(12, 20, 40, 0.72);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+    }
+    .lang-modal-card {
+      position: relative; z-index: 1;
+      background: #fff;
+      border-radius: 20px;
+      max-width: 440px; width: 100%;
+      padding: 40px 32px 32px;
+      text-align: center;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.35);
+      border-top: 4px solid var(--gold);
+      animation: langModalSlide 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    @keyframes langModalSlide {
+      from { transform: translateY(20px) scale(0.96); opacity: 0; }
+      to { transform: translateY(0) scale(1); opacity: 1; }
+    }
+    .lang-modal-close {
+      position: absolute; top: 12px; right: 16px;
+      width: 36px; height: 36px;
+      border: none; background: transparent;
+      font-size: 28px; line-height: 1; color: #999;
+      cursor: pointer; border-radius: 50%;
+      transition: all 0.2s;
+    }
+    .lang-modal-close:hover { background: #f5f5f5; color: var(--navy); }
+    .lang-modal-flag { font-size: 48px; margin-bottom: 12px; }
+    .lang-modal-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 24px; color: var(--navy);
+      margin: 0 0 10px; font-weight: 700;
+    }
+    .lang-modal-card p {
+      font-size: 14px; color: #666;
+      line-height: 1.55; margin: 0 0 24px;
+    }
+    .lang-modal-actions {
+      display: flex; flex-direction: column; gap: 10px;
+      margin-bottom: 18px;
+    }
+    .lang-modal-btn {
+      display: flex; align-items: center; justify-content: center;
+      gap: 8px;
+      padding: 14px 20px;
+      border-radius: 12px;
+      font-weight: 600; font-size: 15px;
+      text-decoration: none;
+      background: #f7f7f8;
+      color: var(--navy);
+      border: 1px solid #eaeaec;
+      transition: all 0.2s;
+    }
+    .lang-modal-btn:hover {
+      background: #fff;
+      border-color: var(--gold);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 18px rgba(200,163,95,0.18);
+    }
+    .lang-modal-btn.primary {
+      background: linear-gradient(135deg, #25D366, #128C7E);
+      color: #fff; border-color: transparent;
+      box-shadow: 0 6px 18px rgba(37,211,102,0.3);
+    }
+    .lang-modal-btn.primary:hover {
+      filter: brightness(1.05);
+      box-shadow: 0 10px 24px rgba(37,211,102,0.4);
+    }
+    .lang-modal-link {
+      background: none; border: none;
+      color: #888; font-size: 13px;
+      cursor: pointer; text-decoration: underline;
+      font-family: inherit;
+    }
+    .lang-modal-link:hover { color: var(--navy); }
+    [dir="rtl"] .lang-modal-card { text-align: center; }
     .btn-primary {
       display: inline-flex;
       align-items: center;
@@ -1232,10 +1320,11 @@
       .mobile-toggle.is-open span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
     }
 
-    /* Page enter animation */
-    @keyframes pageEnter { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    /* Page enter animation — opacity only to avoid creating a containing block
+       on <body> (which would break position:fixed descendants like .lang-modal) */
+    @keyframes pageEnter { from { opacity: 0; } to { opacity: 1; } }
     body { animation: pageEnter 0.35s ease both; }
-    body.page-exit { opacity: 0; transform: translateY(-8px); transition: opacity 0.2s, transform 0.2s; }
+    body.page-exit { opacity: 0; transition: opacity 0.2s; }
 
     /* Skip to content */
     .skip-link { position: absolute; top: -100px; left: 0; padding: 12px 20px; background: var(--gold); color: white; font-weight: 700; z-index: 99999; transition: top 0.2s; border-radius: 0 0 8px 0; }
@@ -1291,7 +1380,7 @@
       </div>
       <div class="contacts">
         <a href="tel:+15145330482">📞 +1 (514) 533-0482</a>
-        <a href="https://wa.me/15145330482" target="_blank">💬 WhatsApp</a>
+        <a href="https://wa.me/14386302869" target="_blank">💬 WhatsApp</a>
         <a href="mailto:info@soshubcanada.com">✉️ info@soshubcanada.com</a>
       </div>
     </div>
@@ -2038,7 +2127,7 @@
         <a href="#quiz" class="btn-primary animate-pulse-gold" style="font-size:17px; padding:18px 40px;" data-i18n="cta.btn">
           ✨ Tester mes chances gratuitement
         </a>
-        <a href="https://wa.me/15145330482?text=Bonjour%2C%20je%20souhaite%20obtenir%20une%20%C3%A9valuation%20gratuite%20pour%20commencer%20ma%20nouvelle%20vie%20au%20Canada." target="_blank" rel="noopener" class="btn-whatsapp" style="font-size:17px; padding:18px 40px;">
+        <a href="https://wa.me/14386302869?text=Bonjour%2C%20je%20souhaite%20obtenir%20une%20%C3%A9valuation%20gratuite%20pour%20commencer%20ma%20nouvelle%20vie%20au%20Canada." target="_blank" rel="noopener" class="btn-whatsapp" style="font-size:17px; padding:18px 40px;">
           💬 Écrire sur WhatsApp
         </a>
       </div>
@@ -2118,7 +2207,7 @@
             <li>📍 3737 Crémazie Est #402</li>
             <li>Montréal, QC H1Z 2K4</li>
             <li><a href="tel:+15145330482">📞 +1 (514) 533-0482</a></li>
-            <li><a href="https://wa.me/15145330482" target="_blank">💬 WhatsApp</a></li>
+            <li><a href="https://wa.me/14386302869" target="_blank">💬 WhatsApp</a></li>
             <li><a href="mailto:info@soshubcanada.com">✉️ info@soshubcanada.com</a></li>
           </ul>
         </div>
@@ -2135,7 +2224,7 @@
   </footer>
 
   <!-- ===== WHATSAPP FIXED BUTTON ===== -->
-  <a href="https://wa.me/15145330482?text=Bonjour%2C%20je%20souhaite%20obtenir%20une%20%C3%A9valuation%20gratuite%20pour%20commencer%20ma%20nouvelle%20vie%20au%20Canada." target="_blank" rel="noopener" class="whatsapp-fixed" title="Écrire sur WhatsApp">
+  <a href="https://wa.me/14386302869?text=Bonjour%2C%20je%20souhaite%20obtenir%20une%20%C3%A9valuation%20gratuite%20pour%20commencer%20ma%20nouvelle%20vie%20au%20Canada." target="_blank" rel="noopener" class="whatsapp-fixed" title="Écrire sur WhatsApp">
     💬
   </a>
 
@@ -2143,7 +2232,7 @@
   <div class="sticky-mobile">
     <div class="inner">
       <a href="#quiz" class="btn-primary">✨ Tester mes chances</a>
-      <a href="https://wa.me/15145330482" target="_blank" rel="noopener" class="btn-whatsapp">💬 WhatsApp</a>
+      <a href="https://wa.me/14386302869" target="_blank" rel="noopener" class="btn-whatsapp">💬 WhatsApp</a>
     </div>
   </div>
 
@@ -2269,110 +2358,73 @@
       });
     });
 
-    // ========== I18N - LANGUAGE SWITCHER ==========
-    const translations = {
-      fr: {
-        'logo.tagline': 'Votre nouvelle vie au Canada',
-        'nav.home': 'Accueil', 'nav.services': 'Nos services', 'nav.about': 'À propos',
-        'nav.contact': 'Contact', 'nav.employers': 'Employeurs', 'nav.client': 'Mon espace client →',
-        'hero.badge1': '✨ +500 familles accompagnées - Évaluation gratuite',
-        'hero.badge2': '⏰ Places limitées - 2026',
-        'hero.title': 'Votre nouvelle vie au <span class="gold">Canada</span> commence ici',
-        'hero.sub': 'Vous rêvez de vivre, travailler ou étudier au Canada\u00a0? Notre équipe multilingue à Montréal vous accompagne de A à Z. Réponse en 24h.',
-        'hero.cta': '✨ Tester mes chances gratuitement →',
-        'quiz.title': 'Testez vos chances en 60 secondes',
-        'quiz.sub': 'Découvrez gratuitement si le Canada est accessible pour vous. Réponse immédiate.',
-        'quiz.cta': '✨ Découvrir mes options gratuitement →',
-        'cta.label': 'On vous attend', 'cta.title': 'Prêt(e) à commencer votre nouvelle vie?',
-        'cta.sub': 'Rejoignez les 500+ familles qui ont déjà fait le saut. La première étape est gratuite.',
-        'cta.btn': '✨ Tester mes chances gratuitement',
-      },
+    // ========== LANGUAGE SWITCHER - PREMIUM MULTILINGUAL CONTACT ==========
+    // The site is French-first (Montreal, Quebec market). Instead of a partial
+    // translation system, clicking EN/AR/ES opens a conversion-focused modal
+    // or redirects to dedicated community pages with bilingual content.
+
+    const langModalContent = {
       en: {
-        'logo.tagline': 'Your new life in Canada',
-        'nav.home': 'Home', 'nav.services': 'Our services', 'nav.about': 'About us',
-        'nav.contact': 'Contact', 'nav.employers': 'Employers', 'nav.client': 'My client portal →',
-        'hero.badge1': '✨ 500+ families supported - Free assessment',
-        'hero.badge2': '⏰ Limited spots - 2026',
-        'hero.title': 'Your new life in <span class="gold">Canada</span> starts here',
-        'hero.sub': 'Dreaming of living, working or studying in Canada? Our multilingual team in Montréal guides you every step of the way. Response within 24h.',
-        'hero.cta': '✨ Test my eligibility for free →',
-        'quiz.title': 'Test your chances in 60 seconds',
-        'quiz.sub': 'Discover for free if Canada is within reach for you. Immediate response.',
-        'quiz.cta': '✨ Discover my options for free →',
-        'cta.label': 'We are ready for you', 'cta.title': 'Ready to start your new life?',
-        'cta.sub': 'Join 500+ families who already made the move. The first step is free.',
-        'cta.btn': '✨ Test my chances for free',
+        title: 'Our team speaks English',
+        sub: 'Get personalized assistance in English from our Montreal office. Choose your preferred channel below.',
+        whatsapp: 'WhatsApp (fastest)',
+        email: 'Email us',
+        phone: 'Call +1 (514) 533-0482',
+        close: 'Close',
+        continueFr: 'Continue in French'
       },
       ar: {
-        'logo.tagline': 'حياتك الجديدة في كندا',
-        'nav.home': 'الرئيسية', 'nav.services': 'خدماتنا', 'nav.about': 'من نحن',
-        'nav.contact': 'اتصل بنا', 'nav.employers': 'أصحاب العمل', 'nav.client': '← حسابي',
-        'hero.badge1': '✨ أكثر من 500 عائلة - تقييم مجاني',
-        'hero.badge2': '⏰ أماكن محدودة - 2026',
-        'hero.title': 'حياتك الجديدة في <span class="gold">كندا</span> تبدأ هنا',
-        'hero.sub': 'هل تحلم بالعيش أو العمل أو الدراسة في كندا؟ فريقنا متعدد اللغات في مونتريال يرافقك خطوة بخطوة. رد خلال 24 ساعة.',
-        'hero.cta': '← ✨ اختبر فرصك مجاناً',
-        'quiz.title': 'اختبر فرصك في 60 ثانية',
-        'quiz.sub': 'اكتشف مجاناً إذا كانت كندا في متناولك. إجابة فورية.',
-        'quiz.cta': '← ✨ اكتشف خياراتي مجاناً',
-        'cta.label': 'نحن بانتظارك', 'cta.title': 'هل أنت مستعد لبدء حياتك الجديدة؟',
-        'cta.sub': 'انضم إلى أكثر من 500 عائلة أخذت الخطوة. الخطوة الأولى مجانية.',
-        'cta.btn': '← ✨ اختبر فرصي مجاناً',
+        title: 'فريقنا يتحدث العربية',
+        sub: 'احصل على مساعدة شخصية باللغة العربية من مكتبنا في مونتريال. اختر قناة الاتصال المفضلة لديك.',
+        whatsapp: 'واتساب (الأسرع)',
+        email: 'راسلنا عبر البريد',
+        phone: '‎+1 (514) 533-0482 اتصل',
+        close: 'إغلاق',
+        continueFr: 'متابعة بالفرنسية'
       },
       es: {
-        'logo.tagline': 'Tu nueva vida en Canadá',
-        'nav.home': 'Inicio', 'nav.services': 'Nuestros servicios', 'nav.about': 'Sobre nosotros',
-        'nav.contact': 'Contacto', 'nav.employers': 'Empleadores', 'nav.client': 'Mi área de cliente →',
-        'hero.badge1': '✨ +500 familias acompañadas - Evaluación gratuita',
-        'hero.badge2': '⏰ Plazas limitadas - 2026',
-        'hero.title': 'Tu nueva vida en <span class="gold">Canadá</span> empieza aquí',
-        'hero.sub': '¿Sueñas con vivir, trabajar o estudiar en Canadá? Nuestro equipo multilingüe en Montreal te acompaña paso a paso. Respuesta en 24h.',
-        'hero.cta': '✨ Evalúa mis posibilidades gratis →',
-        'quiz.title': 'Prueba tus posibilidades en 60 segundos',
-        'quiz.sub': 'Descubre gratis si Canadá está a tu alcance. Respuesta inmediata.',
-        'quiz.cta': '✨ Descubrir mis opciones gratis →',
-        'cta.label': 'Te estamos esperando', 'cta.title': '¿Listo para comenzar tu nueva vida?',
-        'cta.sub': 'Únete a las 500+ familias que ya dieron el salto. El primer paso es gratuito.',
-        'cta.btn': '✨ Evalúa mis posibilidades gratis',
+        title: 'Nuestro equipo habla español',
+        sub: 'Recibe asistencia personalizada en español desde nuestra oficina en Montreal. Elige tu canal preferido.',
+        whatsapp: 'WhatsApp (más rápido)',
+        email: 'Envíanos un correo',
+        phone: 'Llama +1 (514) 533-0482',
+        close: 'Cerrar',
+        continueFr: 'Continuar en francés'
       }
     };
 
-    const langMeta = { fr: { flag:'🇫🇷', short:'FR', dir:'ltr' }, en: { flag:'🇬🇧', short:'EN', dir:'ltr' }, ar: { flag:'🇸🇦', short:'AR', dir:'rtl' }, es: { flag:'🇪🇸', short:'ES', dir:'ltr' } };
-
-    function applyLang(lang) {
-      const dict = translations[lang];
-      if (!dict) return;
-      const meta = langMeta[lang];
-
-      // Update <html> attrs
-      document.documentElement.lang = lang;
-      document.documentElement.dir = meta.dir;
-
-      // Keys that contain trusted inline HTML (e.g. <span class="gold">)
-      const htmlKeys = new Set(['hero.title']);
-
-      // Translate elements
-      document.querySelectorAll('[data-i18n]').forEach(el => {
-        const key = el.dataset.i18n;
-        if (dict[key] !== undefined) {
-          if (htmlKeys.has(key)) {
-            el.innerHTML = dict[key];
-          } else {
-            el.textContent = dict[key];
-          }
-        }
+    function openLangModal(lang) {
+      const c = langModalContent[lang];
+      if (!c) return;
+      const isRtl = lang === 'ar';
+      const modal = document.getElementById('langModal');
+      modal.innerHTML = `
+        <div class="lang-modal-backdrop" data-close="1"></div>
+        <div class="lang-modal-card" role="dialog" aria-modal="true" aria-labelledby="langModalTitle" dir="${isRtl ? 'rtl' : 'ltr'}">
+          <button class="lang-modal-close" aria-label="${c.close}" data-close="1">×</button>
+          <div class="lang-modal-flag">${ {en:'🇬🇧',ar:'🇸🇦',es:'🇪🇸'}[lang] }</div>
+          <h3 id="langModalTitle">${c.title}</h3>
+          <p>${c.sub}</p>
+          <div class="lang-modal-actions">
+            <a href="https://wa.me/14386302869" target="_blank" rel="noopener" class="lang-modal-btn primary">💬 ${c.whatsapp}</a>
+            <a href="mailto:info@soshubcanada.com" class="lang-modal-btn">✉️ ${c.email}</a>
+            <a href="tel:+15145330482" class="lang-modal-btn">📞 ${c.phone}</a>
+          </div>
+          <button class="lang-modal-link" data-close="1">${c.continueFr}</button>
+        </div>
+      `;
+      modal.classList.add('open');
+      document.body.style.overflow = 'hidden';
+      modal.querySelectorAll('[data-close="1"]').forEach(el => {
+        el.addEventListener('click', closeLangModal);
       });
+    }
 
-      // Update toggle label
-      document.getElementById('langLabel').textContent = meta.flag + ' ' + meta.short;
-
-      // Update option selected states
-      document.querySelectorAll('.lang-option').forEach(opt => {
-        const isActive = opt.dataset.lang === lang;
-        opt.setAttribute('aria-selected', isActive);
-      });
-
-      localStorage.setItem('soshub_lang', lang);
+    function closeLangModal() {
+      const modal = document.getElementById('langModal');
+      modal.classList.remove('open');
+      document.body.style.overflow = '';
+      setTimeout(() => { modal.innerHTML = ''; }, 300);
     }
 
     // Dropdown open/close
@@ -2387,21 +2439,31 @@
       langDropdown.classList.remove('open');
       langToggle.setAttribute('aria-expanded', 'false');
     });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeLangModal();
+        langDropdown.classList.remove('open');
+        langToggle.setAttribute('aria-expanded', 'false');
+      }
+    });
+
     document.querySelectorAll('.lang-option').forEach(opt => {
       opt.addEventListener('click', (e) => {
         e.stopPropagation();
-        applyLang(opt.dataset.lang);
+        const lang = opt.dataset.lang;
         langDropdown.classList.remove('open');
         langToggle.setAttribute('aria-expanded', 'false');
+
+        if (lang === 'fr') return; // already in French
+        if (lang === 'ar') { window.location.href = '/maghreb'; return; }
+        if (lang === 'es') { window.location.href = '/latino'; return; }
+        openLangModal(lang); // en → modal
       });
     });
-
-    // Init - restore saved language or detect from browser
-    const saved = localStorage.getItem('soshub_lang');
-    const browserLang = (navigator.language || 'fr').split('-')[0];
-    const initLang = saved || (translations[browserLang] ? browserLang : 'fr');
-    applyLang(initLang);
   </script>
+
+  <!-- ── LANGUAGE CONTACT MODAL ── -->
+  <div id="langModal" class="lang-modal" aria-hidden="true"></div>
 
   <!-- ── BACK TO TOP ── -->
   <button id="back-to-top" aria-label="Retour en haut de page" title="Retour en haut">↑</button>

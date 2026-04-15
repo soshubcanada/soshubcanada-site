@@ -5,13 +5,32 @@
       "name": "aidoqc-site",
       "runtimeExecutable": "/bin/sh",
       "runtimeArgs": ["-c", "cd /Users/grp255/Downloads/aidoqc-app && /usr/local/bin/node node_modules/.bin/next dev"],
-      "port": 3000
+      "port": 3000,
+      "autoPort": true
     },
     {
       "name": "dinarzone-preview",
       "runtimeExecutable": "/bin/sh",
       "runtimeArgs": ["-c", "cd /tmp/dinarzone-preview && python3 -m http.server 3001"],
       "port": 3001
+    },
+    {
+      "name": "dinarzone-app",
+      "runtimeExecutable": "/bin/sh",
+      "runtimeArgs": ["-c", "export PATH=/usr/local/bin:/usr/bin:/bin:$PATH && cd /Users/grp255/Downloads/dinarzone-app && node node_modules/.bin/next dev -p 3002 --webpack"],
+      "port": 3002
+    },
+    {
+      "name": "vira-app",
+      "runtimeExecutable": "/bin/sh",
+      "runtimeArgs": ["-c", "export PATH=/usr/local/bin:/usr/bin:/bin:$PATH && cd /Users/grp255/Downloads/vira-app && node node_modules/.bin/next dev -p 3003 --webpack"],
+      "port": 3003
+    },
+    {
+      "name": "soshub-site",
+      "runtimeExecutable": "/bin/sh",
+      "runtimeArgs": ["-c", "export PATH=/usr/local/bin:/usr/bin:/bin:$PATH && cd '/Users/grp255/Downloads/_CLAUDE Code 2026/soshubcanada-site' && node node_modules/.bin/next dev -p 3004 --webpack"],
+      "port": 3004
     }
   ]
 }

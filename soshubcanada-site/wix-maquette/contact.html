@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" dir="ltr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,6 +13,7 @@
   <link rel="alternate" hreflang="x-default" href="https://soshubcanada.com/contact">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="SOS Hub Canada">
+  <meta property="og:locale" content="fr_CA">
   <meta property="og:title" content="Contact & Réservation | SOS Hub Canada">
   <meta property="og:description" content="Contactez SOS Hub Canada à Montréal. Réservez une consultation gratuite, appelez-nous ou écrivez sur WhatsApp. Bureau au 3737 Crémazie Est.">
   <meta property="og:url" content="https://soshubcanada.com/contact">
@@ -125,7 +126,7 @@
     .cookie-btns { display: flex; gap: 12px; }
     .cookie-btn-accept { padding: 10px 24px; background: #C8A35F; color: white; font-weight: 700; font-size: 14px; border: none; border-radius: 8px; cursor: pointer; }
     .cookie-btn-decline { padding: 10px 24px; background: transparent; color: rgba(255,255,255,0.5); font-size: 14px; border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; cursor: pointer; }
-    @keyframes pageEnter { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes pageEnter { from { opacity: 0; } to { opacity: 1; } }
     body { animation: pageEnter 0.35s ease both; }
     body.page-exit { opacity: 0; transition: opacity 0.2s; }
     :focus-visible { outline: 2px solid #C8A35F; outline-offset: 3px; border-radius: 4px; }
@@ -195,7 +196,7 @@
               </div>
             </a>
 
-            <a href="https://wa.me/15145330482?text=Bonjour%2C%20je%20souhaite%20des%20informations%20sur%20vos%20services." target="_blank" rel="noopener" class="contact-card">
+            <a href="https://wa.me/14386302869?text=Bonjour%2C%20je%20souhaite%20des%20informations%20sur%20vos%20services." target="_blank" rel="noopener" class="contact-card">
               <div class="contact-icon" style="background:rgba(37,211,102,0.1);">💬</div>
               <div>
                 <h3>WhatsApp</h3>
@@ -276,7 +277,7 @@
             allow="clipboard-write"
           ></iframe>
           <div style="padding:16px 24px; text-align:center; border-top:1px solid rgba(0,0,0,0.04);">
-            <a href="https://wa.me/15145330482?text=Bonjour%2C%20je%20souhaite%20r%C3%A9server%20une%20consultation%20gratuite." target="_blank" rel="noopener" style="display:inline-flex; align-items:center; justify-content:center; gap:8px; width:100%; max-width:360px; padding:14px 24px; background:#25D366; color:white; font-weight:700; font-size:15px; border-radius:12px; text-decoration:none; transition:all 0.3s;">💬 Ou réserver via WhatsApp</a>
+            <a href="https://wa.me/14386302869?text=Bonjour%2C%20je%20souhaite%20r%C3%A9server%20une%20consultation%20gratuite." target="_blank" rel="noopener" style="display:inline-flex; align-items:center; justify-content:center; gap:8px; width:100%; max-width:360px; padding:14px 24px; background:#25D366; color:white; font-weight:700; font-size:15px; border-radius:12px; text-decoration:none; transition:all 0.3s;">💬 Ou réserver via WhatsApp</a>
           </div>
         </div>
       </div>
@@ -326,7 +327,7 @@
     </div>
   </footer>
 
-  <a href="https://wa.me/15145330482" target="_blank" rel="noopener" class="whatsapp-fixed">💬</a>
+  <a href="https://wa.me/14386302869" target="_blank" rel="noopener" class="whatsapp-fixed">💬</a>
 
 
   <!-- ── BACK TO TOP ── -->
@@ -370,7 +371,7 @@
           btn.innerHTML = origHTML;
           btn.disabled = false;
           const msg = Object.entries(data).filter(([k]) => k !== 'source').map(([k,v]) => k+': '+v).join('\n');
-          alert('Erreur - contactez-nous sur WhatsApp: wa.me/15145330482');
+          alert('Erreur - contactez-nous sur WhatsApp: wa.me/14386302869');
         }
       });
     }

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" dir="ltr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,6 +13,7 @@
   <link rel="alternate" hreflang="x-default" href="https://soshubcanada.com/employeurs">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="SOS Hub Canada">
+  <meta property="og:locale" content="fr_CA">
   <meta property="og:title" content="Services pour Employeurs | SOS Hub Canada">
   <meta property="og:description" content="SOS Hub Canada prend en charge la paperasse et l'intégration de vos nouveaux employés. Vous gérez votre business, on s'occupe du reste.">
   <meta property="og:url" content="https://soshubcanada.com/employeurs">
@@ -188,7 +189,7 @@
     .cookie-btns { display: flex; gap: 12px; }
     .cookie-btn-accept { padding: 10px 24px; background: #C8A35F; color: white; font-weight: 700; font-size: 14px; border: none; border-radius: 8px; cursor: pointer; }
     .cookie-btn-decline { padding: 10px 24px; background: transparent; color: rgba(255,255,255,0.5); font-size: 14px; border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; cursor: pointer; }
-    @keyframes pageEnter { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes pageEnter { from { opacity: 0; } to { opacity: 1; } }
     body { animation: pageEnter 0.35s ease both; }
     body.page-exit { opacity: 0; transition: opacity 0.2s; }
     :focus-visible { outline: 2px solid #C8A35F; outline-offset: 3px; border-radius: 4px; }
@@ -238,7 +239,7 @@
       <p class="subtitle">Vous avez trouvé votre employé? On prend en charge toute la paperasse, les démarches administratives, l'installation et l'intégration pour que votre nouvel employé soit opérationnel le plus vite possible.</p>
       <div style="display:flex; gap:16px; justify-content:center; flex-wrap:wrap; margin-bottom:48px;">
         <a href="#onboarding" class="btn-primary" style="font-size:16px; padding:18px 40px;">🚀 Nous soumettre un dossier</a>
-        <a href="https://wa.me/15145330482?text=Bonjour%2C%20je%20suis%20un%20employeur%20et%20j%27ai%20besoin%20d%27aide%20pour%20l%27int%C3%A9gration%20d%27un%20employ%C3%A9." target="_blank" rel="noopener" style="display:inline-flex; align-items:center; gap:8px; padding:18px 40px; background:rgba(255,255,255,0.1); color:white; font-weight:700; font-size:16px; border-radius:14px; border:1px solid rgba(255,255,255,0.25); transition:all 0.3s;">💬 Nous écrire sur WhatsApp</a>
+        <a href="https://wa.me/14386302869?text=Bonjour%2C%20je%20suis%20un%20employeur%20et%20j%27ai%20besoin%20d%27aide%20pour%20l%27int%C3%A9gration%20d%27un%20employ%C3%A9." target="_blank" rel="noopener" style="display:inline-flex; align-items:center; gap:8px; padding:18px 40px; background:rgba(255,255,255,0.1); color:white; font-weight:700; font-size:16px; border-radius:14px; border:1px solid rgba(255,255,255,0.25); transition:all 0.3s;">💬 Nous écrire sur WhatsApp</a>
       </div>
       <div class="hero-stats">
         <div class="hero-stat">
@@ -523,7 +524,7 @@
 
         <div class="onboarding-or">ou</div>
 
-        <a href="https://wa.me/15145330482?text=Bonjour%2C%20je%20suis%20un%20employeur%20et%20j%27ai%20besoin%20d%27aide%20pour%20l%27int%C3%A9gration%20et%20les%20d%C3%A9marches%20administratives%20pour%20un%20employ%C3%A9." target="_blank" rel="noopener" class="btn-whatsapp">
+        <a href="https://wa.me/14386302869?text=Bonjour%2C%20je%20suis%20un%20employeur%20et%20j%27ai%20besoin%20d%27aide%20pour%20l%27int%C3%A9gration%20et%20les%20d%C3%A9marches%20administratives%20pour%20un%20employ%C3%A9." target="_blank" rel="noopener" class="btn-whatsapp">
           💬 Écrire directement sur WhatsApp
         </a>
 
@@ -556,13 +557,13 @@
       <p>&copy; 2026 SOS Hub Canada Inc. - 3737 Crémazie Est #402, Montréal, QC H1Z 2K4</p>
       <div style="display:flex; gap:20px;">
         <a href="tel:+15145330482" style="color:var(--gold);">📞 +1 (514) 533-0482</a>
-        <a href="https://wa.me/15145330482" target="_blank" rel="noopener" style="color:#25D366;">💬 WhatsApp</a>
+        <a href="https://wa.me/14386302869" target="_blank" rel="noopener" style="color:#25D366;">💬 WhatsApp</a>
       </div>
     </div>
   </footer>
 
   <!-- WhatsApp fixed -->
-  <a href="https://wa.me/15145330482?text=Bonjour%2C%20je%20suis%20employeur%20et%20j%27ai%20besoin%20d%27aide%20pour%20int%C3%A9grer%20un%20employ%C3%A9." target="_blank" rel="noopener" class="whatsapp-fixed" title="WhatsApp">💬</a>
+  <a href="https://wa.me/14386302869?text=Bonjour%2C%20je%20suis%20employeur%20et%20j%27ai%20besoin%20d%27aide%20pour%20int%C3%A9grer%20un%20employ%C3%A9." target="_blank" rel="noopener" class="whatsapp-fixed" title="WhatsApp">💬</a>
 
   <script>
     // Anti-bot: track form load time
@@ -649,7 +650,7 @@
         btn.textContent = '💬 Continuer par WhatsApp';
         btn.style.background = '#25D366';
         btn.disabled = false;
-        btn.onclick = () => window.open(`https://wa.me/15145330482?text=${msg}`, '_blank');
+        btn.onclick = () => window.open(`https://wa.me/14386302869?text=${msg}`, '_blank');
       }
     }
   </script>

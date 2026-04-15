@@ -480,7 +480,7 @@ Ces titres ciblent des recherches à fort volume :
 - [ ] Accents français vérifiés partout
 - [ ] Images chargées et optimisées
 - [ ] Formulaire quiz connecté et testé
-- [ ] Bouton WhatsApp fonctionnel (lien: `https://wa.me/15145330482?text=Bonjour...`)
+- [ ] Bouton WhatsApp fonctionnel (lien: `https://wa.me/14386302869?text=Bonjour...`)
 - [ ] Navigation par ancres fonctionnelle
 - [ ] Version mobile vérifiée
 - [ ] Meta tags SEO configurés

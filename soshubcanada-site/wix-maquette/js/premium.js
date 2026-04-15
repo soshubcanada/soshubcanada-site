@@ -258,7 +258,7 @@
       form.appendChild(errDiv);
     }
     errDiv.innerHTML = `<span>⚠️ ${message}</span>` +
-      (whatsappMsg ? ` <a href="https://wa.me/15145330482?text=${encodeURIComponent(whatsappMsg)}" target="_blank" style="color:#25D366;font-weight:700;">💬 WhatsApp</a>` : '');
+      (whatsappMsg ? ` <a href="https://wa.me/14386302869?text=${encodeURIComponent(whatsappMsg)}" target="_blank" style="color:#25D366;font-weight:700;">💬 WhatsApp</a>` : '');
     errDiv.style.display = 'block';
   }
 
