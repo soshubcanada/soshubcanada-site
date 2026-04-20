@@ -10,6 +10,7 @@ import { ScrollAnimator } from '@/components/ScrollAnimator';
 import { AnalyticsProvider } from '@/components/Analytics';
 import { CookieBanner } from '@/components/CookieBanner';
 import { ExitIntentPopup } from '@/components/ExitIntentPopup';
+import { SosiaChatMount } from '@/components/SosiaChatMount';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -167,6 +168,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <AnalyticsProvider />
         <CookieBanner />
         <ExitIntentPopup />
+        <SosiaChatMount />
       </body>
     </html>
   );
