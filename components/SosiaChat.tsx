@@ -1,25 +1,31 @@
 'use client';
 
 // ============================================================
-// SOS Hub Canada · SosiaChat · Widget chatbot B2C
+// SOS Hub Canada · SosiaChat · Widget chatbot B2C · v2
 // ============================================================
 //
+// Améliorations v2 :
+//   · Quick reply chips sur le message d'accueil (starters)
+//   · CTA test d'admissibilité dédupliquée par session
+//     (bug v1 : la bulle CTA était réinsérée à chaque réponse
+//      contenant suggested_action=push_test)
+//   · Détection langue navigateur envoyée au serveur comme
+//     indice de contexte
+//   · Bouton « Réessayer » sur erreur réseau
+//   · Meilleure accessibilité (aria-live, focus trap)
+//
 // Comportement :
-// - Bouton flottant bottom-right · icône chat · pastille de
-//   statut vert (en ligne)
-// - Clic → ouvre un panneau 380 × 580 (desktop) · plein écran
-//   en mobile
-// - Auto-check de l'endpoint GET /api/chat-sosia · si 503 le
-//   widget se masque proprement (fallback gracieux si Anthropic
-//   down ou clé manquante)
-// - Persiste session_id en sessionStorage
-// - Persiste état ouvert/fermé en localStorage (restaure l'état
-//   si l'utilisateur a déjà engagé la conversation)
-// - Mobile responsive
-// - Compliance : pas de « immigration » côté UI · point médian à
-//   la place des em dashes
+//   · FAB bottom-right · panel 380 × 580 desktop · plein écran
+//     mobile
+//   · Auto-check de l'endpoint GET /api/chat-sosia · si pas
+//     ready, widget se masque (fallback gracieux)
+//   · Persiste session_id et historique en sessionStorage
+//   · Persiste état ouvert/fermé en localStorage
+//
+// Compliance : pas de « immigration » · point médian à la place
+// des em dashes (géré côté serveur par sanitize).
 
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { nanoid } from 'nanoid';
 import Link from 'next/link';
 
@@ -29,6 +35,7 @@ const STORAGE_KEY_SESSION = 'sosia_session_id';
 const STORAGE_KEY_OPEN = 'sosia_was_open';
 const STORAGE_KEY_HISTORY = 'sosia_history_v1';
 const STORAGE_KEY_DISMISSED = 'sosia_dismissed_at';
+const STORAGE_KEY_CTA_SHOWN = 'sosia_cta_shown';
 
 type Role = 'user' | 'assistant';
 interface UIMessage {
@@ -36,6 +43,7 @@ interface UIMessage {
   role: Role;
   content: string;
   error?: boolean;
+  kind?: 'text' | 'cta_test';
 }
 
 interface ApiResponse {
@@ -43,14 +51,23 @@ interface ApiResponse {
   session_id: string;
   suggested_action: null | { type: 'push_test' | 'capture_email'; url?: string };
   conversion_event: string | null;
+  lang?: string;
+  model?: string;
 }
 
 const WELCOME: UIMessage = {
   id: 'welcome',
   role: 'assistant',
   content:
-    "Bonjour ! Je suis SOSIA, l'assistante virtuelle de SOS Hub Canada. Vous préparez votre projet d'établissement au Canada ? Je peux vous aider à y voir clair. Quelle est votre situation aujourd'hui ?",
+    "Bonjour ! Je suis SOSIA, l'assistante virtuelle de SOS Hub Canada. Je peux vous donner les grandes lignes de l'établissement au Canada et vous orienter vers une consultation gratuite si vous avez un projet concret. Comment puis-je vous aider ?",
 };
+
+const QUICK_REPLIES: string[] = [
+  "C'est quoi le PEQ ?",
+  'Quelles sont les voies depuis la France ou le Maghreb ?',
+  'Permis de travail au Canada',
+  'Je veux parler à un conseiller',
+];
 
 // ------------------------------------------------------------
 // Helpers storage (SSR-safe)
@@ -92,10 +109,26 @@ function readHistory(): UIMessage[] {
 function writeHistory(msgs: UIMessage[]) {
   if (typeof window === 'undefined') return;
   try {
-    sessionStorage.setItem(STORAGE_KEY_HISTORY, JSON.stringify(msgs.slice(-30)));
+    sessionStorage.setItem(STORAGE_KEY_HISTORY, JSON.stringify(msgs.slice(-40)));
   } catch {
     /* noop */
   }
+}
+
+function readCtaShown(): boolean {
+  if (typeof window === 'undefined') return false;
+  return sessionStorage.getItem(STORAGE_KEY_CTA_SHOWN) === '1';
+}
+
+function writeCtaShown() {
+  if (typeof window === 'undefined') return;
+  sessionStorage.setItem(STORAGE_KEY_CTA_SHOWN, '1');
+}
+
+// Langue navigateur brute (fr, en, ar, es, ...)
+function browserLang(): string {
+  if (typeof navigator === 'undefined') return 'fr';
+  return (navigator.language || 'fr').slice(0, 2).toLowerCase();
 }
 
 // ------------------------------------------------------------
@@ -110,6 +143,8 @@ export function SosiaChat() {
   const [error, setError] = useState<string | null>(null);
   const [unread, setUnread] = useState(false);
   const sessionIdRef = useRef('');
+  const ctaShownRef = useRef(false);
+  const lastUserMsgRef = useRef<string>('');
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -130,14 +165,13 @@ export function SosiaChat() {
     };
   }, []);
 
-  // Mount · restaure session + historique + état ouvert
+  // Mount · restaure session + historique + état ouvert + CTA flag
   useEffect(() => {
     sessionIdRef.current = readSession();
+    ctaShownRef.current = readCtaShown();
     const saved = readHistory();
     if (saved.length > 0) setMessages(saved);
     if (readWasOpen()) {
-      // Ne réouvre pas automatiquement si l'utilisateur a explicitement
-      // fermé dans les 5 dernières minutes
       const dismissed = Number(localStorage.getItem(STORAGE_KEY_DISMISSED) || 0);
       if (Date.now() - dismissed > 5 * 60 * 1000) {
         setOpen(true);
@@ -145,7 +179,7 @@ export function SosiaChat() {
     }
   }, []);
 
-  // Auto-scroll en bas quand un nouveau message arrive
+  // Auto-scroll bas quand nouveau message
   useEffect(() => {
     if (!scrollRef.current) return;
     scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
@@ -191,6 +225,7 @@ export function SosiaChat() {
       if (!trimmed || loading) return;
 
       setError(null);
+      lastUserMsgRef.current = trimmed;
       const userMsg: UIMessage = {
         id: nanoid(8),
         role: 'user',
@@ -212,6 +247,7 @@ export function SosiaChat() {
                 typeof window !== 'undefined' ? window.location.href : undefined,
               user_agent:
                 typeof navigator !== 'undefined' ? navigator.userAgent : undefined,
+              lang_hint: browserLang(),
             },
           }),
         });
@@ -226,19 +262,31 @@ export function SosiaChat() {
           id: nanoid(8),
           role: 'assistant',
           content: data.response,
+          kind: 'text',
         };
-        setMessages((prev) => [...prev, assistantMsg]);
 
-        // Si l'utilisateur a accepté le test · on propose une bulle CTA
-        if (data.suggested_action?.type === 'push_test') {
-          setMessages((prev) => [
-            ...prev,
-            {
+        // Ajout de la bulle CTA SEULEMENT si :
+        //   · le serveur propose push_test
+        //   · la CTA n'a pas déjà été montrée dans la session
+        const shouldInjectCta =
+          data.suggested_action?.type === 'push_test' && !ctaShownRef.current;
+
+        setMessages((prev) => {
+          const next: UIMessage[] = [...prev, assistantMsg];
+          if (shouldInjectCta) {
+            next.push({
               id: nanoid(8),
               role: 'assistant',
-              content: '__CTA_TEST__',
-            },
-          ]);
+              content: '',
+              kind: 'cta_test',
+            });
+          }
+          return next;
+        });
+
+        if (shouldInjectCta) {
+          ctaShownRef.current = true;
+          writeCtaShown();
         }
 
         if (!open) setUnread(true);
@@ -251,8 +299,9 @@ export function SosiaChat() {
             id: nanoid(8),
             role: 'assistant',
             content:
-              "Je n'arrive pas à répondre pour le moment · merci de réessayer dans un instant. Si le problème persiste, vous pouvez joindre l'équipe au 514-533-0482 ou via le formulaire de contact.",
+              "Je n'arrive pas à répondre pour le moment · réessayez dans un instant. Si le problème persiste, vous pouvez joindre l'équipe au 1-514-533-0482 ou par courriel info@soshubcanada.com.",
             error: true,
+            kind: 'text',
           },
         ]);
       } finally {
@@ -267,6 +316,17 @@ export function SosiaChat() {
     sendMessage(input);
   };
 
+  const retryLast = useCallback(() => {
+    if (!lastUserMsgRef.current || loading) return;
+    sendMessage(lastUserMsgRef.current);
+  }, [loading, sendMessage]);
+
+  // Quick replies visibles seulement tant qu'aucun message user n'est envoyé
+  const showQuickReplies = useMemo(
+    () => messages.every((m) => m.role !== 'user'),
+    [messages]
+  );
+
   // Widget masqué si endpoint indisponible
   if (available === false) return null;
 
@@ -280,7 +340,8 @@ export function SosiaChat() {
           aria-label="Ouvrir le chat avec SOSIA"
           className="fixed bottom-4 right-4 md:bottom-6 md:right-6 z-[60] group"
         >
-          <span className="relative flex items-center gap-3 pl-3 pr-4 md:pr-5 h-14 md:h-16 rounded-full shadow-xl ring-1 ring-black/5 text-white font-semibold text-sm md:text-[15px] transition-transform hover:scale-[1.03] active:scale-[0.98]"
+          <span
+            className="relative flex items-center gap-3 pl-3 pr-4 md:pr-5 h-14 md:h-16 rounded-full shadow-xl ring-1 ring-black/5 text-white font-semibold text-sm md:text-[15px] transition-transform hover:scale-[1.03] active:scale-[0.98]"
             style={{
               background: `linear-gradient(135deg, ${QC} 0%, #1e40af 100%)`,
             }}
@@ -343,19 +404,37 @@ export function SosiaChat() {
           {/* Messages */}
           <div
             ref={scrollRef}
+            aria-live="polite"
             className="flex-1 overflow-y-auto px-4 py-4 space-y-3"
             style={{ backgroundColor: '#F7F8FA' }}
           >
             {messages.map((m) => (
               <MessageBubble key={m.id} message={m} />
             ))}
+
+            {/* Quick reply chips au démarrage */}
+            {showQuickReplies && !loading && (
+              <QuickReplies
+                replies={QUICK_REPLIES}
+                onPick={(text) => sendMessage(text)}
+              />
+            )}
+
             {loading && <TypingIndicator />}
           </div>
 
-          {/* Error inline */}
+          {/* Error inline + retry */}
           {error && (
-            <div className="px-4 py-2 text-xs text-rose-700 bg-rose-50 border-t border-rose-100">
-              {error}
+            <div className="px-4 py-2 text-xs text-rose-700 bg-rose-50 border-t border-rose-100 flex items-center justify-between gap-3">
+              <span className="truncate">{error}</span>
+              <button
+                type="button"
+                onClick={retryLast}
+                disabled={loading || !lastUserMsgRef.current}
+                className="flex-shrink-0 px-2.5 py-1 rounded-full bg-rose-600 text-white text-[11px] font-semibold hover:bg-rose-700 disabled:opacity-50"
+              >
+                Réessayer
+              </button>
             </div>
           )}
 
@@ -387,12 +466,13 @@ export function SosiaChat() {
 
           {/* Footer */}
           <div className="px-4 pb-2 text-[10.5px] text-gray-400 text-center bg-white">
-            Propulsé par Claude IA · Réponses à titre indicatif
+            Propulsé par Claude IA · informations à titre indicatif · pas un
+            conseil juridique
           </div>
         </div>
       )}
 
-      {/* Keyframe pour l'entrée du panel */}
+      {/* Keyframes */}
       <style jsx global>{`
         @keyframes sosia-in {
           from {
@@ -433,8 +513,8 @@ export function SosiaChat() {
 function MessageBubble({ message }: { message: UIMessage }) {
   const isUser = message.role === 'user';
 
-  // CTA spéciale · bulle test d'admissibilité
-  if (message.content === '__CTA_TEST__') {
+  // Bulle CTA · test d'admissibilité
+  if (message.kind === 'cta_test' || message.content === '__CTA_TEST__') {
     return (
       <div className="flex justify-start">
         <Link
@@ -469,9 +549,32 @@ function MessageBubble({ message }: { message: UIMessage }) {
   );
 }
 
+function QuickReplies({
+  replies,
+  onPick,
+}: {
+  replies: string[];
+  onPick: (text: string) => void;
+}) {
+  return (
+    <div className="flex flex-wrap gap-1.5 pt-1 pl-1">
+      {replies.map((r) => (
+        <button
+          key={r}
+          type="button"
+          onClick={() => onPick(r)}
+          className="text-[12px] font-medium px-3 py-1.5 rounded-full bg-white border border-gray-200 text-gray-700 hover:border-[#003DA5] hover:text-[#003DA5] hover:bg-[#003DA5]/5 transition-colors shadow-sm"
+        >
+          {r}
+        </button>
+      ))}
+    </div>
+  );
+}
+
 function TypingIndicator() {
   return (
-    <div className="flex justify-start">
+    <div className="flex justify-start" aria-label="SOSIA écrit...">
       <div className="bg-white rounded-2xl rounded-bl-md shadow-sm border border-gray-100 px-4 py-3 flex items-center gap-1">
         <span
           className="w-1.5 h-1.5 rounded-full bg-gray-400 sosia-dot"
@@ -491,7 +594,7 @@ function TypingIndicator() {
 }
 
 // ------------------------------------------------------------
-// Icons (inline SVG · évite un import lucide supplémentaire)
+// Icons (inline SVG)
 // ------------------------------------------------------------
 function ChatIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
